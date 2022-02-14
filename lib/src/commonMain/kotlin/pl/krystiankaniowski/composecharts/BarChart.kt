@@ -12,6 +12,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextPainter
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.unit.dp
+import pl.krystiankaniowski.composecharts.axis.YAxis
+import pl.krystiankaniowski.composecharts.axis.drawYAxis
 
 enum class BarChartStyle {
     STANDARD,
@@ -29,7 +31,8 @@ data class BarChartData(
 fun BarChart(
     data: List<BarChartData>,
     colors: Colors = AutoColors,
-    style: BarChartStyle = BarChartStyle.STANDARD
+    style: BarChartStyle = BarChartStyle.STANDARD,
+    yAxis: YAxis = YAxis.Auto
 ) {
     Box(modifier = Modifier.padding(16.dp)) {
         Canvas(modifier = Modifier.fillMaxSize()) {
@@ -41,6 +44,8 @@ fun BarChart(
             val offset =
                 width / (proportion * data.first().values.size + data.first().values.size + 1)
             val barWidth = offset * proportion
+
+            drawYAxis(0f, width, 0f, height, yAxis)
 
             when (style) {
                 BarChartStyle.STANDARD -> {

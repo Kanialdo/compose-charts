@@ -11,6 +11,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.unit.dp
+import pl.krystiankaniowski.composecharts.axis.YAxis
+import pl.krystiankaniowski.composecharts.axis.drawYAxis
 
 data class LineChartData(
     val label: String,
@@ -21,7 +23,8 @@ data class LineChartData(
 @Composable
 fun LineChart(
     data: List<LineChartData>,
-    colors: Colors = AutoColors
+    colors: Colors = AutoColors,
+    yAxis: YAxis = YAxis.Auto
 ) {
     Box(modifier = Modifier.padding(16.dp)) {
         Canvas(modifier = Modifier.fillMaxSize()) {
@@ -32,6 +35,8 @@ fun LineChart(
             val barWidth = width / data.first().values.size
 
             val maxValue = data.maxOf { it.values.maxOf { it } }
+
+            drawYAxis(0f, width, 0f, height, yAxis)
 
             data.forEachIndexed { index, series ->
                 val color = colors.resolve(index, series.color)
