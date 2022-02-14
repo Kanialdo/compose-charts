@@ -1,0 +1,26 @@
+build:
+  maxIssues: 0
+
+formatting:
+  FinalNewline:
+    active: false
+    autoCorrect: true
+    insertFinalNewLine: true
+  MaximumLineLength:
+    active: true
+    maxLineLength: 180
+  NoWildcardImports:
+    active: false
+
+style:
+  MaxLineLength:
+    active: true
+    maxLineLength: 180
+  NewLineAtEndOfFile:
+    active: false
+  WildcardImport:
+    active: false
+
+naming:
+  FunctionNaming:
+    ignoreAnnotated: [Composable]

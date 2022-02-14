@@ -5,6 +5,10 @@ compose = "1.1.0-alpha04"
 detekt = "1.19.0"
 kotlin = "1.6.10"
 
+[libraries]
+
+detekt-plugins-formatting = { module = "io.gitlab.arturbosch.detekt:detekt-formatting", version.ref = "detekt" }
+
 [plugins]
 
 android-library = { id = "com.android.library", version.ref = "androidPlugin" }

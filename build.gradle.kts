@@ -1,3 +1,4 @@
+import io.gitlab.arturbosch.detekt.Detekt
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 group = "pl.krystiankaniowski.composecharts"
@@ -8,6 +9,7 @@ plugins {
     alias(libs.plugins.kotlin.jvm) apply false
     alias(libs.plugins.kotlin.multiplatform) apply false
     alias(libs.plugins.compose) apply false
+    alias(libs.plugins.detekt)
 }
 
 allprojects {
@@ -19,5 +21,21 @@ allprojects {
 
     tasks.withType<KotlinCompile> {
         kotlinOptions.jvmTarget = "1.8"
+    }
+}
+
+subprojects {
+    apply(plugin = "io.gitlab.arturbosch.detekt")
+
+    detekt {
+        ignoreFailures = false
+        buildUponDefaultConfig = true
+        parallel = true
+        autoCorrect = false
+        config.setFrom(files(project.rootDir.resolve("config/detekt.yml")))
+
+        dependencies {
+            detektPlugins(rootProject.libs.detekt.plugins.formatting)
+        }
     }
 }
