@@ -12,11 +12,10 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextPainter
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.unit.dp
-import kotlin.math.max
 
 enum class BarChartStyle {
     STANDARD,
-    COMBINE,
+    STACKED,
     PROPORTION
 }
 
@@ -62,7 +61,7 @@ fun BarChart(
                         }
                     }
                 }
-                BarChartStyle.COMBINE -> {
+                BarChartStyle.STACKED -> {
                     val series = data.size
                     val values = data.first().values.size
                     val maxValues =

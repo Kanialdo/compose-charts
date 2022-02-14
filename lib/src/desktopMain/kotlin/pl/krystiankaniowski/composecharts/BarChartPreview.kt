@@ -24,7 +24,7 @@ fun BarChartStandardPreview() {
 fun BarChartCombinePreview() {
     BarChart(
         data = data,
-        style = BarChartStyle.COMBINE
+        style = BarChartStyle.STACKED
     )
 }
 
