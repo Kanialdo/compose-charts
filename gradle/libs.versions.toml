@@ -1,0 +1,14 @@
+[versions]
+
+androidPlugin = "7.1.0"
+compose = "1.1.0-alpha03"
+detekt = "1.19.0"
+kotlin = "1.6.10"
+
+[plugins]
+
+android-library = { id = "com.android.library", version.ref = "androidPlugin" }
+compose = { id = "org.jetbrains.compose", version.ref = "compose" }
+detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }
+kotlin-multiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
+kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
