@@ -11,6 +11,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.unit.dp
+import pl.krystiankaniowski.composecharts.internal.XMapper
+import pl.krystiankaniowski.composecharts.internal.YMapper
 
 data class LineChartData(
     val label: String,
@@ -29,9 +31,10 @@ fun LineChart(
             val width = size.width
             val height = size.height
 
-            val barWidth = width / data.first().values.size
-
             val maxValue = data.maxOf { it.values.maxOf { it } }
+
+            val xMapper = XMapper(0f, data.first().values.size.toFloat(), width)
+            val yMapper = YMapper(0f, maxValue, height)
 
             data.forEachIndexed { index, series ->
                 val color = colors.resolve(index, series.color)
@@ -39,13 +42,13 @@ fun LineChart(
                 series.values.forEachIndexed { dataIndex, point ->
                     if (dataIndex == 0) {
                         path.moveTo(
-                            x = dataIndex * barWidth + barWidth / 2f,
-                            y = ((maxValue - point) / maxValue) * height
+                            x = xMapper.x(dataIndex + 0.5f),
+                            y = yMapper.y(point)
                         )
                     } else {
                         path.lineTo(
-                            x = dataIndex * barWidth + barWidth / 2f,
-                            y = ((maxValue - point) / maxValue) * height
+                            x = xMapper.x(dataIndex + 0.5f),
+                            y = yMapper.y(point)
                         )
                     }
                 }
@@ -60,8 +63,8 @@ fun LineChart(
                     drawCircle(
                         color = color,
                         center = Offset(
-                            x = dataIndex * barWidth + barWidth / 2f,
-                            y = ((maxValue - point) / maxValue) * height
+                            x = xMapper.x(dataIndex + 0.5f),
+                            y = yMapper.y(point),
                         ),
                         radius = 5f
                     )

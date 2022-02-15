@@ -9,8 +9,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.TextPainter
-import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.unit.dp
 
 enum class BarChartStyle {
