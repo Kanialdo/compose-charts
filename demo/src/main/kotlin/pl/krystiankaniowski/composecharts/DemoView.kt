@@ -38,9 +38,8 @@ fun DemoView() {
             }
         }
         Box(modifier = Modifier.fillMaxHeight().width(1.dp).background(color = Color.LightGray))
-        Box(modifier = Modifier.weight(3f)) {
+        Box(modifier = Modifier.weight(@Suppress("MagicNumber") 3f)) {
             items[current].second.invoke()
         }
     }
 }
-

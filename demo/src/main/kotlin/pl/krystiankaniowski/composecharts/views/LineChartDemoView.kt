@@ -4,6 +4,7 @@ import androidx.compose.runtime.Composable
 import pl.krystiankaniowski.composecharts.LineChart
 import pl.krystiankaniowski.composecharts.LineChartData
 
+@Suppress("MagicNumber")
 @Composable
 fun LineChartDemo() {
     LineChart(

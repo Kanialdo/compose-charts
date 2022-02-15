@@ -4,6 +4,7 @@ import androidx.compose.runtime.Composable
 import pl.krystiankaniowski.composecharts.PieChart
 import pl.krystiankaniowski.composecharts.PieChartData
 
+@Suppress("MagicNumber")
 @Composable
 fun PieChartDemo() {
     PieChart(

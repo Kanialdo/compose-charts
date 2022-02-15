@@ -5,6 +5,7 @@ import pl.krystiankaniowski.composecharts.BarChart
 import pl.krystiankaniowski.composecharts.BarChartData
 import pl.krystiankaniowski.composecharts.BarChartStyle
 
+@Suppress("MagicNumber")
 @Composable
 fun BarChartDemoStandard() {
     BarChart(
@@ -17,6 +18,7 @@ fun BarChartDemoStandard() {
     )
 }
 
+@Suppress("MagicNumber")
 @Composable
 fun BarChartDemoStacked() {
     BarChart(
@@ -29,6 +31,7 @@ fun BarChartDemoStacked() {
     )
 }
 
+@Suppress("MagicNumber")
 @Composable
 fun BarChartDemoProportion() {
     BarChart(
