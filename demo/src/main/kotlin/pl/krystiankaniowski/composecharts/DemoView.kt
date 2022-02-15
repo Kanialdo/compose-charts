@@ -13,7 +13,7 @@ import pl.krystiankaniowski.composecharts.views.*
 
 val items: List<Pair<String, @Composable () -> Unit>> = listOf(
     "Bar chart standard" to { BarChartDemoStandard() },
-    "Bar chart stcked" to { BarChartDemoStacked() },
+    "Bar chart stacked" to { BarChartDemoStacked() },
     "Bar chart proportion" to { BarChartDemoProportion() },
     "Line chart" to { LineChartDemo() },
     "Pie chart" to { PieChartDemo() },
