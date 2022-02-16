@@ -10,6 +10,12 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.google.accompanist.flowlayout.FlowRow
 
+enum class LegendPosition {
+    Top,
+    Bottom,
+    None,
+}
+
 data class LegendEntry(
     val text: String,
     val color: Color
@@ -20,7 +26,7 @@ fun Legend(
     modifier: Modifier = Modifier,
     data: List<LegendEntry>
 ) {
-    Column(modifier = modifier, verticalArrangement = Arrangement.spacedBy(8.dp)) {
+    Column(modifier = modifier, verticalArrangement = Arrangement.spacedBy(16.dp)) {
         data.forEach {
             LegendEntry(it)
         }
@@ -32,7 +38,7 @@ fun LegendFlow(
     modifier: Modifier = Modifier,
     data: List<LegendEntry>
 ) {
-    FlowRow(modifier = modifier, mainAxisSpacing = 8.dp, crossAxisSpacing = 8.dp) {
+    FlowRow(modifier = modifier, mainAxisSpacing = 16.dp, crossAxisSpacing = 8.dp) {
         data.forEach {
             LegendEntry(it)
         }
