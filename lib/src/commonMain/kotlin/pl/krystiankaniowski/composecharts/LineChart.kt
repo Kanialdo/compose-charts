@@ -1,6 +1,7 @@
 package pl.krystiankaniowski.composecharts
 
 import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -11,32 +12,54 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.unit.dp
+import pl.krystiankaniowski.composecharts.internal.ChartChoreographer
 import pl.krystiankaniowski.composecharts.internal.XMapper
 import pl.krystiankaniowski.composecharts.internal.YMapper
 
-data class LineChartData(
-    val label: String,
-    val values: List<Float>,
-    val color: Color = Color.Unspecified
-)
+data class LineChartData(val lines: List<Line>) {
+
+    constructor(vararg lines: Line) : this(lines.toList())
+
+    data class Line(
+        val label: String,
+        val values: List<Float>,
+        val color: Color = Color.Unspecified
+    )
+
+    init {
+        check(lines.first().values.size.let { size -> lines.all { it.values.size == size } }) {
+            "All lines have to contains same amount of entries"
+        }
+    }
+
+    internal val minValue = lines.minOf { it.values.minOf { it } }
+    internal val maxValue = lines.maxOf { it.values.maxOf { it } }
+
+    internal val size: Int get() = lines.first().values.size
+}
 
 @Composable
 fun LineChart(
-    data: List<LineChartData>,
-    colors: Colors = AutoColors
+    data: LineChartData,
+    title: @Composable () -> Unit = {},
+    colors: Colors = AutoColors,
+    legendPosition: LegendPosition = LegendPosition.Bottom,
 ) {
-    Box(modifier = Modifier.padding(16.dp)) {
-        Canvas(modifier = Modifier.fillMaxSize()) {
+
+    ChartChoreographer(
+        title = title,
+        legend = { LineLegend(data, colors) },
+        legendPosition = legendPosition,
+    ) {
+        Canvas(Modifier.fillMaxSize()) {
 
             val width = size.width
             val height = size.height
 
-            val maxValue = data.maxOf { it.values.maxOf { it } }
-
             val xMapper = XMapper(0f, data.first().values.size.toFloat(), width)
             val yMapper = YMapper(0f, maxValue, height)
 
-            data.forEachIndexed { index, series ->
+            data.lines.forEachIndexed { index, series ->
                 val color = colors.resolve(index, series.color)
                 val path = Path()
                 series.values.forEachIndexed { dataIndex, point ->
@@ -71,5 +94,23 @@ fun LineChart(
                 }
             }
         }
+    }
+}
+
+@Composable
+private fun LineLegend(
+    data: LineChartData,
+    colors: Colors = AutoColors
+) {
+    Box(modifier = Modifier.border(width = 1.dp, color = Color.LightGray)) {
+        LegendFlow(
+            modifier = Modifier.padding(16.dp),
+            data = data.lines.mapIndexed { index, item ->
+                LegendEntry(
+                    item.label,
+                    colors.resolve(index, item.color)
+                )
+            }
+        )
     }
 }

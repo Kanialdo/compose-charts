@@ -1,5 +1,6 @@
 package pl.krystiankaniowski.composecharts.views
 
+import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import pl.krystiankaniowski.composecharts.LineChart
 import pl.krystiankaniowski.composecharts.LineChartData
@@ -8,10 +9,13 @@ import pl.krystiankaniowski.composecharts.LineChartData
 @Composable
 fun LineChartDemo() {
     LineChart(
-        data = listOf(
-            LineChartData(label = "Series A", values = listOf(5f, 4f, 3f, 2f, 1f)),
-            LineChartData(label = "Series B", values = listOf(1f, 1f, 1f, 1f, 1f)),
-            LineChartData(label = "Series C", values = listOf(0f, 1f, 2f, 1f, 0f)),
+        data = LineChartData(
+            lines = listOf(
+                LineChartData.Line(label = "Series A", values = listOf(5f, 4f, 3f, 2f, 1f)),
+                LineChartData.Line(label = "Series B", values = listOf(1f, 1f, 1f, 1f, 1f)),
+                LineChartData.Line(label = "Series C", values = listOf(0f, 1f, 2f, 1f, 0f)),
+            )
         ),
+        title = { Text("Line chart") },
     )
 }

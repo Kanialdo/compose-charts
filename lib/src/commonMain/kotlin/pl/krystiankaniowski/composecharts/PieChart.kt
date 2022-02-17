@@ -1,7 +1,9 @@
 package pl.krystiankaniowski.composecharts
 
 import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -11,29 +13,50 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Paint
 import androidx.compose.ui.graphics.drawscope.drawIntoCanvas
 import androidx.compose.ui.unit.dp
+import pl.krystiankaniowski.composecharts.internal.ChartChoreographer
 
-data class PieChartData(
-    val label: String,
-    val value: Float,
-    val color: Color = Color.Unspecified
-)
+data class PieChartData(val slices: List<Slice>) {
+
+    constructor(vararg slices: Slice) : this(slices.toList())
+
+    data class Slice(
+        val label: String,
+        val value: Float,
+        val color: Color = Color.Unspecified
+    )
+
+    internal val sum = slices.sumOf { it.value.toDouble() }.toFloat()
+
+    internal val size: Int get() = slices.size
+}
 
 @Composable
 fun PieChart(
-    data: List<PieChartData>,
-    colors: Colors = AutoColors
+    data: PieChartData,
+    title: @Composable () -> Unit = {},
+    colors: Colors = AutoColors,
+    legendPosition: LegendPosition = LegendPosition.Bottom,
 ) {
+    ChartChoreographer(
+        title = title,
+        legend = { PieLegend(data, colors) },
+        legendPosition = legendPosition,
+    ) {
+        Canvas(Modifier.fillMaxSize()) {
+            val width = size.width
+            val height = size.height
 
-    val sum = data.sumOf { it.value.toDouble() }.toFloat()
+            val localSize = minOf(width, height)
 
-    Box(modifier = Modifier.padding(16.dp)) {
-        Canvas(Modifier) {
             drawIntoCanvas { canvas ->
                 var start = 0f
-                data.forEachIndexed { index, slice ->
-                    val end = (slice.value / sum) * 360f
+                data.slices.forEachIndexed { index, slice ->
+                    val end = (slice.value / data.sum) * 360f
                     canvas.drawArc(
-                        rect = Rect(Offset(0f, 0f), Offset(200f, 200f)),
+                        rect = Rect(
+                            center = Offset(width / 2, height / 2),
+                            radius = localSize / 2
+                        ),
                         startAngle = start,
                         sweepAngle = end,
                         useCenter = true,
@@ -43,5 +66,23 @@ fun PieChart(
                 }
             }
         }
+    }
+}
+
+@Composable
+private fun PieLegend(
+    data: PieChartData,
+    colors: Colors = AutoColors
+) {
+    Box(modifier = Modifier.border(width = 1.dp, color = Color.LightGray)) {
+        LegendFlow(
+            modifier = Modifier.padding(16.dp),
+            data = data.slices.mapIndexed { index, item ->
+                LegendEntry(
+                    item.label,
+                    colors.resolve(index, item.color)
+                )
+            }
+        )
     }
 }
