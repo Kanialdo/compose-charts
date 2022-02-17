@@ -1,10 +1,13 @@
 package pl.krystiankaniowski.composecharts
 
 import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
@@ -21,10 +24,14 @@ data class LineChartData(
 @Composable
 fun LineChart(
     data: List<LineChartData>,
-    colors: Colors = AutoColors
+    colors: Colors = AutoColors,
+    legendPosition: LegendPosition = LegendPosition.Bottom,
 ) {
-    Box(modifier = Modifier.padding(16.dp)) {
-        Canvas(modifier = Modifier.fillMaxSize()) {
+    Column(modifier = Modifier.padding(16.dp)) {
+        if (legendPosition == LegendPosition.Top) {
+            LineLegend(data, colors)
+        }
+        Canvas(modifier = Modifier.weight(1f).fillMaxWidth().padding(16.dp)) {
 
             val width = size.width
             val height = size.height
@@ -67,6 +74,26 @@ fun LineChart(
                     )
                 }
             }
+        }
+        if (legendPosition == LegendPosition.Bottom) {
+            LineLegend(data, colors)
+        }
+    }
+}
+
+@Composable
+private fun LineLegend(
+    data: List<LineChartData>,
+    colors: Colors = AutoColors
+) {
+    Box(modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
+        Box(modifier = Modifier.border(width = 1.dp, color = Color.LightGray)) {
+            LegendFlow(modifier = Modifier.padding(16.dp), data = data.mapIndexed { index, item ->
+                LegendEntry(
+                    item.label,
+                    colors.resolve(index, item.color)
+                )
+            })
         }
     }
 }
