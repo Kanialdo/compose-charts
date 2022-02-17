@@ -3,17 +3,16 @@ package pl.krystiankaniowski.composecharts
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.unit.dp
+import pl.krystiankaniowski.composecharts.internal.ChartChoreographer
 
 data class LineChartData(val lines: List<Line>) {
 
@@ -40,14 +39,17 @@ data class LineChartData(val lines: List<Line>) {
 @Composable
 fun LineChart(
     data: LineChartData,
+    title: @Composable () -> Unit = {},
     colors: Colors = AutoColors,
     legendPosition: LegendPosition = LegendPosition.Bottom,
 ) {
-    Column(modifier = Modifier.padding(16.dp)) {
-        if (legendPosition == LegendPosition.Top) {
-            LineLegend(data, colors)
-        }
-        Canvas(modifier = Modifier.weight(1f).fillMaxWidth().padding(16.dp)) {
+
+    ChartChoreographer(
+        title = title,
+        legend = { LineLegend(data, colors) },
+        legendPosition = legendPosition,
+    ) {
+        Canvas(Modifier.fillMaxSize()) {
 
             val width = size.width
             val height = size.height
@@ -90,9 +92,6 @@ fun LineChart(
                 }
             }
         }
-        if (legendPosition == LegendPosition.Bottom) {
-            LineLegend(data, colors)
-        }
     }
 }
 
@@ -101,17 +100,15 @@ private fun LineLegend(
     data: LineChartData,
     colors: Colors = AutoColors
 ) {
-    Box(modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
-        Box(modifier = Modifier.border(width = 1.dp, color = Color.LightGray)) {
-            LegendFlow(
-                modifier = Modifier.padding(16.dp),
-                data = data.lines.mapIndexed { index, item ->
-                    LegendEntry(
-                        item.label,
-                        colors.resolve(index, item.color)
-                    )
-                }
-            )
-        }
+    Box(modifier = Modifier.border(width = 1.dp, color = Color.LightGray)) {
+        LegendFlow(
+            modifier = Modifier.padding(16.dp),
+            data = data.lines.mapIndexed { index, item ->
+                LegendEntry(
+                    item.label,
+                    colors.resolve(index, item.color)
+                )
+            }
+        )
     }
 }

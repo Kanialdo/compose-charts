@@ -1,6 +1,7 @@
 package pl.krystiankaniowski.composecharts
 
 import androidx.compose.desktop.ui.tooling.preview.Preview
+import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 
 private val data = BarChartData(
@@ -16,7 +17,8 @@ private val data = BarChartData(
 fun BarChartStandardPreview() {
     BarChart(
         data = data,
-        style = BarChartStyle.STANDARD
+        style = BarChartStyle.STANDARD,
+        title = { Text("Bar chart standard") },
     )
 }
 
@@ -25,7 +27,8 @@ fun BarChartStandardPreview() {
 fun BarChartCombinePreview() {
     BarChart(
         data = data,
-        style = BarChartStyle.STACKED
+        style = BarChartStyle.STACKED,
+        title = { Text("Bar chart stacked") },
     )
 }
 
@@ -34,6 +37,7 @@ fun BarChartCombinePreview() {
 fun BarChartProportionPreview() {
     BarChart(
         data = data,
-        style = BarChartStyle.PROPORTION
+        style = BarChartStyle.PROPORTION,
+        title = { Text("Bar chart proportion") },
     )
 }

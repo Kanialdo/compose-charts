@@ -1,6 +1,7 @@
 package pl.krystiankaniowski.composecharts
 
 import androidx.compose.desktop.ui.tooling.preview.Preview
+import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 
 private val data = LineChartData(
@@ -13,8 +14,9 @@ private val data = LineChartData(
 
 @Preview
 @Composable
-fun LineChartStandardPreview() {
+fun LineChartPreview() {
     LineChart(
         data = data,
+        title = { Text("Line chart") },
     )
 }

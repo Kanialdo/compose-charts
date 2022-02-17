@@ -1,6 +1,7 @@
 package pl.krystiankaniowski.composecharts
 
 import androidx.compose.desktop.ui.tooling.preview.Preview
+import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 
 private val data = PieChartData(
@@ -15,6 +16,7 @@ private val data = PieChartData(
 @Composable
 private fun PieChartPreview() {
     PieChart(
-        data = data
+        data = data,
+        title = { Text("Pie chart") },
     )
 }

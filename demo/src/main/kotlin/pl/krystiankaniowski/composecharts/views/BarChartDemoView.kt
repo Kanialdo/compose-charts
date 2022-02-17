@@ -1,5 +1,6 @@
 package pl.krystiankaniowski.composecharts.views
 
+import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import pl.krystiankaniowski.composecharts.BarChart
 import pl.krystiankaniowski.composecharts.BarChartData
@@ -16,7 +17,8 @@ fun BarChartDemoStandard() {
                 BarChartData.Bar(label = "Series C", values = listOf(0f, 1f, 2f, 1f, 0f)),
             )
         ),
-        style = BarChartStyle.STANDARD
+        style = BarChartStyle.STANDARD,
+        title = { Text("Bar chart standard") },
     )
 }
 
@@ -31,7 +33,8 @@ fun BarChartDemoStacked() {
                 BarChartData.Bar(label = "Series C", values = listOf(0f, 1f, 2f, 1f, 0f)),
             )
         ),
-        style = BarChartStyle.STACKED
+        style = BarChartStyle.STACKED,
+        title = { Text("Bar chart stacked") },
     )
 }
 
@@ -46,6 +49,7 @@ fun BarChartDemoProportion() {
                 BarChartData.Bar(label = "Series C", values = listOf(0f, 1f, 2f, 1f, 0f)),
             )
         ),
-        style = BarChartStyle.PROPORTION
+        style = BarChartStyle.PROPORTION,
+        title = { Text("Bar chart proportion") },
     )
 }
