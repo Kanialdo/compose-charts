@@ -15,15 +15,31 @@ import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.unit.dp
 
-data class LineChartData(
-    val label: String,
-    val values: List<Float>,
-    val color: Color = Color.Unspecified
-)
+data class LineChartData(val lines: List<Line>) {
+
+    constructor(vararg lines: Line) : this(lines.toList())
+
+    data class Line(
+        val label: String,
+        val values: List<Float>,
+        val color: Color = Color.Unspecified
+    )
+
+    init {
+        check(lines.first().values.size.let { size -> lines.all { it.values.size == size } }) {
+            "All lines have to contains same amount of entries"
+        }
+    }
+
+    internal val minValue = lines.minOf { it.values.minOf { it } }
+    internal val maxValue = lines.maxOf { it.values.maxOf { it } }
+
+    internal val size: Int get() = lines.first().values.size
+}
 
 @Composable
 fun LineChart(
-    data: List<LineChartData>,
+    data: LineChartData,
     colors: Colors = AutoColors,
     legendPosition: LegendPosition = LegendPosition.Bottom,
 ) {
@@ -36,11 +52,10 @@ fun LineChart(
             val width = size.width
             val height = size.height
 
-            val barWidth = width / data.first().values.size
+            val barWidth = width / data.size
+            val maxValue = data.maxValue
 
-            val maxValue = data.maxOf { it.values.maxOf { it } }
-
-            data.forEachIndexed { index, series ->
+            data.lines.forEachIndexed { index, series ->
                 val color = colors.resolve(index, series.color)
                 val path = Path()
                 series.values.forEachIndexed { dataIndex, point ->
@@ -83,17 +98,20 @@ fun LineChart(
 
 @Composable
 private fun LineLegend(
-    data: List<LineChartData>,
+    data: LineChartData,
     colors: Colors = AutoColors
 ) {
     Box(modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
         Box(modifier = Modifier.border(width = 1.dp, color = Color.LightGray)) {
-            LegendFlow(modifier = Modifier.padding(16.dp), data = data.mapIndexed { index, item ->
-                LegendEntry(
-                    item.label,
-                    colors.resolve(index, item.color)
-                )
-            })
+            LegendFlow(
+                modifier = Modifier.padding(16.dp),
+                data = data.lines.mapIndexed { index, item ->
+                    LegendEntry(
+                        item.label,
+                        colors.resolve(index, item.color)
+                    )
+                }
+            )
         }
     }
 }

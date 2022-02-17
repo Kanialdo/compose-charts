@@ -16,20 +16,29 @@ import androidx.compose.ui.graphics.Paint
 import androidx.compose.ui.graphics.drawscope.drawIntoCanvas
 import androidx.compose.ui.unit.dp
 
-data class PieChartData(
-    val label: String,
-    val value: Float,
-    val color: Color = Color.Unspecified
-)
+data class PieChartData(val slices: List<Slice>) {
+
+    constructor(vararg slices: Slice) : this(slices.toList())
+
+    data class Slice(
+        val label: String,
+        val value: Float,
+        val color: Color = Color.Unspecified
+    )
+
+    internal val sum = slices.sumOf { it.value.toDouble() }.toFloat()
+
+    internal val size: Int get() = slices.size
+}
 
 @Composable
 fun PieChart(
-    data: List<PieChartData>,
+    data: PieChartData,
     colors: Colors = AutoColors,
     legendPosition: LegendPosition = LegendPosition.Bottom,
 ) {
 
-    val sum = data.sumOf { it.value.toDouble() }.toFloat()
+    val sum = data.sum
 
     Column(modifier = Modifier.padding(16.dp)) {
         if (legendPosition == LegendPosition.Top) {
@@ -38,7 +47,7 @@ fun PieChart(
         Canvas(modifier = Modifier.weight(1f).fillMaxWidth().padding(16.dp)) {
             drawIntoCanvas { canvas ->
                 var start = 0f
-                data.forEachIndexed { index, slice ->
+                data.slices.forEachIndexed { index, slice ->
                     val end = (slice.value / sum) * 360f
                     canvas.drawArc(
                         rect = Rect(Offset(0f, 0f), Offset(200f, 200f)),
@@ -59,17 +68,19 @@ fun PieChart(
 
 @Composable
 private fun PieLegend(
-    data: List<PieChartData>,
+    data: PieChartData,
     colors: Colors = AutoColors
 ) {
     Box(modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
         Box(modifier = Modifier.border(width = 1.dp, color = Color.LightGray)) {
-            LegendFlow(modifier = Modifier.padding(16.dp), data = data.mapIndexed { index, item ->
-                LegendEntry(
-                    item.label,
-                    colors.resolve(index, item.color)
-                )
-            })
+            LegendFlow(
+                modifier = Modifier.padding(16.dp),
+                data = data.slices.mapIndexed { index, item ->
+                    LegendEntry(
+                        item.label,
+                        colors.resolve(index, item.color)
+                    )
+                })
         }
     }
 }

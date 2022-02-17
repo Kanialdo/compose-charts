@@ -14,21 +14,39 @@ import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 
+data class BarChartData(val bars: List<Bar>) {
+
+    constructor(vararg bars: Bar) : this(bars.toList())
+
+    data class Bar(
+        val label: String,
+        val values: List<Float>,
+        val color: Color = Color.Unspecified
+    ) {
+        internal val sum: Float get() = values.sum()
+    }
+
+    init {
+        check(bars.first().values.size.let { size -> bars.all { it.values.size == size } }) {
+            "All bars have to contains same amount of entries"
+        }
+    }
+
+    internal val minValue = bars.minOf { it.values.minOf { it } }
+    internal val maxValue = bars.maxOf { it.values.maxOf { it } }
+
+    internal val size: Int get() = bars.first().values.size
+}
+
 enum class BarChartStyle {
     STANDARD,
     STACKED,
     PROPORTION
 }
 
-data class BarChartData(
-    val label: String,
-    val values: List<Float>,
-    val color: Color = Color.Unspecified,
-)
-
 @Composable
 fun BarChart(
-    data: List<BarChartData>,
+    data: BarChartData,
     colors: Colors = AutoColors,
     style: BarChartStyle = BarChartStyle.STANDARD,
     legendPosition: LegendPosition = LegendPosition.Bottom,
@@ -43,14 +61,13 @@ fun BarChart(
             val height = size.height
 
             val proportion = 2f
-            val offset =
-                width / (proportion * data.first().values.size + data.first().values.size + 1)
+            val offset = width / (proportion * data.size + data.size + 1)
             val barWidth = offset * proportion
 
             when (style) {
                 BarChartStyle.STANDARD -> {
-                    val maxValue = data.maxOf { it.values.maxOf { it } }
-                    data.forEachIndexed { series, value ->
+                    val maxValue = data.maxValue
+                    data.bars.forEachIndexed { series, value ->
                         value.values.forEachIndexed { pos, v ->
                             drawRect(
                                 color = colors.resolve(series, value.color),
@@ -67,16 +84,16 @@ fun BarChart(
                     }
                 }
                 BarChartStyle.STACKED -> {
-                    val series = data.size
-                    val values = data.first().values.size
+                    val series = data.bars.size
+                    val values = data.size
                     val maxValues =
-                        FloatArray(values) { index -> data.map { it.values[index] }.sum() }
+                        FloatArray(values) { index -> data.bars.map { it.values[index] }.sum() }
                     val maxOfValues = maxValues.maxOf { it }
                     for (i in (values - 1) downTo 0) {
                         var counter = maxValues[i]
                         for (j in (series - 1) downTo 0) {
                             drawRect(
-                                color = colors.resolve(series - 1 - j, data[j].color),
+                                color = colors.resolve(series - 1 - j, data.bars[j].color),
                                 topLeft = Offset(
                                     x = i * barWidth + (i + 1) * offset,
                                     y = ((maxOfValues - counter) / maxOfValues) * height
@@ -86,20 +103,20 @@ fun BarChart(
                                     height = (counter / maxOfValues) * height
                                 )
                             )
-                            counter -= data[j].values[i]
+                            counter -= data.bars[j].values[i]
                         }
                     }
                 }
                 BarChartStyle.PROPORTION -> {
-                    val series = data.size
-                    val values = data.first().values.size
+                    val series = data.bars.size
+                    val values = data.size
                     val maxValues =
-                        FloatArray(values) { index -> data.map { it.values[index] }.sum() }
+                        FloatArray(values) { index -> data.bars.map { it.values[index] }.sum() }
                     for (i in (values - 1) downTo 0) {
                         var counter = maxValues[i]
                         for (j in (series - 1) downTo 0) {
                             drawRect(
-                                color = colors.resolve(series - 1 - j, data[j].color),
+                                color = colors.resolve(series - 1 - j, data.bars[j].color),
                                 topLeft = Offset(
                                     x = i * barWidth + (i + 1) * offset,
                                     y = ((maxValues[i] - counter) / maxValues[i]) * height
@@ -109,7 +126,7 @@ fun BarChart(
                                     height = (counter / maxValues[i]) * height
                                 )
                             )
-                            counter -= data[j].values[i]
+                            counter -= data.bars[j].values[i]
                         }
                     }
                 }
@@ -123,17 +140,19 @@ fun BarChart(
 
 @Composable
 private fun BarLegend(
-    data: List<BarChartData>,
+    data: BarChartData,
     colors: Colors = AutoColors
 ) {
     Box(modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
         Box(modifier = Modifier.border(width = 1.dp, color = Color.LightGray)) {
-            LegendFlow(modifier = Modifier.padding(16.dp), data = data.mapIndexed { index, item ->
-                LegendEntry(
-                    item.label,
-                    colors.resolve(index, item.color)
-                )
-            })
+            LegendFlow(
+                modifier = Modifier.padding(16.dp),
+                data = data.bars.mapIndexed { index, item ->
+                    LegendEntry(
+                        item.label,
+                        colors.resolve(index, item.color)
+                    )
+                })
         }
     }
 }
