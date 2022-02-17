@@ -121,7 +121,6 @@ fun BarChart(
     }
 }
 
-
 @Composable
 private fun BarLegend(
     data: List<BarChartData>,
