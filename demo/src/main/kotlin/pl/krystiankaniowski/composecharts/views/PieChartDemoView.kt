@@ -8,10 +8,12 @@ import pl.krystiankaniowski.composecharts.PieChartData
 @Composable
 fun PieChartDemo() {
     PieChart(
-        data = listOf(
-            PieChartData(label = "Series A", 1f),
-            PieChartData(label = "Series B", 2f),
-            PieChartData(label = "Series C", 3f),
-        ),
+        data = PieChartData(
+            slices = listOf(
+                PieChartData.Slice(label = "Series A", value = 1f),
+                PieChartData.Slice(label = "Series B", value = 2f),
+                PieChartData.Slice(label = "Series C", value = 3f),
+            ),
+        )
     )
 }
