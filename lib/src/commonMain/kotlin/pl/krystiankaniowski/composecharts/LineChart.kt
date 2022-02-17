@@ -56,8 +56,16 @@ fun LineChart(
             val width = size.width
             val height = size.height
 
-            val xMapper = XMapper(0f, data.first().values.size.toFloat(), width)
-            val yMapper = YMapper(0f, maxValue, height)
+            val xMapper = XMapper(0f, data.size.toFloat(), width)
+            val yMapper = YMapper(0f, data.maxValue, height)
+
+            for (i in 0..data.maxValue.toInt()) {
+                drawLine(
+                    color = Color.Gray,
+                    start = Offset(0f, yMapper.y(i)),
+                    end = Offset(width, yMapper.y(i))
+                )
+            }
 
             data.lines.forEachIndexed { index, series ->
                 val color = colors.resolve(index, series.color)
