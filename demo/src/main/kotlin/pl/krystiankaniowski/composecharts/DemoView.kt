@@ -16,6 +16,7 @@ val items: List<Pair<String, @Composable () -> Unit>> = listOf(
     "Bar chart stacked" to { BarChartDemoStacked() },
     "Bar chart proportion" to { BarChartDemoProportion() },
     "Line chart" to { LineChartDemo() },
+    "Point chart" to { PointChartDemo() },
     "Pie chart" to { PieChartDemo() },
     "Legend" to { LegendDemoView() },
     "Legend Flow" to { LegendFlowDemoView() },
