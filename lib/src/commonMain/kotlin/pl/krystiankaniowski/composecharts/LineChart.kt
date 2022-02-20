@@ -13,6 +13,7 @@ import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.unit.dp
 import pl.krystiankaniowski.composecharts.internal.ChartChoreographer
+import pl.krystiankaniowski.composecharts.internal.PointMapper
 
 data class LineChartData(val lines: List<Line>) {
 
@@ -51,11 +52,10 @@ fun LineChart(
     ) {
         Canvas(Modifier.fillMaxSize()) {
 
-            val width = size.width
-            val height = size.height
-
-            val barWidth = width / data.size
-            val maxValue = data.maxValue
+            val mapper = PointMapper(
+                xMin = 0f, xMax = data.size.toFloat(), xTarget = size.width,
+                yMin = 0f, yMax = data.maxValue, yTarget = size.height
+            )
 
             data.lines.forEachIndexed { index, series ->
                 val color = colors.resolve(index, series.color)
@@ -63,13 +63,13 @@ fun LineChart(
                 series.values.forEachIndexed { dataIndex, point ->
                     if (dataIndex == 0) {
                         path.moveTo(
-                            x = dataIndex * barWidth + barWidth / 2f,
-                            y = ((maxValue - point) / maxValue) * height
+                            x = mapper.x(dataIndex + 0.5f),
+                            y = mapper.y(point)
                         )
                     } else {
                         path.lineTo(
-                            x = dataIndex * barWidth + barWidth / 2f,
-                            y = ((maxValue - point) / maxValue) * height
+                            x = mapper.x(dataIndex + 0.5f),
+                            y = mapper.y(point)
                         )
                     }
                 }
@@ -84,8 +84,8 @@ fun LineChart(
                     drawCircle(
                         color = color,
                         center = Offset(
-                            x = dataIndex * barWidth + barWidth / 2f,
-                            y = ((maxValue - point) / maxValue) * height
+                            x = mapper.x(dataIndex + 0.5f),
+                            y = mapper.y(point),
                         ),
                         radius = 5f
                     )

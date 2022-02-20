@@ -3,6 +3,7 @@ package pl.krystiankaniowski.composecharts
 import androidx.compose.desktop.ui.tooling.preview.Preview
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import kotlin.random.Random
 
 private val data = LineChartData(
     lines = listOf(
@@ -17,6 +18,23 @@ private val data = LineChartData(
 fun LineChartPreview() {
     LineChart(
         data = data,
+        title = { Text("Line chart") },
+    )
+}
+
+@Preview
+@Composable
+fun LineChartComplexPreview() {
+    val random = Random(0)
+    val points = List(50) { random.nextFloat() * 5 }
+    LineChart(
+        data = LineChartData(
+            lines = listOf(
+                LineChartData.Line(
+                    label = "Series A", values = points,
+                )
+            )
+        ),
         title = { Text("Line chart") },
     )
 }
