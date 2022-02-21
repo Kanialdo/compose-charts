@@ -14,6 +14,7 @@ import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.unit.dp
 import pl.krystiankaniowski.composecharts.internal.ChartChoreographer
 import pl.krystiankaniowski.composecharts.internal.PointMapper
+import pl.krystiankaniowski.composecharts.internal.calculateYHelperLines
 
 data class LineChartData(val lines: List<Line>) {
 
@@ -56,6 +57,14 @@ fun LineChart(
                 xMin = 0f, xMax = data.size.toFloat(), xTarget = size.width,
                 yMin = 0f, yMax = data.maxValue, yTarget = size.height
             )
+
+            calculateYHelperLines(0f, data.maxValue).forEach {
+                drawLine(
+                    color = Color.LightGray,
+                    start = Offset(x = 0f, y = mapper.y(it)),
+                    end = Offset(x = size.width, y = mapper.y(it))
+                )
+            }
 
             data.lines.forEachIndexed { index, series ->
                 val color = colors.resolve(index, series.color)

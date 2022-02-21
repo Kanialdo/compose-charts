@@ -16,9 +16,7 @@ data class PointMapper(
 
     fun x(value: Int) = (value - xMin) * xTarget / xDiff
 
-    fun y(value: Float) =
-        (if (yInverted) (yMax - value) else (value - yMin)) * yTarget / yDiff
+    fun y(value: Float) = (if (yInverted) (yMax - value) else (value - yMin)) * yTarget / yDiff
 
-    fun y(value: Int) =
-        (if (yInverted) (yMax - value) else (value - yMin)) * yTarget / yDiff
+    fun y(value: Int) = (if (yInverted) (yMax - value) else (value - yMin)) * yTarget / yDiff
 }
