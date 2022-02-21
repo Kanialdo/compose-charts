@@ -24,6 +24,19 @@ fun LineChartPreview() {
 
 @Preview
 @Composable
+fun LineChartNotRegularPreview() {
+    LineChart(
+        data = LineChartData(
+            lines = listOf(
+                LineChartData.Line(label = "Series A", values = listOf(1.2f, 8.35f, 16.6f, 54.987f, 62.99f)),
+            )
+        ),
+        title = { Text("Line chart") },
+    )
+}
+
+@Preview
+@Composable
 fun LineChartComplexPreview() {
     val random = Random(0)
     val points = List(50) { random.nextFloat() * 5 }

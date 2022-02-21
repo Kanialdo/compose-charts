@@ -9,9 +9,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.drawscope.drawIntoCanvas
 import androidx.compose.ui.unit.dp
 import pl.krystiankaniowski.composecharts.internal.ChartChoreographer
 import pl.krystiankaniowski.composecharts.internal.PointMapper
+import pl.krystiankaniowski.composecharts.internal.calculateYHelperLines
 
 data class PointChartData(val points: List<Points>) {
 
@@ -58,6 +60,10 @@ fun PointChart(
                 xMin = data.minX, xMax = data.maxX, xTarget = size.width,
                 yMin = data.minY, yMax = data.maxY, yTarget = size.height
             )
+
+            drawIntoCanvas {
+                it.drawYAxisHelperLines(mapper, calculateYHelperLines(0f, data.maxY))
+            }
 
             data.points.forEachIndexed { index, series ->
                 val color = colors.resolve(index, series.color)
