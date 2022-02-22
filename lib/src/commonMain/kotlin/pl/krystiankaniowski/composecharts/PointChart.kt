@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.drawscope.drawIntoCanvas
 import androidx.compose.ui.unit.dp
@@ -56,9 +57,27 @@ fun PointChart(
     ) {
         Canvas(Modifier.fillMaxSize()) {
 
+            val xAxisHeight = 20f
+            val yAxisWidth = 0f
+            val contentWidth = size.width - yAxisWidth
+            val contentHeight = size.height - xAxisHeight
+
+            val contentArea = Rect(
+                top = 0f, bottom = contentHeight,
+                left = yAxisWidth, right = size.width
+            )
+            val xAxisArea = Rect(
+                top = contentHeight, bottom = size.height,
+                left = yAxisWidth, right = contentWidth
+            )
+            val yAxisArea = Rect(
+                top = 0f, bottom = contentHeight,
+                left = 0f, right = yAxisWidth
+            )
+
             val mapper = PointMapper(
-                xMin = data.minX, xMax = data.maxX, xTarget = size.width,
-                yMin = data.minY, yMax = data.maxY, yTarget = size.height
+                xMin = data.minX, xMax = data.maxX, xTarget = contentWidth,
+                yMin = data.minY, yMax = data.maxY, yTarget = contentHeight
             )
 
             drawIntoCanvas {
@@ -78,6 +97,18 @@ fun PointChart(
                     )
                 }
             }
+
+            this.XAxis(
+                mapper,
+                labels = mapOf(0f to "0", 1f to "1", 2f to "2", 3f to "3", 4f to "4", 5f to "5"),
+                drawableArea = Rect(
+                    left = 0f,
+                    top = size.height - xAxisHeight,
+                    right = size.width,
+                    bottom = size.height,
+                )
+            )
+
         }
     }
 }
