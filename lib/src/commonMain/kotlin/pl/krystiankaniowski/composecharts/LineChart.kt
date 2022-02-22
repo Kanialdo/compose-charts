@@ -24,7 +24,9 @@ data class LineChartData(val lines: List<Line>) {
     data class Line(
         val label: String,
         val values: List<Float>,
-        val color: Color = Color.Unspecified
+        val color: Color? = null,
+        val lineStyle: LineChartStyle.LineStyle? = null,
+        val pointStyle: LineChartStyle.PointStyle? = null,
     )
 
     init {
@@ -39,17 +41,33 @@ data class LineChartData(val lines: List<Line>) {
     internal val size: Int get() = lines.first().values.size
 }
 
+data class LineChartStyle(
+    val colors: Colors = AutoColors,
+    val lineStyle: LineStyle = LineStyle(),
+    val pointStyle: PointStyle = PointStyle.Filled(),
+) {
+
+    data class LineStyle(
+        val width: Float = 5f
+    )
+
+    sealed class PointStyle {
+        object None : PointStyle()
+        data class Filled(val size: Float = 5f) : PointStyle()
+    }
+}
+
 @Composable
 fun LineChart(
     data: LineChartData,
     title: @Composable () -> Unit = {},
-    colors: Colors = AutoColors,
+    style: LineChartStyle = LineChartStyle(),
     legendPosition: LegendPosition = LegendPosition.Bottom,
 ) {
 
     ChartChoreographer(
         title = title,
-        legend = { LineLegend(data, colors) },
+        legend = { LineLegend(data, style.colors) },
         legendPosition = legendPosition,
     ) {
         Canvas(Modifier.fillMaxSize()) {
@@ -64,7 +82,7 @@ fun LineChart(
             }
 
             data.lines.forEachIndexed { index, series ->
-                val color = colors.resolve(index, series.color)
+                val color = series.color ?: style.colors.getColor(index)
                 val path = Path()
                 series.values.forEachIndexed { dataIndex, point ->
                     if (dataIndex == 0) {
@@ -82,19 +100,22 @@ fun LineChart(
                 drawPath(
                     color = color,
                     path = path,
-                    style = Stroke(
-                        width = 5f
-                    )
+                    style = Stroke(width = series.lineStyle?.width ?: style.lineStyle.width)
                 )
-                series.values.forEachIndexed { dataIndex, point ->
-                    drawCircle(
-                        color = color,
-                        center = Offset(
-                            x = mapper.x(dataIndex + 0.5f),
-                            y = mapper.y(point),
-                        ),
-                        radius = 5f
-                    )
+                when (val pointStyle = series.pointStyle ?: style.pointStyle) {
+                    LineChartStyle.PointStyle.None -> {}
+                    is LineChartStyle.PointStyle.Filled -> {
+                        series.values.forEachIndexed { dataIndex, point ->
+                            drawCircle(
+                                color = color,
+                                center = Offset(
+                                    x = mapper.x(dataIndex + 0.5f),
+                                    y = mapper.y(point),
+                                ),
+                                radius = pointStyle.size
+                            )
+                        }
+                    }
                 }
             }
         }
@@ -112,7 +133,7 @@ private fun LineLegend(
             data = data.lines.mapIndexed { index, item ->
                 LegendEntry(
                     item.label,
-                    colors.resolve(index, item.color)
+                    item.color ?: colors.getColor(index)
                 )
             }
         )
