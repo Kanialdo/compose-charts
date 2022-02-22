@@ -1,5 +1,7 @@
 package pl.krystiankaniowski.composecharts.internal
 
+import androidx.compose.ui.geometry.Offset
+
 data class PointMapper(
     val xMin: Float,
     val xMax: Float,
@@ -19,4 +21,6 @@ data class PointMapper(
     fun y(value: Float) = (if (yInverted) (yMax - value) else (value - yMin)) * yTarget / yDiff
 
     fun y(value: Int) = (if (yInverted) (yMax - value) else (value - yMin)) * yTarget / yDiff
+
+    fun offset(x: Float, y: Float) = Offset(x(x), y(y))
 }

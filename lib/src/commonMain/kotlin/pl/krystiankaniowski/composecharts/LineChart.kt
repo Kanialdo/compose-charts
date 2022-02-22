@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.drawscope.Stroke
@@ -81,10 +80,10 @@ fun LineChart(
                 it.drawYAxisHelperLines(mapper, calculateYHelperLines(0f, data.maxValue))
             }
 
-            data.lines.forEachIndexed { index, series ->
-                val color = series.color ?: style.colors.getColor(index)
+            data.lines.forEachIndexed { index, line ->
+                val color = line.color ?: style.colors.getColor(index)
                 val path = Path()
-                series.values.forEachIndexed { dataIndex, point ->
+                line.values.forEachIndexed { dataIndex, point ->
                     if (dataIndex == 0) {
                         path.moveTo(
                             x = mapper.x(dataIndex + 0.5f),
@@ -100,18 +99,15 @@ fun LineChart(
                 drawPath(
                     color = color,
                     path = path,
-                    style = Stroke(width = series.lineStyle?.width ?: style.lineStyle.width)
+                    style = Stroke(width = line.lineStyle?.width ?: style.lineStyle.width)
                 )
-                when (val pointStyle = series.pointStyle ?: style.pointStyle) {
+                when (val pointStyle = line.pointStyle ?: style.pointStyle) {
                     LineChartStyle.PointStyle.None -> {}
                     is LineChartStyle.PointStyle.Filled -> {
-                        series.values.forEachIndexed { dataIndex, point ->
+                        line.values.forEachIndexed { dataIndex, point ->
                             drawCircle(
                                 color = color,
-                                center = Offset(
-                                    x = mapper.x(dataIndex + 0.5f),
-                                    y = mapper.y(point),
-                                ),
+                                center = mapper.offset(dataIndex + 0.5f, point),
                                 radius = pointStyle.size
                             )
                         }
