@@ -3,9 +3,9 @@ package pl.krystiankaniowski.composecharts.views
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
-import pl.krystiankaniowski.composecharts.LineChart
-import pl.krystiankaniowski.composecharts.LineChartData
-import pl.krystiankaniowski.composecharts.LineChartStyle
+import pl.krystiankaniowski.composecharts.line.LineChart
+import pl.krystiankaniowski.composecharts.line.LineChartData
+import pl.krystiankaniowski.composecharts.line.LineChartStyle
 
 @Suppress("MagicNumber")
 @Composable

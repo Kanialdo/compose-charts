@@ -1,4 +1,4 @@
-package pl.krystiankaniowski.composecharts
+package pl.krystiankaniowski.composecharts.line
 
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.border
@@ -7,11 +7,14 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Path
+import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.drawscope.drawIntoCanvas
 import androidx.compose.ui.unit.dp
+import pl.krystiankaniowski.composecharts.*
 import pl.krystiankaniowski.composecharts.internal.ChartChoreographer
 import pl.krystiankaniowski.composecharts.internal.PointMapper
 import pl.krystiankaniowski.composecharts.internal.calculateYHelperLines
@@ -61,6 +64,7 @@ fun LineChart(
     data: LineChartData,
     title: @Composable () -> Unit = {},
     style: LineChartStyle = LineChartStyle(),
+    xAxis: LineChartXAxis = LineChartXAxis.Linear(),
     legendPosition: LegendPosition = LegendPosition.Bottom,
 ) {
 
@@ -71,48 +75,76 @@ fun LineChart(
     ) {
         Canvas(Modifier.fillMaxSize()) {
 
+            val contentArea = Rect(
+                top = 0f, bottom = size.height - xAxis.requiredHeight(),
+                left = 0f, right = size.width
+            )
+            val xAxisArea = Rect(
+                top = contentArea.bottom, bottom = size.height,
+                left = contentArea.left, right = contentArea.right
+            )
+
             val mapper = PointMapper(
-                xMin = 0f, xMax = data.size.toFloat(), xTarget = size.width,
-                yMin = 0f, yMax = data.maxValue, yTarget = size.height
+                xMin = 0f, xMax = data.size.toFloat(), xTarget = contentArea.right,
+                yMin = 0f, yMax = data.maxValue, yTarget = contentArea.bottom
             )
 
             drawIntoCanvas {
                 it.drawYAxisHelperLines(mapper, calculateYHelperLines(0f, data.maxValue))
             }
 
+            xAxis.draw(this, contentArea, xAxisArea, data)
             data.lines.forEachIndexed { index, line ->
-                val color = line.color ?: style.colors.getColor(index)
-                val path = Path()
-                line.values.forEachIndexed { dataIndex, point ->
-                    if (dataIndex == 0) {
-                        path.moveTo(
-                            x = mapper.x(dataIndex + 0.5f),
-                            y = mapper.y(point)
-                        )
-                    } else {
-                        path.lineTo(
-                            x = mapper.x(dataIndex + 0.5f),
-                            y = mapper.y(point)
-                        )
-                    }
-                }
-                drawPath(
-                    color = color,
-                    path = path,
-                    style = Stroke(width = line.lineStyle?.width ?: style.lineStyle.width)
+                drawLine(index, line, style, mapper)
+                drawPoints(index, line, style, mapper)
+            }
+        }
+    }
+}
+
+private fun DrawScope.drawLine(
+    index: Int,
+    line: LineChartData.Line,
+    style: LineChartStyle,
+    mapper: PointMapper
+) {
+    val color = line.color ?: style.colors.getColor(index)
+    val path = Path()
+    line.values.forEachIndexed { dataIndex, point ->
+        if (dataIndex == 0) {
+            path.moveTo(
+                x = mapper.x(dataIndex + 0.5f),
+                y = mapper.y(point)
+            )
+        } else {
+            path.lineTo(
+                x = mapper.x(dataIndex + 0.5f),
+                y = mapper.y(point)
+            )
+        }
+    }
+    drawPath(
+        color = color,
+        path = path,
+        style = Stroke(width = line.lineStyle?.width ?: style.lineStyle.width)
+    )
+}
+
+private fun DrawScope.drawPoints(
+    index: Int,
+    line: LineChartData.Line,
+    style: LineChartStyle,
+    mapper: PointMapper
+) {
+    when (val pointStyle = line.pointStyle ?: style.pointStyle) {
+        LineChartStyle.PointStyle.None -> {}
+        is LineChartStyle.PointStyle.Filled -> {
+            line.values.forEachIndexed { dataIndex, point ->
+                drawCircle(
+                    color = line.color ?: style.colors.getColor(index),
+                    center = mapper.offset(dataIndex + 0.5f, point),
+                    radius = pointStyle.size
                 )
-                when (val pointStyle = line.pointStyle ?: style.pointStyle) {
-                    LineChartStyle.PointStyle.None -> {}
-                    is LineChartStyle.PointStyle.Filled -> {
-                        line.values.forEachIndexed { dataIndex, point ->
-                            drawCircle(
-                                color = color,
-                                center = mapper.offset(dataIndex + 0.5f, point),
-                                radius = pointStyle.size
-                            )
-                        }
-                    }
-                }
             }
         }
     }
