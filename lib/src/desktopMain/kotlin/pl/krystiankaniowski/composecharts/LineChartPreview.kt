@@ -3,6 +3,7 @@ package pl.krystiankaniowski.composecharts
 import androidx.compose.desktop.ui.tooling.preview.Preview
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.graphics.Color
 import kotlin.random.Random
 
 private val data = LineChartData(
@@ -28,8 +29,42 @@ fun LineChartNotRegularPreview() {
     LineChart(
         data = LineChartData(
             lines = listOf(
-                LineChartData.Line(label = "Series A", values = listOf(1.2f, 8.35f, 16.6f, 54.987f, 62.99f)),
+                LineChartData.Line(
+                    label = "Series A",
+                    values = listOf(1.2f, 8.35f, 16.6f, 54.987f, 62.99f)
+                ),
             )
+        ),
+        title = { Text("Line chart") },
+    )
+}
+
+@Preview
+@Composable
+fun LineChartCustomStylePreview() {
+    LineChart(
+        data = LineChartData(
+            lines = listOf(
+                LineChartData.Line(
+                    label = "Custom color",
+                    values = listOf(5f, 4f, 3f, 2f, 1f),
+                    color = Color.Black
+                ),
+                LineChartData.Line(
+                    label = "Custom line style",
+                    values = listOf(1f, 1f, 1f, 1f, 1f),
+                    lineStyle = LineChartStyle.LineStyle(width = 5f)
+                ),
+                LineChartData.Line(
+                    label = "Custom point style",
+                    values = listOf(0f, 1f, 2f, 1f, 0f),
+                    pointStyle = LineChartStyle.PointStyle.Filled(size = 5f)
+                ),
+            )
+        ),
+        style = LineChartStyle(
+            lineStyle = LineChartStyle.LineStyle(width = 1f),
+            pointStyle = LineChartStyle.PointStyle.None
         ),
         title = { Text("Line chart") },
     )

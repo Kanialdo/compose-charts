@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.drawscope.Stroke
@@ -24,7 +23,9 @@ data class LineChartData(val lines: List<Line>) {
     data class Line(
         val label: String,
         val values: List<Float>,
-        val color: Color = Color.Unspecified
+        val color: Color? = null,
+        val lineStyle: LineChartStyle.LineStyle? = null,
+        val pointStyle: LineChartStyle.PointStyle? = null,
     )
 
     init {
@@ -39,17 +40,33 @@ data class LineChartData(val lines: List<Line>) {
     internal val size: Int get() = lines.first().values.size
 }
 
+data class LineChartStyle(
+    val colors: Colors = AutoColors,
+    val lineStyle: LineStyle = LineStyle(),
+    val pointStyle: PointStyle = PointStyle.Filled(),
+) {
+
+    data class LineStyle(
+        val width: Float = 5f
+    )
+
+    sealed class PointStyle {
+        object None : PointStyle()
+        data class Filled(val size: Float = 5f) : PointStyle()
+    }
+}
+
 @Composable
 fun LineChart(
     data: LineChartData,
     title: @Composable () -> Unit = {},
-    colors: Colors = AutoColors,
+    style: LineChartStyle = LineChartStyle(),
     legendPosition: LegendPosition = LegendPosition.Bottom,
 ) {
 
     ChartChoreographer(
         title = title,
-        legend = { LineLegend(data, colors) },
+        legend = { LineLegend(data, style.colors) },
         legendPosition = legendPosition,
     ) {
         Canvas(Modifier.fillMaxSize()) {
@@ -63,10 +80,10 @@ fun LineChart(
                 it.drawYAxisHelperLines(mapper, calculateYHelperLines(0f, data.maxValue))
             }
 
-            data.lines.forEachIndexed { index, series ->
-                val color = colors.resolve(index, series.color)
+            data.lines.forEachIndexed { index, line ->
+                val color = line.color ?: style.colors.getColor(index)
                 val path = Path()
-                series.values.forEachIndexed { dataIndex, point ->
+                line.values.forEachIndexed { dataIndex, point ->
                     if (dataIndex == 0) {
                         path.moveTo(
                             x = mapper.x(dataIndex + 0.5f),
@@ -82,19 +99,19 @@ fun LineChart(
                 drawPath(
                     color = color,
                     path = path,
-                    style = Stroke(
-                        width = 5f
-                    )
+                    style = Stroke(width = line.lineStyle?.width ?: style.lineStyle.width)
                 )
-                series.values.forEachIndexed { dataIndex, point ->
-                    drawCircle(
-                        color = color,
-                        center = Offset(
-                            x = mapper.x(dataIndex + 0.5f),
-                            y = mapper.y(point),
-                        ),
-                        radius = 5f
-                    )
+                when (val pointStyle = line.pointStyle ?: style.pointStyle) {
+                    LineChartStyle.PointStyle.None -> {}
+                    is LineChartStyle.PointStyle.Filled -> {
+                        line.values.forEachIndexed { dataIndex, point ->
+                            drawCircle(
+                                color = color,
+                                center = mapper.offset(dataIndex + 0.5f, point),
+                                radius = pointStyle.size
+                            )
+                        }
+                    }
                 }
             }
         }
@@ -112,7 +129,7 @@ private fun LineLegend(
             data = data.lines.mapIndexed { index, item ->
                 LegendEntry(
                     item.label,
-                    colors.resolve(index, item.color)
+                    item.color ?: colors.getColor(index)
                 )
             }
         )
