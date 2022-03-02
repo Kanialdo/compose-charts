@@ -4,6 +4,9 @@ import androidx.compose.desktop.ui.tooling.preview.Preview
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
+import pl.krystiankaniowski.composecharts.line.LineChart
+import pl.krystiankaniowski.composecharts.line.LineChartData
+import pl.krystiankaniowski.composecharts.line.LineChartStyle
 import kotlin.random.Random
 
 private val data = LineChartData(
