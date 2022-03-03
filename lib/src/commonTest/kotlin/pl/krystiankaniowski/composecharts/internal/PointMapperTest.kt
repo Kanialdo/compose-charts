@@ -8,8 +8,8 @@ internal class PointMapperTest {
     fun validateSimpleMapping() {
 
         val mapper = PointMapper(
-            xMin = 0f, xMax = 10f, xTarget = 100f,
-            yMin = 0f, yMax = 10f, yTarget = 100f
+            xSrcMin = 0f, xSrcMax = 10f, xDstMin = 0f, xDstMax = 100f,
+            ySrcMin = 0f, ySrcMax = 10f, yDstMin = 0f, yDstMax = 100f,
         )
 
         assertEquals(0f, mapper.x(0f))
@@ -25,24 +25,24 @@ internal class PointMapperTest {
     fun validateRangeMapping() {
 
         val mapper = PointMapper(
-            xMin = 20f, xMax = 24f, xTarget = 100f,
-            yMin = 20f, yMax = 24f, yTarget = 100f,
+            xSrcMin = 20f, xSrcMax = 24f, xDstMin = 50f, xDstMax = 100f,
+            ySrcMin = 20f, ySrcMax = 24f, yDstMin = 50f, yDstMax = 100f,
         )
 
-        assertEquals(0f, mapper.x(20f))
-        assertEquals(25f, mapper.x(21f))
+        assertEquals(50f, mapper.x(20f))
+        assertEquals(62.5f, mapper.x(21f))
         assertEquals(100f, mapper.x(24f))
 
         assertEquals(100f, mapper.y(20f))
-        assertEquals(25f, mapper.y(23f))
-        assertEquals(0f, mapper.y(24f))
+        assertEquals(87.5f, mapper.y(21f))
+        assertEquals(50f, mapper.y(24f))
     }
 
     @Test
     fun validateYInvertedFlag() {
         val mapperWithYInverted = PointMapper(
-            xMin = 0f, xMax = 10f, xTarget = 100f,
-            yMin = 0f, yMax = 10f, yTarget = 100f,
+            xSrcMin = 0f, xSrcMax = 10f, xDstMin = 0f, xDstMax = 100f,
+            ySrcMin = 0f, ySrcMax = 10f, yDstMin = 0f, yDstMax = 100f,
             yInverted = true
         )
 
@@ -55,8 +55,8 @@ internal class PointMapperTest {
     @Test
     fun validateSameBehaviourForDifferentTypes() {
         val mapper = PointMapper(
-            xMin = 0f, xMax = 10f, xTarget = 100f,
-            yMin = 0f, yMax = 10f, yTarget = 100f
+            xSrcMin = 0f, xSrcMax = 10f, xDstMin = 0f, xDstMax = 100f,
+            ySrcMin = 0f, ySrcMax = 10f, yDstMin = 0f, yDstMax = 100f,
         )
 
         assertEquals(mapper.x(0), mapper.x(0f))
