@@ -57,8 +57,8 @@ fun PointChart(
         Canvas(Modifier.fillMaxSize()) {
 
             val mapper = PointMapper(
-                xMin = data.minX, xMax = data.maxX, xTarget = size.width,
-                yMin = data.minY, yMax = data.maxY, yTarget = size.height
+                xSrcMin = data.minX, xSrcMax = data.maxX, xDstMin = 0f, xDstMax = size.width,
+                ySrcMin = data.minY, ySrcMax = data.maxY, yDstMin = 0f, yDstMax = size.height
             )
 
             drawIntoCanvas {

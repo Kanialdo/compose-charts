@@ -15,8 +15,8 @@ fun Canvas.drawYAxisHelperLines(
 ) {
     yHelpers.forEach {
         drawLine(
-            p1 = Offset(x = 0f, y = mapper.y(it)),
-            p2 = Offset(x = mapper.xTarget, y = mapper.y(it)),
+            p1 = Offset(x = mapper.xDstMin, y = mapper.y(it)),
+            p2 = Offset(x = mapper.xDstMax, y = mapper.y(it)),
             paint = paint,
         )
     }

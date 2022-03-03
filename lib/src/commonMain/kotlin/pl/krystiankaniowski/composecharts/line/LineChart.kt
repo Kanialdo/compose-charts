@@ -85,8 +85,14 @@ fun LineChart(
             )
 
             val mapper = PointMapper(
-                xMin = 0f, xMax = data.size.toFloat(), xTarget = contentArea.right,
-                yMin = 0f, yMax = data.maxValue, yTarget = contentArea.bottom
+                xSrcMin = 0f,
+                xSrcMax = data.size.toFloat(),
+                xDstMin = contentArea.left,
+                xDstMax = contentArea.right,
+                ySrcMin = 0f,
+                ySrcMax = data.maxValue,
+                yDstMin = contentArea.top,
+                yDstMax = contentArea.bottom
             )
 
             drawIntoCanvas {
