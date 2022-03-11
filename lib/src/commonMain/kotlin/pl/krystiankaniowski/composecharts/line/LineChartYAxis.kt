@@ -6,6 +6,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.sp
+import pl.krystiankaniowski.composecharts.internal.TextAnchorX
+import pl.krystiankaniowski.composecharts.internal.TextAnchorY
 import pl.krystiankaniowski.composecharts.internal.YMapper
 import pl.krystiankaniowski.composecharts.internal.drawText
 
@@ -57,8 +59,10 @@ sealed class LineChartYAxis {
             for (i in 0..10 step 2) {
                 drawScope.drawText(
                     text = label(i.toFloat()),
-                    x = 0f,
+                    x = requiredWidth() - 10f,
                     y = yMapper.y(i),
+                    anchorX = TextAnchorX.Right,
+                    anchorY = TextAnchorY.Center,
                     color = color,
                     size = textSize.value
                 )
