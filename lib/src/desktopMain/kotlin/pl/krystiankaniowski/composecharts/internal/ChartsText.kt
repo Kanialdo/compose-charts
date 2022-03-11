@@ -27,8 +27,8 @@ internal actual fun DrawScope.drawText(
         },
         y = when (anchorY) {
             TextAnchorY.Top -> y
-            TextAnchorY.Center -> y - size / 2
-            TextAnchorY.Bottom -> y - size
+            TextAnchorY.Center -> y + size / 2
+            TextAnchorY.Bottom -> y + size
         },
         paint = Paint().apply {
             this.color = color.toArgb()

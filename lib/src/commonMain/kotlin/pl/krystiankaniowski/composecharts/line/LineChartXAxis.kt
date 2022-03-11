@@ -6,6 +6,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.sp
+import pl.krystiankaniowski.composecharts.internal.TextAnchorX
 import pl.krystiankaniowski.composecharts.internal.XMapper
 import pl.krystiankaniowski.composecharts.internal.drawText
 
@@ -65,6 +66,7 @@ sealed class LineChartXAxis {
                         text = label(i),
                         x = x,
                         y = xAxisScope.top + requiredHeight(),
+                        anchorX = TextAnchorX.Center,
                         color = color,
                         size = textSize.value
                     )

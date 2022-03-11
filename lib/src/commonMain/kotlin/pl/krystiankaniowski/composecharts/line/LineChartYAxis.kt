@@ -6,10 +6,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.sp
-import pl.krystiankaniowski.composecharts.internal.TextAnchorX
-import pl.krystiankaniowski.composecharts.internal.TextAnchorY
-import pl.krystiankaniowski.composecharts.internal.YMapper
-import pl.krystiankaniowski.composecharts.internal.drawText
+import pl.krystiankaniowski.composecharts.internal.*
 
 sealed class LineChartYAxis {
 
@@ -37,8 +34,8 @@ sealed class LineChartYAxis {
 
     data class Linear(
         private val label: (Float) -> String = { it.toString() },
-        private val textSize: TextUnit = 24.sp,
-        private val color: Color = Color.Black,
+        private val textSize: TextUnit = 20.sp,
+        private val color: Color = Color.LightGray,
     ) : LineChartYAxis() {
 
         override fun requiredWidth(): Float = 80f
@@ -50,23 +47,32 @@ sealed class LineChartYAxis {
             yMapper: YMapper,
             data: LineChartData
         ) {
-            drawScope.drawLine(
-                color = color,
-                Offset(yAxisScope.right, yAxisScope.top),
-                Offset(yAxisScope.right, yAxisScope.bottom)
-            )
 
-            for (i in 0..10 step 2) {
+            val thresholds = calculateYHelperLines(data.minValue, data.maxValue)
+
+            for (threshold in thresholds) {
+                val y = yMapper.y(threshold)
+                drawScope.drawLine(
+                    color = color,
+                    start = Offset(x = chartScope.left, y = y),
+                    end = Offset(x = chartScope.right, y = y),
+                )
                 drawScope.drawText(
-                    text = label(i.toFloat()),
+                    text = label(threshold),
                     x = requiredWidth() - 10f,
-                    y = yMapper.y(i),
+                    y = y,
                     anchorX = TextAnchorX.Right,
                     anchorY = TextAnchorY.Center,
                     color = color,
                     size = textSize.value
                 )
             }
+
+            drawScope.drawLine(
+                color = color,
+                start = Offset(yAxisScope.right, yAxisScope.top),
+                end = Offset(yAxisScope.right, yAxisScope.bottom)
+            )
         }
     }
 }
