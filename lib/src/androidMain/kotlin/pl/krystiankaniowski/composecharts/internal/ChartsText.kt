@@ -10,7 +10,9 @@ internal actual fun DrawScope.drawText(
     x: Float,
     y: Float,
     color: Color,
-    size: Float
+    size: Float,
+    anchorX: TextAnchorX,
+    anchorY: TextAnchorY,
 ) {
     val paint = Paint().apply {
         this.color = color.value.toInt()
@@ -18,8 +20,16 @@ internal actual fun DrawScope.drawText(
     }
     drawContext.canvas.nativeCanvas.drawText(
         text,
-        x - paint.measureText(text) / 2,
-        y,
+        when (anchorX) {
+            TextAnchorX.Left -> x
+            TextAnchorX.Center -> x - paint.measureText(text) / 2
+            TextAnchorX.Right -> x - paint.measureText(text)
+        },
+        when (anchorY) {
+            TextAnchorY.Top -> y
+            TextAnchorY.Center -> y - size / 2
+            TextAnchorY.Bottom -> y - size
+        },
         paint
     )
 }

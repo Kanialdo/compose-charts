@@ -6,6 +6,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.sp
+import pl.krystiankaniowski.composecharts.internal.TextAnchorX
+import pl.krystiankaniowski.composecharts.internal.XMapper
 import pl.krystiankaniowski.composecharts.internal.drawText
 
 sealed class LineChartXAxis {
@@ -14,6 +16,7 @@ sealed class LineChartXAxis {
         drawScope: DrawScope,
         chartScope: Rect,
         xAxisScope: Rect,
+        xMapper: XMapper,
         data: LineChartData
     )
 
@@ -25,6 +28,7 @@ sealed class LineChartXAxis {
             drawScope: DrawScope,
             chartScope: Rect,
             xAxisScope: Rect,
+            xMapper: XMapper,
             data: LineChartData
         ) {
         }
@@ -42,6 +46,7 @@ sealed class LineChartXAxis {
             drawScope: DrawScope,
             chartScope: Rect,
             xAxisScope: Rect,
+            xMapper: XMapper,
             data: LineChartData
         ) {
             drawScope.drawLine(
@@ -49,9 +54,8 @@ sealed class LineChartXAxis {
                 Offset(xAxisScope.left, xAxisScope.top),
                 Offset(xAxisScope.right, xAxisScope.top)
             )
-            val step = xAxisScope.width / data.size
             for (i in 0 until data.size) {
-                val x = xAxisScope.left + step * (i + 0.5f)
+                val x = xMapper.x(i + 0.5f)
                 drawScope.drawLine(
                     color = color,
                     Offset(x, xAxisScope.top),
@@ -62,6 +66,7 @@ sealed class LineChartXAxis {
                         text = label(i),
                         x = x,
                         y = xAxisScope.top + requiredHeight(),
+                        anchorX = TextAnchorX.Center,
                         color = color,
                         size = textSize.value
                     )

@@ -13,13 +13,23 @@ internal actual fun DrawScope.drawText(
     x: Float,
     y: Float,
     color: Color,
-    size: Float
+    size: Float,
+    anchorX: TextAnchorX,
+    anchorY: TextAnchorY,
 ) {
-    val textLine = TextLine.Companion.make(text, Font(typeface = null, size = size))
+    val textLine = TextLine.make(text, Font(typeface = null, size = size))
     drawContext.canvas.nativeCanvas.drawTextLine(
         line = textLine,
-        x = x - textLine.width / 2,
-        y = y,
+        x = when (anchorX) {
+            TextAnchorX.Left -> x
+            TextAnchorX.Center -> x - textLine.width / 2
+            TextAnchorX.Right -> x - textLine.width
+        },
+        y = when (anchorY) {
+            TextAnchorY.Top -> y
+            TextAnchorY.Center -> y + size / 2
+            TextAnchorY.Bottom -> y + size
+        },
         paint = Paint().apply {
             this.color = color.toArgb()
         }

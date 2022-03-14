@@ -12,12 +12,10 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.graphics.drawscope.Stroke
-import androidx.compose.ui.graphics.drawscope.drawIntoCanvas
 import androidx.compose.ui.unit.dp
 import pl.krystiankaniowski.composecharts.*
 import pl.krystiankaniowski.composecharts.internal.ChartChoreographer
 import pl.krystiankaniowski.composecharts.internal.PointMapper
-import pl.krystiankaniowski.composecharts.internal.calculateYHelperLines
 
 data class LineChartData(val lines: List<Line>) {
 
@@ -65,6 +63,7 @@ fun LineChart(
     title: @Composable () -> Unit = {},
     style: LineChartStyle = LineChartStyle(),
     xAxis: LineChartXAxis = LineChartXAxis.Linear(),
+    yAxis: LineChartYAxis = LineChartYAxis.Linear(),
     legendPosition: LegendPosition = LegendPosition.Bottom,
 ) {
 
@@ -77,11 +76,15 @@ fun LineChart(
 
             val contentArea = Rect(
                 top = 0f, bottom = size.height - xAxis.requiredHeight(),
-                left = 0f, right = size.width
+                left = yAxis.requiredWidth(), right = size.width
             )
             val xAxisArea = Rect(
                 top = contentArea.bottom, bottom = size.height,
                 left = contentArea.left, right = contentArea.right
+            )
+            val yAxisArea = Rect(
+                top = contentArea.top, bottom = contentArea.bottom,
+                left = 0f, right = contentArea.left
             )
 
             val mapper = PointMapper(
@@ -95,11 +98,8 @@ fun LineChart(
                 yDstMax = contentArea.bottom
             )
 
-            drawIntoCanvas {
-                it.drawYAxisHelperLines(mapper, calculateYHelperLines(0f, data.maxValue))
-            }
-
-            xAxis.draw(this, contentArea, xAxisArea, data)
+            xAxis.draw(this, contentArea, xAxisArea, mapper, data)
+            yAxis.draw(this, contentArea, yAxisArea, mapper, data)
             data.lines.forEachIndexed { index, line ->
                 drawLine(index, line, style, mapper)
                 drawPoints(index, line, style, mapper)
