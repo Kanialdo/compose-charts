@@ -10,7 +10,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import pl.krystiankaniowski.composecharts.LegendPosition
+import pl.krystiankaniowski.composecharts.legend.LegendPosition
 
 @Preview
 @Composable

@@ -6,9 +6,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import pl.krystiankaniowski.composecharts.AutoColors
-import pl.krystiankaniowski.composecharts.Legend
-import pl.krystiankaniowski.composecharts.LegendEntry
-import pl.krystiankaniowski.composecharts.LegendFlow
+import pl.krystiankaniowski.composecharts.legend.Legend
+import pl.krystiankaniowski.composecharts.legend.LegendEntry
+import pl.krystiankaniowski.composecharts.legend.LegendFlow
 
 private val legendData = listOf(
     LegendEntry(text = "Series A", color = AutoColors.getColor(0)),

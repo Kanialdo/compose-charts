@@ -1,8 +1,10 @@
-package pl.krystiankaniowski.composecharts
+package pl.krystiankaniowski.composecharts.pie
 
 import androidx.compose.desktop.ui.tooling.preview.Preview
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import pl.krystiankaniowski.composecharts.pie.PieChart
+import pl.krystiankaniowski.composecharts.pie.PieChartData
 
 private val data = PieChartData(
     slices = listOf(
