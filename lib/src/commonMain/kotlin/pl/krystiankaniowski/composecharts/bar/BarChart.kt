@@ -67,6 +67,9 @@ fun BarChart(
     ) {
         Canvas(Modifier.fillMaxSize()) {
 
+            val w = 0.25f
+            val offset = 1f
+
             val contentArea = Rect(
                 top = 0f, bottom = size.height - 0,
                 left = yAxis.requiredWidth(), right = size.width
@@ -77,8 +80,8 @@ fun BarChart(
             )
 
             val mapper = PointMapper(
-                xSrcMin = -1f,
-                xSrcMax = data.size.toFloat(),
+                xSrcMin = 0f - offset,
+                xSrcMax = data.size - 1 + offset,
                 xDstMin = contentArea.left,
                 xDstMax = contentArea.right,
                 ySrcMin = data.minValue,
@@ -89,23 +92,19 @@ fun BarChart(
 
             yAxis.draw(this, contentArea, yAxisArea, mapper, data)
 
-            val height = size.height
-
-            val w = 0.25f
-            val barWidth = 2 * w * mapper.xScale
-
             when (style) {
                 BarChartStyle.STANDARD -> {
+                    val barWidth = 2 * w * mapper.xScale / data.bars.size
                     data.bars.forEachIndexed { series, value ->
                         value.values.forEachIndexed { pos, v ->
                             drawRect(
                                 color = colors.resolve(series, value.color),
                                 topLeft = Offset(
-                                    x = mapper.x(pos - w + (series / data.bars.size.toFloat()) / 2),
+                                    x = mapper.x(pos - w) + series * barWidth,
                                     y = mapper.y(v)
                                 ),
                                 size = Size(
-                                    width = barWidth / data.bars.size,
+                                    width = barWidth,
                                     height = v * mapper.yScale
                                 )
                             )
@@ -113,6 +112,7 @@ fun BarChart(
                     }
                 }
                 BarChartStyle.STACKED -> {
+                    val barWidth = 2 * w * mapper.xScale
                     val series = data.bars.size
                     val values = data.size
                     val maxValues =
@@ -125,11 +125,11 @@ fun BarChart(
                                 color = colors.resolve(series - 1 - j, data.bars[j].color),
                                 topLeft = Offset(
                                     x = mapper.x(i - w),
-                                    y = ((maxOfValues - counter) / maxOfValues) * height
+                                    y = mapper.y(maxOfValues - counter)
                                 ),
                                 size = Size(
                                     width = barWidth,
-                                    height = (counter / maxOfValues) * height
+                                    height = (counter / maxOfValues) * contentArea.height
                                 )
                             )
                             counter -= data.bars[j].values[i]
@@ -137,6 +137,7 @@ fun BarChart(
                     }
                 }
                 BarChartStyle.PROPORTION -> {
+                    val barWidth = 2 * w * mapper.xScale
                     val series = data.bars.size
                     val values = data.size
                     val maxValues =
@@ -148,11 +149,11 @@ fun BarChart(
                                 color = colors.resolve(series - 1 - j, data.bars[j].color),
                                 topLeft = Offset(
                                     x = mapper.x(i - w),
-                                    y = ((maxValues[i] - counter) / maxValues[i]) * height
+                                    y = ((maxValues[i] - counter) / maxValues[i]) * contentArea.height
                                 ),
                                 size = Size(
                                     width = barWidth,
-                                    height = (counter / maxValues[i]) * height
+                                    height = (counter / maxValues[i]) * contentArea.height
                                 )
                             )
                             counter -= data.bars[j].values[i]
