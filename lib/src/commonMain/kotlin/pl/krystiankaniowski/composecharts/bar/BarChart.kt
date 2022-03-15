@@ -77,11 +77,11 @@ fun BarChart(
             )
 
             val mapper = PointMapper(
-                xSrcMin = 0f,
-                xSrcMax = data.size.toFloat() + 1,
+                xSrcMin = -1f,
+                xSrcMax = data.size.toFloat(),
                 xDstMin = contentArea.left,
                 xDstMax = contentArea.right,
-                ySrcMin = 0f,
+                ySrcMin = data.minValue,
                 ySrcMax = data.maxValue,
                 yDstMin = contentArea.top,
                 yDstMax = contentArea.bottom
@@ -96,18 +96,17 @@ fun BarChart(
 
             when (style) {
                 BarChartStyle.STANDARD -> {
-                    val maxValue = data.maxValue
                     data.bars.forEachIndexed { series, value ->
                         value.values.forEachIndexed { pos, v ->
                             drawRect(
                                 color = colors.resolve(series, value.color),
                                 topLeft = Offset(
-                                    x = mapper.x(pos - w + 1 + (series / data.bars.size.toFloat()) / 2),
-                                    y = ((maxValue - v) / maxValue) * height
+                                    x = mapper.x(pos - w + (series / data.bars.size.toFloat()) / 2),
+                                    y = mapper.y(v)
                                 ),
                                 size = Size(
                                     width = barWidth / data.bars.size,
-                                    height = (v / maxValue) * height
+                                    height = v * mapper.yScale
                                 )
                             )
                         }
@@ -125,7 +124,7 @@ fun BarChart(
                             drawRect(
                                 color = colors.resolve(series - 1 - j, data.bars[j].color),
                                 topLeft = Offset(
-                                    x = mapper.x(i - w + 1),
+                                    x = mapper.x(i - w),
                                     y = ((maxOfValues - counter) / maxOfValues) * height
                                 ),
                                 size = Size(
@@ -148,7 +147,7 @@ fun BarChart(
                             drawRect(
                                 color = colors.resolve(series - 1 - j, data.bars[j].color),
                                 topLeft = Offset(
-                                    x = mapper.x(i - w + 1),
+                                    x = mapper.x(i - w),
                                     y = ((maxValues[i] - counter) / maxValues[i]) * height
                                 ),
                                 size = Size(
