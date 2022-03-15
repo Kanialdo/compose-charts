@@ -2,13 +2,13 @@ package pl.krystiankaniowski.composecharts.views
 
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import pl.krystiankaniowski.composecharts.BarChart
-import pl.krystiankaniowski.composecharts.BarChartData
-import pl.krystiankaniowski.composecharts.BarChartStyle
+import pl.krystiankaniowski.composecharts.bar.BarChart
+import pl.krystiankaniowski.composecharts.bar.BarChartData
+import pl.krystiankaniowski.composecharts.bar.BarChartStyle
 
 @Suppress("MagicNumber")
 @Composable
-fun BarChartDemoStandard() {
+fun BarChartDemoGrouped() {
     BarChart(
         data = BarChartData(
             bars = listOf(

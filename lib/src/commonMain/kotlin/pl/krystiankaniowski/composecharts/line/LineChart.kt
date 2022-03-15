@@ -13,9 +13,13 @@ import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.unit.dp
-import pl.krystiankaniowski.composecharts.*
+import pl.krystiankaniowski.composecharts.AutoColors
+import pl.krystiankaniowski.composecharts.Colors
 import pl.krystiankaniowski.composecharts.internal.ChartChoreographer
 import pl.krystiankaniowski.composecharts.internal.PointMapper
+import pl.krystiankaniowski.composecharts.legend.LegendEntry
+import pl.krystiankaniowski.composecharts.legend.LegendFlow
+import pl.krystiankaniowski.composecharts.legend.LegendPosition
 
 data class LineChartData(val lines: List<Line>) {
 

@@ -1,4 +1,4 @@
-package pl.krystiankaniowski.composecharts
+package pl.krystiankaniowski.composecharts.bar
 
 import androidx.compose.desktop.ui.tooling.preview.Preview
 import androidx.compose.material.Text

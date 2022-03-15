@@ -1,4 +1,4 @@
-package pl.krystiankaniowski.composecharts
+package pl.krystiankaniowski.composecharts.legend
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*

@@ -8,7 +8,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import pl.krystiankaniowski.composecharts.LegendPosition
+import pl.krystiankaniowski.composecharts.legend.LegendPosition
 
 @Composable
 internal fun ChartChoreographer(

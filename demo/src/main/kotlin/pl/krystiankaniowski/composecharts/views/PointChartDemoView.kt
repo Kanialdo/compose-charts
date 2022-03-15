@@ -2,8 +2,8 @@ package pl.krystiankaniowski.composecharts.views
 
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import pl.krystiankaniowski.composecharts.PointChart
-import pl.krystiankaniowski.composecharts.PointChartData
+import pl.krystiankaniowski.composecharts.point.PointChart
+import pl.krystiankaniowski.composecharts.point.PointChartData
 
 @Suppress("MagicNumber")
 @Composable

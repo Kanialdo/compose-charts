@@ -1,4 +1,4 @@
-package pl.krystiankaniowski.composecharts
+package pl.krystiankaniowski.composecharts.point
 
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.border
@@ -11,9 +11,16 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.drawscope.drawIntoCanvas
 import androidx.compose.ui.unit.dp
+import pl.krystiankaniowski.composecharts.AutoColors
+import pl.krystiankaniowski.composecharts.Colors
+import pl.krystiankaniowski.composecharts.drawYAxisHelperLines
 import pl.krystiankaniowski.composecharts.internal.ChartChoreographer
 import pl.krystiankaniowski.composecharts.internal.PointMapper
 import pl.krystiankaniowski.composecharts.internal.calculateYHelperLines
+import pl.krystiankaniowski.composecharts.legend.LegendEntry
+import pl.krystiankaniowski.composecharts.legend.LegendFlow
+import pl.krystiankaniowski.composecharts.legend.LegendPosition
+import pl.krystiankaniowski.composecharts.resolve
 
 data class PointChartData(val points: List<Points>) {
 
