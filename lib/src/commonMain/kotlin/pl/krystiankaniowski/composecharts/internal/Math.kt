@@ -8,8 +8,8 @@ data class PointMapper(
     val yInverted: Boolean = true
 ) : XMapper, YMapper {
 
-    private val xScale = (xDstMax - xDstMin) / (xSrcMax - xSrcMin)
-    private val yScale = (yDstMax - yDstMin) / (ySrcMax - ySrcMin)
+    val xScale = (xDstMax - xDstMin) / (xSrcMax - xSrcMin)
+    val yScale = (yDstMax - yDstMin) / (ySrcMax - ySrcMin)
 
     override fun x(value: Float) = (value - xSrcMin) * xScale + xDstMin
 

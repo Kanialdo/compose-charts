@@ -8,12 +8,14 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import pl.krystiankaniowski.composecharts.AutoColors
 import pl.krystiankaniowski.composecharts.Colors
 import pl.krystiankaniowski.composecharts.internal.ChartChoreographer
+import pl.krystiankaniowski.composecharts.internal.PointMapper
 import pl.krystiankaniowski.composecharts.legend.LegendEntry
 import pl.krystiankaniowski.composecharts.legend.LegendFlow
 import pl.krystiankaniowski.composecharts.legend.LegendPosition
@@ -55,6 +57,7 @@ fun BarChart(
     style: BarChartStyle = BarChartStyle.STANDARD,
     title: @Composable () -> Unit = {},
     colors: Colors = AutoColors,
+    yAxis: BarChartYAxis = BarChartYAxis.Names(),
     legendPosition: LegendPosition = LegendPosition.Bottom,
 ) {
     ChartChoreographer(
@@ -64,12 +67,32 @@ fun BarChart(
     ) {
         Canvas(Modifier.fillMaxSize()) {
 
-            val width = size.width
+            val contentArea = Rect(
+                top = 0f, bottom = size.height - 0,
+                left = yAxis.requiredWidth(), right = size.width
+            )
+            val yAxisArea = Rect(
+                top = contentArea.top, bottom = contentArea.bottom,
+                left = 0f, right = contentArea.left
+            )
+
+            val mapper = PointMapper(
+                xSrcMin = 0f,
+                xSrcMax = data.size.toFloat() + 1,
+                xDstMin = contentArea.left,
+                xDstMax = contentArea.right,
+                ySrcMin = 0f,
+                ySrcMax = data.maxValue,
+                yDstMin = contentArea.top,
+                yDstMax = contentArea.bottom
+            )
+
+            yAxis.draw(this, contentArea, yAxisArea, mapper, data)
+
             val height = size.height
 
-            val proportion = 2f
-            val offset = width / (proportion * data.size + data.size + 1)
-            val barWidth = offset * proportion
+            val w = 0.25f
+            val barWidth = 2 * w * mapper.xScale
 
             when (style) {
                 BarChartStyle.STANDARD -> {
@@ -79,11 +102,11 @@ fun BarChart(
                             drawRect(
                                 color = colors.resolve(series, value.color),
                                 topLeft = Offset(
-                                    x = pos * barWidth + (pos + 1) * offset + (barWidth / data.size) * series,
+                                    x = mapper.x(pos - w + 1 + (series / data.bars.size.toFloat()) / 2),
                                     y = ((maxValue - v) / maxValue) * height
                                 ),
                                 size = Size(
-                                    width = barWidth / data.size,
+                                    width = barWidth / data.bars.size,
                                     height = (v / maxValue) * height
                                 )
                             )
@@ -102,7 +125,7 @@ fun BarChart(
                             drawRect(
                                 color = colors.resolve(series - 1 - j, data.bars[j].color),
                                 topLeft = Offset(
-                                    x = i * barWidth + (i + 1) * offset,
+                                    x = mapper.x(i - w + 1),
                                     y = ((maxOfValues - counter) / maxOfValues) * height
                                 ),
                                 size = Size(
@@ -125,7 +148,7 @@ fun BarChart(
                             drawRect(
                                 color = colors.resolve(series - 1 - j, data.bars[j].color),
                                 topLeft = Offset(
-                                    x = i * barWidth + (i + 1) * offset,
+                                    x = mapper.x(i - w + 1),
                                     y = ((maxValues[i] - counter) / maxValues[i]) * height
                                 ),
                                 size = Size(
