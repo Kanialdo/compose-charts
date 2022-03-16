@@ -79,21 +79,23 @@ fun BarChart(
                 left = 0f, right = contentArea.left
             )
 
-            val mapper = PointMapper(
-                xSrcMin = 0f - offset,
-                xSrcMax = data.size - 1 + offset,
-                xDstMin = contentArea.left,
-                xDstMax = contentArea.right,
-                ySrcMin = data.minValue,
-                ySrcMax = data.maxValue,
-                yDstMin = contentArea.top,
-                yDstMax = contentArea.bottom
-            )
-
-            yAxis.draw(this, contentArea, yAxisArea, mapper, data)
-
             when (style) {
+
                 BarChartStyle.STANDARD -> {
+
+                    val mapper = PointMapper(
+                        xSrcMin = 0f - offset,
+                        xSrcMax = data.size - 1 + offset,
+                        xDstMin = contentArea.left,
+                        xDstMax = contentArea.right,
+                        ySrcMin = 0f,
+                        ySrcMax = data.maxValue,
+                        yDstMin = contentArea.top,
+                        yDstMax = contentArea.bottom
+                    )
+
+                    yAxis.draw(this, contentArea, yAxisArea, mapper, mapper.ySrcMin, mapper.ySrcMax)
+
                     val barWidth = 2 * w * mapper.xScale / data.bars.size
                     data.bars.forEachIndexed { series, value ->
                         value.values.forEachIndexed { pos, v ->
@@ -111,49 +113,81 @@ fun BarChart(
                         }
                     }
                 }
+
                 BarChartStyle.STACKED -> {
-                    val barWidth = 2 * w * mapper.xScale
+
                     val series = data.bars.size
                     val values = data.size
-                    val maxValues =
-                        FloatArray(values) { index -> data.bars.map { it.values[index] }.sum() }
+                    val maxValues = FloatArray(values) { index -> data.bars.map { it.values[index] }.sum() }
                     val maxOfValues = maxValues.maxOf { it }
+
+                    val mapper = PointMapper(
+                        xSrcMin = 0f - offset,
+                        xSrcMax = data.size - 1 + offset,
+                        xDstMin = contentArea.left,
+                        xDstMax = contentArea.right,
+                        ySrcMin = 0f,
+                        ySrcMax = maxOfValues,
+                        yDstMin = contentArea.top,
+                        yDstMax = contentArea.bottom
+                    )
+
+                    val barWidth = 2 * w * mapper.xScale
+
+                    yAxis.draw(this, contentArea, yAxisArea, mapper, mapper.ySrcMin, mapper.ySrcMax)
+
                     for (i in (values - 1) downTo 0) {
                         var counter = maxValues[i]
                         for (j in (series - 1) downTo 0) {
                             drawRect(
-                                color = colors.resolve(series - 1 - j, data.bars[j].color),
+                                color = colors.resolve(j, data.bars[j].color),
                                 topLeft = Offset(
                                     x = mapper.x(i - w),
-                                    y = mapper.y(maxOfValues - counter)
+                                    y = mapper.y(counter)
                                 ),
                                 size = Size(
                                     width = barWidth,
-                                    height = (counter / maxOfValues) * contentArea.height
+                                    height = counter * mapper.yScale
                                 )
                             )
                             counter -= data.bars[j].values[i]
                         }
                     }
                 }
+
                 BarChartStyle.PROPORTION -> {
-                    val barWidth = 2 * w * mapper.xScale
+
                     val series = data.bars.size
                     val values = data.size
-                    val maxValues =
-                        FloatArray(values) { index -> data.bars.map { it.values[index] }.sum() }
+                    val maxValues = FloatArray(values) { index -> data.bars.map { it.values[index] }.sum() }
+
+                    val mapper = PointMapper(
+                        xSrcMin = 0f - offset,
+                        xSrcMax = data.size - 1 + offset,
+                        xDstMin = contentArea.left,
+                        xDstMax = contentArea.right,
+                        ySrcMin = 0f,
+                        ySrcMax = 1f,
+                        yDstMin = contentArea.top,
+                        yDstMax = contentArea.bottom
+                    )
+
+                    yAxis.draw(this, contentArea, yAxisArea, mapper, mapper.ySrcMin, mapper.ySrcMax)
+
+                    val barWidth = 2 * w * mapper.xScale
+
                     for (i in (values - 1) downTo 0) {
                         var counter = maxValues[i]
                         for (j in (series - 1) downTo 0) {
                             drawRect(
-                                color = colors.resolve(series - 1 - j, data.bars[j].color),
+                                color = colors.resolve(j, data.bars[j].color),
                                 topLeft = Offset(
                                     x = mapper.x(i - w),
-                                    y = ((maxValues[i] - counter) / maxValues[i]) * contentArea.height
+                                    y = mapper.y(counter / maxValues[i])
                                 ),
                                 size = Size(
                                     width = barWidth,
-                                    height = (counter / maxValues[i]) * contentArea.height
+                                    height = (counter / maxValues[i]) * mapper.yScale
                                 )
                             )
                             counter -= data.bars[j].values[i]

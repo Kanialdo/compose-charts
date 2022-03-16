@@ -15,7 +15,8 @@ sealed class BarChartYAxis {
         chartScope: Rect,
         yAxisScope: Rect,
         yMapper: YMapper,
-        data: BarChartData
+        min: Float,
+        max: Float,
     )
 
     internal abstract fun requiredWidth(): Float
@@ -27,7 +28,8 @@ sealed class BarChartYAxis {
             chartScope: Rect,
             yAxisScope: Rect,
             yMapper: YMapper,
-            data: BarChartData
+            min: Float,
+            max: Float,
         ) {
         }
     }
@@ -45,10 +47,11 @@ sealed class BarChartYAxis {
             chartScope: Rect,
             yAxisScope: Rect,
             yMapper: YMapper,
-            data: BarChartData
+            min: Float,
+            max: Float,
         ) {
 
-            val thresholds = calculateYHelperLines(data.minValue, data.maxValue)
+            val thresholds = calculateYHelperLines(min, max)
 
             for (threshold in thresholds) {
                 val y = yMapper.y(threshold)
