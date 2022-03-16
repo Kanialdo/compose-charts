@@ -100,7 +100,7 @@ fun BarChart(
                         var counter = maxValues[i]
                         for (j in (series - 1) downTo 0) {
                             drawRect(
-                                color = colors.resolve(series - 1 - j, data.bars[j].color),
+                                color = colors.resolve(j, data.bars[j].color),
                                 topLeft = Offset(
                                     x = i * barWidth + (i + 1) * offset,
                                     y = ((maxOfValues - counter) / maxOfValues) * height
@@ -123,7 +123,7 @@ fun BarChart(
                         var counter = maxValues[i]
                         for (j in (series - 1) downTo 0) {
                             drawRect(
-                                color = colors.resolve(series - 1 - j, data.bars[j].color),
+                                color = colors.resolve(j, data.bars[j].color),
                                 topLeft = Offset(
                                     x = i * barWidth + (i + 1) * offset,
                                     y = ((maxValues[i] - counter) / maxValues[i]) * height
