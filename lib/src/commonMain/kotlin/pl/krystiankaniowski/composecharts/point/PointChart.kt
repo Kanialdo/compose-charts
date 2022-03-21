@@ -8,15 +8,13 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.drawscope.drawIntoCanvas
 import androidx.compose.ui.unit.dp
 import pl.krystiankaniowski.composecharts.AutoColors
 import pl.krystiankaniowski.composecharts.Colors
-import pl.krystiankaniowski.composecharts.drawYAxisHelperLines
 import pl.krystiankaniowski.composecharts.internal.ChartChoreographer
 import pl.krystiankaniowski.composecharts.internal.PointMapper
-import pl.krystiankaniowski.composecharts.internal.calculateYHelperLines
 import pl.krystiankaniowski.composecharts.legend.LegendEntry
 import pl.krystiankaniowski.composecharts.legend.LegendFlow
 import pl.krystiankaniowski.composecharts.legend.LegendPosition
@@ -53,6 +51,7 @@ fun PointChart(
     data: PointChartData,
     title: @Composable () -> Unit = {},
     colors: Colors = AutoColors,
+    yAxis: PointChartYAxis = PointChartYAxis.Linear(),
     legendPosition: LegendPosition = LegendPosition.Bottom,
 ) {
 
@@ -63,14 +62,27 @@ fun PointChart(
     ) {
         Canvas(Modifier.fillMaxSize()) {
 
-            val mapper = PointMapper(
-                xSrcMin = data.minX, xSrcMax = data.maxX, xDstMin = 0f, xDstMax = size.width,
-                ySrcMin = data.minY, ySrcMax = data.maxY, yDstMin = 0f, yDstMax = size.height
+            val contentArea = Rect(
+                top = 0f, bottom = size.height - 0,
+                left = yAxis.requiredWidth(), right = size.width
+            )
+            val yAxisArea = Rect(
+                top = contentArea.top, bottom = contentArea.bottom,
+                left = 0f, right = contentArea.left
             )
 
-            drawIntoCanvas {
-                it.drawYAxisHelperLines(mapper, calculateYHelperLines(0f, data.maxY))
-            }
+            val mapper = PointMapper(
+                xSrcMin = data.minX,
+                xSrcMax = data.maxX,
+                xDstMin = contentArea.left,
+                xDstMax = contentArea.right,
+                ySrcMin = data.minY,
+                ySrcMax = data.maxY,
+                yDstMin = contentArea.top,
+                yDstMax = contentArea.bottom
+            )
+
+            yAxis.draw(this, contentArea, yAxisArea, mapper, data)
 
             data.points.forEachIndexed { index, series ->
                 val color = colors.resolve(index, series.color)
