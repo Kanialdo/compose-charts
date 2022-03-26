@@ -2,6 +2,8 @@ package pl.krystiankaniowski.composecharts.point
 
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Rect
+import androidx.compose.ui.geometry.Size
+import androidx.compose.ui.graphics.BlendMode
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.unit.TextUnit
@@ -10,7 +12,13 @@ import pl.krystiankaniowski.composecharts.internal.TextAnchorX
 import pl.krystiankaniowski.composecharts.internal.XMapper
 import pl.krystiankaniowski.composecharts.internal.drawText
 
-sealed interface PointChartXAxis {
+data class PointChartXAxis(
+    private val labels: Labels = Labels.Auto(),
+    private val textSize: TextUnit = 24.sp,
+    private val color: Color = Color.Black
+) {
+
+    fun requiredHeight(): Float = textSize.value * 1.5f
 
     fun draw(
         drawScope: DrawScope,
@@ -18,34 +26,76 @@ sealed interface PointChartXAxis {
         xAxisScope: Rect,
         xMapper: XMapper,
         data: PointChartData
-    )
+    ) {
 
-    fun requiredHeight(): Float
-
-    object None : PointChartXAxis {
-        override fun requiredHeight() = 0f
-        override fun draw(
-            drawScope: DrawScope,
-            chartScope: Rect,
-            xAxisScope: Rect,
-            xMapper: XMapper,
-            data: PointChartData
-        ) {
+        fun drawTag(x: Float) {
+            drawScope.drawLine(
+                color = color,
+                Offset(x, xAxisScope.top),
+                Offset(x, xAxisScope.top + 6f)
+            )
         }
-    }
 
-    sealed class Label {
+        fun drawArea(x1: Float, x2: Float) {
+            drawScope.drawRect(
+                color = Color(0xFFEEEEEE),
+                topLeft = Offset(x1, chartScope.top),
+                size = Size(x2 - x1, chartScope.height + xAxisScope.height),
+                blendMode = BlendMode.ColorBurn
+            )
+        }
 
-        data class Point(
-            val name: String,
-            val value: Float,
-        ) : Label()
+        fun drawLabel(x: Float, label: String) {
+            drawScope.drawText(
+                text = label,
+                x = x,
+                y = xAxisScope.top + requiredHeight(),
+                anchorX = TextAnchorX.Center,
+                color = color,
+                size = textSize.value
+            )
+        }
 
-        data class Range(
-            val name: String,
-            val from: Float,
-            val to: Float,
-        ) : Label()
+        drawScope.drawLine(
+            color = color,
+            Offset(xAxisScope.left, xAxisScope.top),
+            Offset(xAxisScope.right, xAxisScope.top)
+        )
+
+        when (labels) {
+            is Labels.Auto -> {
+                val startPos = data.minX
+                val count = 5
+                val step = (data.maxX - data.minX) / count
+                for (i in 0..count) {
+                    val xValue = startPos + i * step
+                    val x = xMapper.x(xValue)
+                    drawTag(x)
+                    if (count <= 10 || (i % (count / 10) == 0)) {
+                        drawLabel(x, labels.formatter(xValue))
+                    }
+                }
+            }
+            is Labels.Fixed -> {
+                labels.labels.forEach { label ->
+                    val x = xMapper.x(label.value)
+                    drawTag(x)
+                    drawLabel(x, label.label)
+                }
+            }
+            is Labels.FixedRanges -> {
+                labels.labels.forEachIndexed { index, label ->
+                    val x1 = xMapper.x(label.from)
+                    val x2 = xMapper.x(label.to)
+                    if (index % 2 == 1) {
+                        drawArea(x1, x2)
+                    }
+                    drawTag(x1)
+                    drawTag(x2)
+                    drawLabel((x1 + x2) / 2, label.label)
+                }
+            }
+        }
     }
 
     sealed class Labels {
@@ -54,102 +104,23 @@ sealed interface PointChartXAxis {
             val formatter: (Float) -> String = { it.toString() }
         ) : Labels()
 
-        data class Custom(
-            val labels: List<Label>
-        ) : Labels()
-    }
-
-    data class Linear(
-        private val labels: Labels = Labels.Auto(),
-        private val textSize: TextUnit = 24.sp,
-        private val color: Color = Color.Black
-    ) : PointChartXAxis {
-
-        override fun requiredHeight(): Float = textSize.value * 1.5f
-
-        override fun draw(
-            drawScope: DrawScope,
-            chartScope: Rect,
-            xAxisScope: Rect,
-            xMapper: XMapper,
-            data: PointChartData
-        ) {
-            drawScope.drawLine(
-                color = color,
-                Offset(xAxisScope.left, xAxisScope.top),
-                Offset(xAxisScope.right, xAxisScope.top)
+        data class Fixed(
+            val labels: List<Point>
+        ) : Labels() {
+            data class Point(
+                val label: String,
+                val value: Float,
             )
+        }
 
-            when (labels) {
-                is Labels.Auto -> {
-                    val startPos = data.minX
-                    val count = 5
-                    val step = (data.maxX - data.minX) / count
-                    for (i in 0..count) {
-                        val xValue = startPos + i * step
-                        val x = xMapper.x(xValue)
-                        drawScope.drawLine(
-                            color = color,
-                            Offset(x, xAxisScope.top),
-                            Offset(x, xAxisScope.top + 4f)
-                        )
-                        if (count <= 10 || (i % (count / 10) == 0)) {
-                            drawScope.drawText(
-                                text = labels.formatter(xValue),
-                                x = x,
-                                y = xAxisScope.top + requiredHeight(),
-                                anchorX = TextAnchorX.Center,
-                                color = color,
-                                size = textSize.value
-                            )
-                        }
-                    }
-                }
-                is Labels.Custom -> {
-                    labels.labels.forEach { label ->
-                        when (label) {
-                            is Label.Point -> {
-                                val x = xMapper.x(label.value)
-                                drawScope.drawLine(
-                                    color = color,
-                                    Offset(x, xAxisScope.top),
-                                    Offset(x, xAxisScope.top + 4f)
-                                )
-                                drawScope.drawText(
-                                    text = label.name,
-                                    x = x,
-                                    y = xAxisScope.top + requiredHeight(),
-                                    anchorX = TextAnchorX.Center,
-                                    color = color,
-                                    size = textSize.value
-                                )
-                            }
-                            is Label.Range -> {
-                                val x1 = xMapper.x(label.from)
-                                val x2 = xMapper.x(label.to)
-                                drawScope.drawLine(
-                                    color = color,
-                                    Offset(x1, xAxisScope.top),
-                                    Offset(x1, xAxisScope.top + 4f)
-                                )
-                                drawScope.drawLine(
-                                    color = color,
-                                    Offset(x2, xAxisScope.top),
-                                    Offset(x2, xAxisScope.top + 4f)
-                                )
-                                drawScope.drawText(
-                                    text = label.name,
-                                    x = (x1 + x2) / 2,
-                                    y = xAxisScope.top + requiredHeight(),
-                                    anchorX = TextAnchorX.Center,
-                                    color = color,
-                                    size = textSize.value
-                                )
-                            }
-                        }
-                    }
-                }
-            }
+        data class FixedRanges(
+            val labels: List<Range>
+        ) : Labels() {
+            data class Range(
+                val label: String,
+                val from: Float,
+                val to: Float,
+            )
         }
     }
 }

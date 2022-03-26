@@ -52,19 +52,19 @@ fun PointChartCustomXAxisPreview() {
     PointChart(
         data = data,
         title = { Text("Point chart") },
-        xAxis = PointChartXAxis.Linear(
-            labels = PointChartXAxis.Labels.Custom(
+        xAxis = PointChartXAxis(
+            labels = PointChartXAxis.Labels.Fixed(
                 labels = listOf(
-                    PointChartXAxis.Label.Point(
-                        name = "A",
+                    PointChartXAxis.Labels.Fixed.Point(
+                        label = "A",
                         value = 1f
                     ),
-                    PointChartXAxis.Label.Point(
-                        name = "B",
+                    PointChartXAxis.Labels.Fixed.Point(
+                        label = "B",
                         value = 2f
                     ),
-                    PointChartXAxis.Label.Point(
-                        name = "C",
+                    PointChartXAxis.Labels.Fixed.Point(
+                        label = "C",
                         value = 3f
                     ),
                 )
@@ -79,17 +79,32 @@ fun PointChartCustomXAxisRangePreview() {
     PointChart(
         data = data,
         title = { Text("Point chart") },
-        xAxis = PointChartXAxis.Linear(
-            labels = PointChartXAxis.Labels.Custom(
+        xAxis = PointChartXAxis(
+            labels = PointChartXAxis.Labels.FixedRanges(
                 labels = listOf(
-                    PointChartXAxis.Label.Range(
-                        name = "A",
+                    PointChartXAxis.Labels.FixedRanges.Range(
+                        label = "A",
                         from = 0f,
+                        to = 1f,
+                    ),
+                    PointChartXAxis.Labels.FixedRanges.Range(
+                        label = "B",
+                        from = 1f,
                         to = 2f,
                     ),
-                    PointChartXAxis.Label.Range(
-                        name = "B",
+                    PointChartXAxis.Labels.FixedRanges.Range(
+                        label = "C",
                         from = 2f,
+                        to = 3f,
+                    ),
+                    PointChartXAxis.Labels.FixedRanges.Range(
+                        label = "D",
+                        from = 3f,
+                        to = 4f,
+                    ),
+                    PointChartXAxis.Labels.FixedRanges.Range(
+                        label = "E",
+                        from = 4f,
                         to = 5f,
                     ),
                 )

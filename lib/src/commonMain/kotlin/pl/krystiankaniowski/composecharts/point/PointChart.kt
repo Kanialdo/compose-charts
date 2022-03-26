@@ -51,7 +51,7 @@ fun PointChart(
     data: PointChartData,
     title: @Composable () -> Unit = {},
     colors: Colors = AutoColors,
-    xAxis: PointChartXAxis = PointChartXAxis.Linear(),
+    xAxis: PointChartXAxis? = PointChartXAxis(),
     yAxis: PointChartYAxis = PointChartYAxis.Linear(),
     legendPosition: LegendPosition = LegendPosition.Bottom,
 ) {
@@ -64,7 +64,7 @@ fun PointChart(
         Canvas(Modifier.fillMaxSize()) {
 
             val contentArea = Rect(
-                top = 0f, bottom = size.height - xAxis.requiredHeight(),
+                top = 0f, bottom = size.height - (xAxis?.requiredHeight() ?: 0f),
                 left = yAxis.requiredWidth(), right = size.width
             )
             val xAxisArea = Rect(
@@ -88,7 +88,7 @@ fun PointChart(
             )
 
             yAxis.draw(this, contentArea, yAxisArea, mapper, data)
-            xAxis.draw(this, contentArea, xAxisArea, mapper, data)
+            xAxis?.draw(this, contentArea, xAxisArea, mapper, data)
 
             data.points.forEachIndexed { index, series ->
                 val color = colors.resolve(index, series.color)
