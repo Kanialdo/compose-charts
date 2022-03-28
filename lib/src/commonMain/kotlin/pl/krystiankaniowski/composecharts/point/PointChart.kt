@@ -51,7 +51,7 @@ fun PointChart(
     data: PointChartData,
     title: @Composable () -> Unit = {},
     colors: Colors = AutoColors,
-    xAxis: PointChartXAxis? = PointChartXAxis(),
+    xAxis: PointChartXAxis.Drawer = PointChartXAxis.Auto(),
     yAxis: PointChartYAxis = PointChartYAxis.Linear(),
     legendPosition: LegendPosition = LegendPosition.Bottom,
 ) {

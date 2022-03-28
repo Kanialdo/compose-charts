@@ -14,6 +14,7 @@ import androidx.compose.ui.graphics.Paint
 import androidx.compose.ui.graphics.drawscope.drawIntoCanvas
 import androidx.compose.ui.unit.dp
 import pl.krystiankaniowski.composecharts.AutoColors
+import pl.krystiankaniowski.composecharts.ChartsTheme
 import pl.krystiankaniowski.composecharts.Colors
 import pl.krystiankaniowski.composecharts.internal.ChartChoreographer
 import pl.krystiankaniowski.composecharts.legend.LegendEntry
@@ -80,7 +81,7 @@ private fun PieLegend(
     data: PieChartData,
     colors: Colors = AutoColors
 ) {
-    Box(modifier = Modifier.border(width = 1.dp, color = Color.LightGray)) {
+    Box(modifier = Modifier.border(width = 1.dp, color = ChartsTheme.legendColor)) {
         LegendFlow(
             modifier = Modifier.padding(16.dp),
             data = data.slices.mapIndexed { index, item ->

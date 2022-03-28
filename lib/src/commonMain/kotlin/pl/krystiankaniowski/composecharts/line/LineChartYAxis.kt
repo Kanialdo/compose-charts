@@ -1,26 +1,31 @@
 package pl.krystiankaniowski.composecharts.line
 
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.sp
+import pl.krystiankaniowski.composecharts.ChartsTheme
 import pl.krystiankaniowski.composecharts.internal.*
 
-sealed class LineChartYAxis {
+object LineChartYAxis {
 
-    internal abstract fun draw(
-        drawScope: DrawScope,
-        chartScope: Rect,
-        yAxisScope: Rect,
-        yMapper: YMapper,
-        data: LineChartData
-    )
+    interface Drawer {
+        fun requiredWidth(): Float
+        fun draw(
+            drawScope: DrawScope,
+            chartScope: Rect,
+            yAxisScope: Rect,
+            yMapper: YMapper,
+            data: LineChartData
+        )
 
-    internal abstract fun requiredWidth(): Float
+    }
 
-    object None : LineChartYAxis() {
+    @Composable
+    fun None() = object : Drawer {
         override fun requiredWidth() = 0f
         override fun draw(
             drawScope: DrawScope,
@@ -32,11 +37,12 @@ sealed class LineChartYAxis {
         }
     }
 
-    data class Linear(
-        private val label: (Float) -> String = { it.toString() },
-        private val textSize: TextUnit = 20.sp,
-        private val color: Color = Color.LightGray,
-    ) : LineChartYAxis() {
+    @Composable
+    fun Auto(
+        label: (Float) -> String = { it.toString() },
+        textSize: TextUnit = 20.sp,
+        color: Color = ChartsTheme.axisColor,
+    ) = object : Drawer {
 
         override fun requiredWidth(): Float = 80f
 

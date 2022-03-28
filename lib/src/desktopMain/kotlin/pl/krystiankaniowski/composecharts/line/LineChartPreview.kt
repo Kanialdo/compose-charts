@@ -4,10 +4,6 @@ import androidx.compose.desktop.ui.tooling.preview.Preview
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
-import pl.krystiankaniowski.composecharts.line.LineChart
-import pl.krystiankaniowski.composecharts.line.LineChartData
-import pl.krystiankaniowski.composecharts.line.LineChartStyle
-import pl.krystiankaniowski.composecharts.line.LineChartXAxis
 import kotlin.random.Random
 
 private val data = LineChartData(
@@ -60,7 +56,7 @@ fun LineChartCustomLabelsPreview() {
             )
         ),
         title = { Text("Line chart") },
-        xAxis = LineChartXAxis.Linear(label = { listOf("A", "B", "C", "D", "E")[it] })
+        xAxis = LineChartXAxis.Auto(label = { listOf("A", "B", "C", "D", "E")[it] })
     )
 }
 

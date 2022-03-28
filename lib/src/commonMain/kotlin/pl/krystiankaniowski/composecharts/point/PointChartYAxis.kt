@@ -6,6 +6,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.sp
+import pl.krystiankaniowski.composecharts.ChartsTheme
 import pl.krystiankaniowski.composecharts.internal.*
 
 sealed class PointChartYAxis {
@@ -35,7 +36,7 @@ sealed class PointChartYAxis {
     data class Linear(
         private val label: (Float) -> String = { it.toString() },
         private val textSize: TextUnit = 20.sp,
-        private val color: Color = Color.LightGray,
+        private val color: Color = ChartsTheme.axisColor,
     ) : PointChartYAxis() {
 
         override fun requiredWidth(): Float = 80f

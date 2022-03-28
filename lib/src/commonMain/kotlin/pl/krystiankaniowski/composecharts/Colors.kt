@@ -1,5 +1,7 @@
 package pl.krystiankaniowski.composecharts
 
+import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 
 interface Colors {

@@ -3,7 +3,9 @@ package pl.krystiankaniowski.composecharts
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.material.Divider
 import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
@@ -28,22 +30,24 @@ fun DemoView() {
 
     var current by remember { mutableStateOf(0) }
 
-    Row {
-        Column(modifier = Modifier.weight(1f)) {
-            items.forEachIndexed { index, (label, _) ->
-                Text(
-                    text = label,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .clickable { current = index }
-                        .padding(vertical = 8.dp, horizontal = 16.dp),
-                    color = if (index == current) MaterialTheme.colors.primary else Color.Unspecified
-                )
+    Surface {
+        Row {
+            Column(modifier = Modifier.weight(1f)) {
+                items.forEachIndexed { index, (label, _) ->
+                    Text(
+                        text = label,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .clickable { current = index }
+                            .padding(vertical = 8.dp, horizontal = 16.dp),
+                        color = if (index == current) MaterialTheme.colors.primary else Color.Unspecified
+                    )
+                }
             }
-        }
-        Box(modifier = Modifier.fillMaxHeight().width(1.dp).background(color = Color.LightGray))
-        Box(modifier = Modifier.weight(@Suppress("MagicNumber") 3f)) {
-            items[current].second.invoke()
+            Divider(modifier = Modifier.fillMaxHeight().width(1.dp))
+            Box(modifier = Modifier.weight(@Suppress("MagicNumber") 3f)) {
+                items[current].second.invoke()
+            }
         }
     }
 }

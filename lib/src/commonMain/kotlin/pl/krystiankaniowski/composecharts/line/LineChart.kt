@@ -14,6 +14,7 @@ import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.unit.dp
 import pl.krystiankaniowski.composecharts.AutoColors
+import pl.krystiankaniowski.composecharts.ChartsTheme
 import pl.krystiankaniowski.composecharts.Colors
 import pl.krystiankaniowski.composecharts.internal.ChartChoreographer
 import pl.krystiankaniowski.composecharts.internal.PointMapper
@@ -66,8 +67,8 @@ fun LineChart(
     data: LineChartData,
     title: @Composable () -> Unit = {},
     style: LineChartStyle = LineChartStyle(),
-    xAxis: LineChartXAxis = LineChartXAxis.Linear(),
-    yAxis: LineChartYAxis = LineChartYAxis.Linear(),
+    xAxis: LineChartXAxis.Drawer = LineChartXAxis.Auto(),
+    yAxis: LineChartYAxis.Drawer = LineChartYAxis.Auto(),
     legendPosition: LegendPosition = LegendPosition.Bottom,
 ) {
 
@@ -165,7 +166,7 @@ private fun LineLegend(
     data: LineChartData,
     colors: Colors = AutoColors
 ) {
-    Box(modifier = Modifier.border(width = 1.dp, color = Color.LightGray)) {
+    Box(modifier = Modifier.border(width = 1.dp, color = ChartsTheme.legendColor)) {
         LegendFlow(
             modifier = Modifier.padding(16.dp),
             data = data.lines.mapIndexed { index, item ->

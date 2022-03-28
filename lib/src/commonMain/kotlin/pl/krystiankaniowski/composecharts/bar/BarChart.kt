@@ -13,6 +13,7 @@ import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import pl.krystiankaniowski.composecharts.AutoColors
+import pl.krystiankaniowski.composecharts.ChartsTheme
 import pl.krystiankaniowski.composecharts.Colors
 import pl.krystiankaniowski.composecharts.internal.ChartChoreographer
 import pl.krystiankaniowski.composecharts.internal.PointMapper
@@ -204,7 +205,7 @@ private fun BarLegend(
     data: BarChartData,
     colors: Colors = AutoColors
 ) {
-    Box(modifier = Modifier.border(width = 1.dp, color = Color.LightGray)) {
+    Box(modifier = Modifier.border(width = 1.dp, color = ChartsTheme.legendColor)) {
         LegendFlow(
             modifier = Modifier.padding(16.dp),
             data = data.bars.mapIndexed { index, item ->
