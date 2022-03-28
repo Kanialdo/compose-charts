@@ -18,20 +18,20 @@ private val data = PointChartData(
         ),
         PointChartData.Points(
             label = "Series B", values = listOf(
-                PointChartData.Point(5f, 5f),
-                PointChartData.Point(4f, 4f),
-                PointChartData.Point(3f, 3f),
-                PointChartData.Point(2f, 2f),
-                PointChartData.Point(1f, 1f),
+                PointChartData.Point(5f, 4f),
+                PointChartData.Point(4f, 3f),
+                PointChartData.Point(3f, 2f),
+                PointChartData.Point(2f, 1f),
+                PointChartData.Point(1f, 0f),
             )
         ),
         PointChartData.Points(
             label = "Series C", values = listOf(
-                PointChartData.Point(5f, 0f),
-                PointChartData.Point(4f, 0f),
-                PointChartData.Point(3f, 0f),
-                PointChartData.Point(2f, 0f),
-                PointChartData.Point(1f, 0f),
+                PointChartData.Point(5f, 1.5f),
+                PointChartData.Point(4f, 1.5f),
+                PointChartData.Point(3f, 1.5f),
+                PointChartData.Point(2f, 1.5f),
+                PointChartData.Point(1f, 1.5f),
             )
         ),
     )
@@ -43,5 +43,72 @@ fun PointChartPreview() {
     PointChart(
         data = data,
         title = { Text("Point chart") },
+    )
+}
+
+@Preview
+@Composable
+fun PointChartCustomXAxisPreview() {
+    PointChart(
+        data = data,
+        title = { Text("Point chart") },
+        xAxis = PointChartXAxis(
+            labels = PointChartXAxis.Labels.Fixed(
+                labels = listOf(
+                    PointChartXAxis.Labels.Fixed.Point(
+                        label = "A",
+                        value = 1f
+                    ),
+                    PointChartXAxis.Labels.Fixed.Point(
+                        label = "B",
+                        value = 2f
+                    ),
+                    PointChartXAxis.Labels.Fixed.Point(
+                        label = "C",
+                        value = 3f
+                    ),
+                )
+            )
+        )
+    )
+}
+
+@Preview
+@Composable
+fun PointChartCustomXAxisRangePreview() {
+    PointChart(
+        data = data,
+        title = { Text("Point chart") },
+        xAxis = PointChartXAxis(
+            labels = PointChartXAxis.Labels.FixedRanges(
+                labels = listOf(
+                    PointChartXAxis.Labels.FixedRanges.Range(
+                        label = "A",
+                        from = 0f,
+                        to = 1f,
+                    ),
+                    PointChartXAxis.Labels.FixedRanges.Range(
+                        label = "B",
+                        from = 1f,
+                        to = 2f,
+                    ),
+                    PointChartXAxis.Labels.FixedRanges.Range(
+                        label = "C",
+                        from = 2f,
+                        to = 3f,
+                    ),
+                    PointChartXAxis.Labels.FixedRanges.Range(
+                        label = "D",
+                        from = 3f,
+                        to = 4f,
+                    ),
+                    PointChartXAxis.Labels.FixedRanges.Range(
+                        label = "E",
+                        from = 4f,
+                        to = 5f,
+                    ),
+                )
+            )
+        )
     )
 }
