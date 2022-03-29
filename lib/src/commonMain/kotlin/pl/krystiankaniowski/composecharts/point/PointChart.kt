@@ -10,8 +10,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Path
+import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.unit.dp
 import pl.krystiankaniowski.composecharts.AutoColors
+import pl.krystiankaniowski.composecharts.ChartsTheme
 import pl.krystiankaniowski.composecharts.Colors
 import pl.krystiankaniowski.composecharts.internal.ChartChoreographer
 import pl.krystiankaniowski.composecharts.internal.PointMapper
@@ -92,7 +95,19 @@ fun PointChart(
 
             data.points.forEachIndexed { index, series ->
                 val color = colors.resolve(index, series.color)
-                series.values.forEach { point ->
+                val path = Path()
+                series.values.forEachIndexed { pos, point ->
+                    when (pos) {
+                        0 -> path.moveTo(
+                            x = mapper.x(point.x),
+                            y = mapper.y(point.y),
+                        )
+                        else -> path.lineTo(
+                            x = mapper.x(point.x),
+                            y = mapper.y(point.y),
+                        )
+                    }
+
                     drawCircle(
                         color = color,
                         center = Offset(
@@ -102,6 +117,7 @@ fun PointChart(
                         radius = 5f
                     )
                 }
+                drawPath(path = path, color = color, style = Stroke(width = 5f))
             }
         }
     }
@@ -112,7 +128,7 @@ private fun PointLegend(
     data: PointChartData,
     colors: Colors = AutoColors
 ) {
-    Box(modifier = Modifier.border(width = 1.dp, color = Color.LightGray)) {
+    Box(modifier = Modifier.border(width = 1.dp, color = ChartsTheme.legendColor)) {
         LegendFlow(
             modifier = Modifier.padding(16.dp),
             data = data.points.mapIndexed { index, item ->
