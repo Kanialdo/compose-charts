@@ -3,6 +3,7 @@ package pl.krystiankaniowski.composecharts.point
 import androidx.compose.desktop.ui.tooling.preview.Preview
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import kotlin.random.Random
 
 private val data = PointChartData(
     points = listOf(
@@ -106,5 +107,24 @@ fun PointChartCustomXAxisRangePreview() {
                 ),
             )
         )
+    )
+}
+
+
+@Preview
+@Composable
+fun PointChartComplexPreview() {
+    val random = Random(0)
+    val points = List(50) { index -> PointChartData.Point(index / 10f, random.nextFloat() * 5) }
+    PointChart(
+        data = PointChartData(
+            points = listOf(
+                PointChartData.Points(
+                    label = "Data",
+                    values = points,
+                )
+            )
+        ),
+        title = { Text("Point chart") },
     )
 }
