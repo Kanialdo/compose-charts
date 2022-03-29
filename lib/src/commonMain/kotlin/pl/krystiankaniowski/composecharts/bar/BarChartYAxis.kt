@@ -4,6 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.PathEffect
 import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.sp
@@ -61,6 +62,7 @@ object BarChartYAxis {
                     color = color,
                     start = Offset(x = chartScope.left, y = y),
                     end = Offset(x = chartScope.right, y = y),
+                    pathEffect = PathEffect.dashPathEffect(floatArrayOf(10f, 20f)),
                 )
                 drawScope.drawText(
                     text = label(threshold),
