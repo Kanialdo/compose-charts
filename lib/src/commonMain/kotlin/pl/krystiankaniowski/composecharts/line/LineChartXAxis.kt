@@ -42,7 +42,7 @@ object LineChartXAxis {
     fun Auto(
         label: (Int) -> String = { (it + 1).toString() },
         textSize: TextUnit = 24.sp,
-        color: Color = ChartsTheme.axisColor2
+        color: Color = ChartsTheme.axisColor
     ): Drawer = object : Drawer {
 
         override fun requiredHeight(): Float = textSize.value * 1.5f

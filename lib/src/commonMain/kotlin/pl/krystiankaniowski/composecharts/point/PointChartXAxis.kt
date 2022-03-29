@@ -4,7 +4,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.geometry.Size
-import androidx.compose.ui.graphics.BlendMode
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.unit.TextUnit
@@ -26,6 +25,19 @@ object PointChartXAxis {
             xMapper: XMapper,
             data: PointChartData
         )
+    }
+
+    @Composable
+    fun None(): Drawer = object : Drawer {
+        override fun requiredHeight() = 0f
+        override fun draw(
+            drawScope: DrawScope,
+            chartScope: Rect,
+            xAxisScope: Rect,
+            xMapper: XMapper,
+            data: PointChartData
+        ) {
+        }
     }
 
     data class Label(
@@ -56,10 +68,9 @@ object PointChartXAxis {
 
         fun drawArea(drawScope: DrawScope, xAxisScope: Rect, chartScope: Rect, x1: Float, x2: Float) {
             drawScope.drawRect(
-                color = Color(0xFFEEEEEE),
+                color = Color(0x11888888),
                 topLeft = Offset(x1, chartScope.top),
                 size = Size(x2 - x1, chartScope.height + xAxisScope.height),
-                blendMode = BlendMode.ColorBurn
             )
         }
 

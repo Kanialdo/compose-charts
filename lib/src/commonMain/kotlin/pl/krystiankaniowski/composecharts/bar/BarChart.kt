@@ -58,7 +58,7 @@ fun BarChart(
     style: BarChartStyle = BarChartStyle.STANDARD,
     title: @Composable () -> Unit = {},
     colors: Colors = AutoColors,
-    yAxis: BarChartYAxis = BarChartYAxis.Names(),
+    yAxis: BarChartYAxis.Drawer = BarChartYAxis.Auto(),
     legendPosition: LegendPosition = LegendPosition.Bottom,
 ) {
     ChartChoreographer(
