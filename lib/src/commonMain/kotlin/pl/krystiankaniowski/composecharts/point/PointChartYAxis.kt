@@ -1,26 +1,30 @@
 package pl.krystiankaniowski.composecharts.point
 
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.sp
+import pl.krystiankaniowski.composecharts.ChartsTheme
 import pl.krystiankaniowski.composecharts.internal.*
 
-sealed class PointChartYAxis {
+object PointChartYAxis {
 
-    internal abstract fun draw(
-        drawScope: DrawScope,
-        chartScope: Rect,
-        yAxisScope: Rect,
-        yMapper: YMapper,
-        data: PointChartData
-    )
+    interface Drawer {
+        fun requiredWidth(): Float
+        fun draw(
+            drawScope: DrawScope,
+            chartScope: Rect,
+            yAxisScope: Rect,
+            yMapper: YMapper,
+            data: PointChartData
+        )
+    }
 
-    internal abstract fun requiredWidth(): Float
-
-    object None : PointChartYAxis() {
+    @Composable
+    fun None(): Drawer = object : Drawer {
         override fun requiredWidth() = 0f
         override fun draw(
             drawScope: DrawScope,
@@ -32,14 +36,13 @@ sealed class PointChartYAxis {
         }
     }
 
-    data class Linear(
-        private val label: (Float) -> String = { it.toString() },
-        private val textSize: TextUnit = 20.sp,
-        private val color: Color = Color.LightGray,
-    ) : PointChartYAxis() {
-
-        override fun requiredWidth(): Float = 80f
-
+    @Composable
+    fun Auto(
+        label: (Float) -> String = { it.toString() },
+        textSize: TextUnit = 20.sp,
+        color: Color = ChartsTheme.axisColor,
+    ): Drawer = object : Drawer {
+        override fun requiredWidth() = 80f
         override fun draw(
             drawScope: DrawScope,
             chartScope: Rect,
@@ -47,7 +50,6 @@ sealed class PointChartYAxis {
             yMapper: YMapper,
             data: PointChartData
         ) {
-
             val thresholds = calculateYHelperLines(data.minY, data.maxY)
 
             for (threshold in thresholds) {

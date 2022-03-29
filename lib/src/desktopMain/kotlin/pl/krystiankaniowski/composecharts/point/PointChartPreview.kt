@@ -52,22 +52,20 @@ fun PointChartCustomXAxisPreview() {
     PointChart(
         data = data,
         title = { Text("Point chart") },
-        xAxis = PointChartXAxis(
-            labels = PointChartXAxis.Labels.Fixed(
-                labels = listOf(
-                    PointChartXAxis.Labels.Fixed.Point(
-                        label = "A",
-                        value = 1f
-                    ),
-                    PointChartXAxis.Labels.Fixed.Point(
-                        label = "B",
-                        value = 2f
-                    ),
-                    PointChartXAxis.Labels.Fixed.Point(
-                        label = "C",
-                        value = 3f
-                    ),
-                )
+        xAxis = PointChartXAxis.Fixed(
+            points = listOf(
+                PointChartXAxis.Label(
+                    label = "A",
+                    value = 1f
+                ),
+                PointChartXAxis.Label(
+                    label = "B",
+                    value = 2f
+                ),
+                PointChartXAxis.Label(
+                    label = "C",
+                    value = 3f
+                ),
             )
         )
     )
@@ -79,35 +77,33 @@ fun PointChartCustomXAxisRangePreview() {
     PointChart(
         data = data,
         title = { Text("Point chart") },
-        xAxis = PointChartXAxis(
-            labels = PointChartXAxis.Labels.FixedRanges(
-                labels = listOf(
-                    PointChartXAxis.Labels.FixedRanges.Range(
-                        label = "A",
-                        from = 0f,
-                        to = 1f,
-                    ),
-                    PointChartXAxis.Labels.FixedRanges.Range(
-                        label = "B",
-                        from = 1f,
-                        to = 2f,
-                    ),
-                    PointChartXAxis.Labels.FixedRanges.Range(
-                        label = "C",
-                        from = 2f,
-                        to = 3f,
-                    ),
-                    PointChartXAxis.Labels.FixedRanges.Range(
-                        label = "D",
-                        from = 3f,
-                        to = 4f,
-                    ),
-                    PointChartXAxis.Labels.FixedRanges.Range(
-                        label = "E",
-                        from = 4f,
-                        to = 5f,
-                    ),
-                )
+        xAxis = PointChartXAxis.FixedRanges(
+            points = listOf(
+                PointChartXAxis.Range(
+                    label = "A",
+                    from = 0f,
+                    to = 1f,
+                ),
+                PointChartXAxis.Range(
+                    label = "B",
+                    from = 1f,
+                    to = 2f,
+                ),
+                PointChartXAxis.Range(
+                    label = "C",
+                    from = 2f,
+                    to = 3f,
+                ),
+                PointChartXAxis.Range(
+                    label = "D",
+                    from = 3f,
+                    to = 4f,
+                ),
+                PointChartXAxis.Range(
+                    label = "E",
+                    from = 4f,
+                    to = 5f,
+                ),
             )
         )
     )
