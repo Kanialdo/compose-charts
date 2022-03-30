@@ -10,8 +10,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.Path
-import androidx.compose.ui.graphics.drawscope.Stroke
+import androidx.compose.ui.graphics.PointMode
 import androidx.compose.ui.unit.dp
 import pl.krystiankaniowski.composecharts.AutoColors
 import pl.krystiankaniowski.composecharts.ChartsTheme
@@ -95,29 +94,12 @@ fun PointChart(
 
             data.points.forEachIndexed { index, series ->
                 val color = colors.resolve(index, series.color)
-                val path = Path()
-                series.values.forEachIndexed { pos, point ->
-                    when (pos) {
-                        0 -> path.moveTo(
-                            x = mapper.x(point.x),
-                            y = mapper.y(point.y),
-                        )
-                        else -> path.lineTo(
-                            x = mapper.x(point.x),
-                            y = mapper.y(point.y),
-                        )
-                    }
-
-                    drawCircle(
-                        color = color,
-                        center = Offset(
-                            x = mapper.x(point.x),
-                            y = mapper.y(point.y),
-                        ),
-                        radius = 5f
-                    )
-                }
-                drawPath(path = path, color = color, style = Stroke(width = 5f))
+                drawPoints(
+                    points = series.values.map { Offset(mapper.x(it.x), mapper.y(it.y)) },
+                    pointMode = PointMode.Polygon,
+                    strokeWidth = 5f,
+                    color = color,
+                )
             }
         }
     }
