@@ -42,7 +42,10 @@ object PointChartYAxis {
         label: (Float) -> String = { it.toString() },
         textSize: TextUnit = 20.sp,
         color: Color = ChartsTheme.axisColor,
-    ): Drawer = object : Drawer {
+    ): Drawer = object : DrawerImpl(
+        textSize,
+        color
+    ) {
         override fun requiredWidth() = 80f
         override fun draw(
             drawScope: DrawScope,
@@ -53,29 +56,74 @@ object PointChartYAxis {
         ) {
             val thresholds = calculateYHelperLines(data.minY, data.maxY)
 
-            for (threshold in thresholds) {
-                val y = yMapper.y(threshold)
-                drawScope.drawLine(
-                    color = color,
-                    start = Offset(x = chartScope.left, y = y),
-                    end = Offset(x = chartScope.right, y = y),
-                    pathEffect = PathEffect.dashPathEffect(floatArrayOf(10f, 20f)),
-                )
-                drawScope.drawText(
-                    text = label(threshold),
-                    x = requiredWidth() - 10f,
-                    y = y,
-                    anchorX = TextAnchorX.Right,
-                    anchorY = TextAnchorY.Center,
-                    color = color,
-                    size = textSize.value
-                )
+            thresholds.forEach {
+                drawHelperLine(drawScope = drawScope, chartScope = chartScope, yMapper = yMapper, value = it, label = label(it))
             }
+            drawYAxis(drawScope = drawScope, yAxisScope = yAxisScope)
+        }
+    }
 
+    @Composable
+    fun Fixed(
+        labels: List<Pair<Float, String>>,
+        textSize: TextUnit = 20.sp,
+        color: Color = ChartsTheme.axisColor,
+    ): Drawer = object : DrawerImpl(
+        textSize,
+        color
+    ) {
+        override fun requiredWidth() = 80f
+        override fun draw(
+            drawScope: DrawScope,
+            chartScope: Rect,
+            yAxisScope: Rect,
+            yMapper: YMapper,
+            data: PointChartData
+        ) {
+            labels.forEach {
+                drawHelperLine(drawScope = drawScope, chartScope = chartScope, yMapper = yMapper, value = it.first, label = it.second)
+            }
+            drawYAxis(drawScope = drawScope, yAxisScope = yAxisScope)
+        }
+    }
+
+    internal abstract class DrawerImpl(
+        private val textSize: TextUnit = 20.sp,
+        private val color: Color = ChartsTheme.axisColor,
+    ) : Drawer {
+        fun drawYAxis(
+            drawScope: DrawScope,
+            yAxisScope: Rect,
+        ) {
             drawScope.drawLine(
                 color = color,
                 start = Offset(yAxisScope.right, yAxisScope.top),
                 end = Offset(yAxisScope.right, yAxisScope.bottom)
+            )
+        }
+
+        fun drawHelperLine(
+            drawScope: DrawScope,
+            chartScope: Rect,
+            yMapper: YMapper,
+            value: Float,
+            label: String
+        ) {
+            val y = yMapper.y(value)
+            drawScope.drawLine(
+                color = color,
+                start = Offset(x = chartScope.left, y = y),
+                end = Offset(x = chartScope.right, y = y),
+                pathEffect = PathEffect.dashPathEffect(floatArrayOf(10f, 20f)),
+            )
+            drawScope.drawText(
+                text = label,
+                x = requiredWidth() - 10f,
+                y = y,
+                anchorX = TextAnchorX.Right,
+                anchorY = TextAnchorY.Center,
+                color = color,
+                size = textSize.value
             )
         }
     }

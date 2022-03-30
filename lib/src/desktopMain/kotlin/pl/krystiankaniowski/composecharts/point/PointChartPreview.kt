@@ -110,7 +110,6 @@ fun PointChartCustomXAxisRangePreview() {
     )
 }
 
-
 @Preview
 @Composable
 fun PointChartComplexPreview() {
