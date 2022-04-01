@@ -23,28 +23,18 @@ import pl.krystiankaniowski.composecharts.legend.LegendPosition
 import pl.krystiankaniowski.composecharts.resolve
 
 data class PointChartData(
-    val points: List<Points>,
-    internal val minX: Float = points.minOf { it.values.minOf { point -> point.x } },
-    internal val maxX: Float = points.maxOf { it.values.maxOf { point -> point.x } },
-    internal val minY: Float = points.minOf { it.values.minOf { point -> point.y } },
-    internal val maxY: Float = points.maxOf { it.values.maxOf { point -> point.y } },
+    val series: List<Series>,
+    internal val minX: Float = series.minOf { it.values.minOf { point -> point.x } },
+    internal val maxX: Float = series.maxOf { it.values.maxOf { point -> point.x } },
+    internal val minY: Float = series.minOf { it.values.minOf { point -> point.y } },
+    internal val maxY: Float = series.maxOf { it.values.maxOf { point -> point.y } },
 ) {
-
-    data class Points(
+    data class Series(
         val label: String,
-        val values: List<Point>,
-        val color: Color = Color.Unspecified
+        val values: List<Offset>,
+        val color: Color = Color.Unspecified,
+        val strokeWidth: Float = 5f
     )
-
-    class Point(val x: Float, val y: Float)
-
-    init {
-        check(points.first().values.size.let { size -> points.all { it.values.size == size } }) {
-            "All points set have to contains same amount of entries"
-        }
-    }
-
-    internal val size: Int get() = points.first().values.size
 }
 
 @Composable
@@ -91,13 +81,12 @@ fun PointChart(
             yAxis.draw(this, contentArea, yAxisArea, mapper, data)
             xAxis.draw(this, contentArea, xAxisArea, mapper, data)
 
-            data.points.forEachIndexed { index, series ->
-                val color = colors.resolve(index, series.color)
+            data.series.forEachIndexed { index, series ->
                 drawPoints(
                     points = series.values.map { Offset(mapper.x(it.x), mapper.y(it.y)) },
                     pointMode = PointMode.Polygon,
-                    strokeWidth = 5f,
-                    color = color,
+                    strokeWidth = series.strokeWidth,
+                    color = colors.resolve(index, series.color),
                 )
             }
         }
@@ -112,10 +101,10 @@ private fun PointLegend(
     Box(modifier = Modifier.border(width = 1.dp, color = ChartsTheme.legendColor)) {
         LegendFlow(
             modifier = Modifier.padding(16.dp),
-            data = data.points.mapIndexed { index, item ->
+            data = data.series.mapIndexed { index, series ->
                 LegendEntry(
-                    item.label,
-                    colors.resolve(index, item.color)
+                    series.label,
+                    colors.resolve(index, series.color)
                 )
             }
         )

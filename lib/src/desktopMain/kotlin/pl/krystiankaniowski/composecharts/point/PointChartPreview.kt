@@ -3,36 +3,37 @@ package pl.krystiankaniowski.composecharts.point
 import androidx.compose.desktop.ui.tooling.preview.Preview
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.geometry.Offset
 import kotlin.random.Random
 
 private val data = PointChartData(
-    points = listOf(
-        PointChartData.Points(
+    series = listOf(
+        PointChartData.Series(
             label = "Series A",
             values = listOf(
-                PointChartData.Point(0f, 5f),
-                PointChartData.Point(0f, 4f),
-                PointChartData.Point(0f, 3f),
-                PointChartData.Point(0f, 2f),
-                PointChartData.Point(0f, 1f),
+                Offset(0f, 5f),
+                Offset(0f, 4f),
+                Offset(0f, 3f),
+                Offset(0f, 2f),
+                Offset(0f, 1f),
             )
         ),
-        PointChartData.Points(
+        PointChartData.Series(
             label = "Series B", values = listOf(
-                PointChartData.Point(5f, 4f),
-                PointChartData.Point(4f, 3f),
-                PointChartData.Point(3f, 2f),
-                PointChartData.Point(2f, 1f),
-                PointChartData.Point(1f, 0f),
+                Offset(5f, 4f),
+                Offset(4f, 3f),
+                Offset(3f, 2f),
+                Offset(2f, 1f),
+                Offset(1f, 0f),
             )
         ),
-        PointChartData.Points(
+        PointChartData.Series(
             label = "Series C", values = listOf(
-                PointChartData.Point(5f, 1.5f),
-                PointChartData.Point(4f, 1.5f),
-                PointChartData.Point(3f, 1.5f),
-                PointChartData.Point(2f, 1.5f),
-                PointChartData.Point(1f, 1.5f),
+                Offset(5f, 1.5f),
+                Offset(4f, 1.5f),
+                Offset(3f, 1.5f),
+                Offset(2f, 1.5f),
+                Offset(1f, 1.5f),
             )
         ),
     )
@@ -114,11 +115,11 @@ fun PointChartCustomXAxisRangePreview() {
 @Composable
 fun PointChartComplexPreview() {
     val random = Random(0)
-    val points = List(50) { index -> PointChartData.Point(index / 10f, random.nextFloat() * 5) }
+    val points = List(50) { index -> Offset(index / 10f, random.nextFloat() * 5) }
     PointChart(
         data = PointChartData(
-            points = listOf(
-                PointChartData.Points(
+            series = listOf(
+                PointChartData.Series(
                     label = "Data",
                     values = points,
                 )
@@ -132,11 +133,11 @@ fun PointChartComplexPreview() {
 @Composable
 fun PointChartCustomBoundsPreview() {
     val random = Random(0)
-    val points = List(50) { index -> PointChartData.Point(index / 10f, random.nextFloat() * 5) }
+    val points = List(50) { index -> Offset(index / 10f, random.nextFloat() * 5) }
     PointChart(
         data = PointChartData(
-            points = listOf(
-                PointChartData.Points(
+            series = listOf(
+                PointChartData.Series(
                     label = "Data",
                     values = points,
                 )
