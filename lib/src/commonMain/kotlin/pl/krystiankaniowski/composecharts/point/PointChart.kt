@@ -22,11 +22,13 @@ import pl.krystiankaniowski.composecharts.legend.LegendFlow
 import pl.krystiankaniowski.composecharts.legend.LegendPosition
 import pl.krystiankaniowski.composecharts.resolve
 
-data class PointChartData(val points: List<Points>) {
-
-    constructor(vararg points: Points) : this(points.toList())
-
-    class Point(val x: Float, val y: Float)
+data class PointChartData(
+    val points: List<Points>,
+    internal val minX: Float = points.minOf { it.values.minOf { point -> point.x } },
+    internal val maxX: Float = points.maxOf { it.values.maxOf { point -> point.x } },
+    internal val minY: Float = points.minOf { it.values.minOf { point -> point.y } },
+    internal val maxY: Float = points.maxOf { it.values.maxOf { point -> point.y } },
+) {
 
     data class Points(
         val label: String,
@@ -34,16 +36,13 @@ data class PointChartData(val points: List<Points>) {
         val color: Color = Color.Unspecified
     )
 
+    class Point(val x: Float, val y: Float)
+
     init {
         check(points.first().values.size.let { size -> points.all { it.values.size == size } }) {
             "All points set have to contains same amount of entries"
         }
     }
-
-    internal val minX = points.minOf { it.values.minOf { point -> point.x } }
-    internal val maxX = points.maxOf { it.values.maxOf { point -> point.x } }
-    internal val minY = points.minOf { it.values.minOf { point -> point.y } }
-    internal val maxY = points.maxOf { it.values.maxOf { point -> point.y } }
 
     internal val size: Int get() = points.first().values.size
 }

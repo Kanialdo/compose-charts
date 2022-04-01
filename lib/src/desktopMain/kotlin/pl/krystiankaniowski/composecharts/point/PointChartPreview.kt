@@ -127,3 +127,25 @@ fun PointChartComplexPreview() {
         title = { Text("Point chart") },
     )
 }
+
+@Preview
+@Composable
+fun PointChartCustomBoundsPreview() {
+    val random = Random(0)
+    val points = List(50) { index -> PointChartData.Point(index / 10f, random.nextFloat() * 5) }
+    PointChart(
+        data = PointChartData(
+            points = listOf(
+                PointChartData.Points(
+                    label = "Data",
+                    values = points,
+                )
+            ),
+            minX = 0f,
+            maxX = 10f,
+            minY = 0f,
+            maxY = 10f,
+        ),
+        title = { Text("Point chart") },
+    )
+}
