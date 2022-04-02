@@ -19,7 +19,7 @@ internal fun ChartChoreographer(
     chart: @Composable () -> Unit,
 ) {
     Surface {
-        Column(modifier = Modifier.padding(16.dp)) {
+        Column {
             Box(
                 modifier = Modifier.fillMaxWidth(),
                 contentAlignment = Alignment.Center,
@@ -32,7 +32,7 @@ internal fun ChartChoreographer(
                     content = { legend() },
                 )
             }
-            Box(modifier = Modifier.weight(1f).fillMaxWidth().padding(16.dp)) {
+            Box(modifier = Modifier.weight(1f).fillMaxWidth()) {
                 chart()
             }
             if (legendPosition == LegendPosition.Bottom) {
