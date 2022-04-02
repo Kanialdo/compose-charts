@@ -4,6 +4,7 @@ import android.graphics.Paint
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.graphics.nativeCanvas
+import androidx.compose.ui.graphics.toArgb
 
 internal actual fun DrawScope.drawText(
     text: String,
@@ -15,7 +16,7 @@ internal actual fun DrawScope.drawText(
     anchorY: TextAnchorY,
 ) {
     val paint = Paint().apply {
-        this.color = color.value.toInt()
+        this.color = color.toArgb()
         textSize = size
     }
     drawContext.canvas.nativeCanvas.drawText(
