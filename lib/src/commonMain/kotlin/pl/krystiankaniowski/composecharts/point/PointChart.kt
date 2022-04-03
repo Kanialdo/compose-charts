@@ -49,7 +49,7 @@ fun PointChart(
 ) {
 
     ChartChoreographer(
-        modifier = Modifier,
+        modifier = modifier,
         title = title,
         legend = { PointLegend(data, colors) },
         legendPosition = legendPosition,
