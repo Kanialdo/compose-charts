@@ -45,7 +45,7 @@ fun DemoView() {
                 }
             }
             Divider(modifier = Modifier.fillMaxHeight().width(1.dp))
-            Box(modifier = Modifier.weight(@Suppress("MagicNumber") 3f)) {
+            Box(modifier = Modifier.weight(@Suppress("MagicNumber") 3f).padding(16.dp)) {
                 items[current].second.invoke()
             }
         }

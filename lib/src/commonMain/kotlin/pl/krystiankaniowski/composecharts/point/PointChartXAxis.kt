@@ -56,7 +56,7 @@ object PointChartXAxis {
         private val color: Color = ChartsTheme.axisColor
     ) : Drawer {
 
-        override fun requiredHeight(): Float = textSize.value * 1.5f
+        override fun requiredHeight(): Float = textSize.value * 1.8f
 
         fun drawTag(drawScope: DrawScope, xAxisScope: Rect, x: Float) {
             drawScope.drawLine(
@@ -78,7 +78,7 @@ object PointChartXAxis {
             drawScope.drawText(
                 text = label,
                 x = x,
-                y = xAxisScope.top + requiredHeight(),
+                y = xAxisScope.top + textSize.value + 6f,
                 anchorX = TextAnchorX.Center,
                 color = color,
                 size = textSize.value
