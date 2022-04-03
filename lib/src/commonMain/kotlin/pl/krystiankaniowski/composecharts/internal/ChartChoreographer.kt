@@ -13,21 +13,22 @@ import pl.krystiankaniowski.composecharts.legend.LegendPosition
 
 @Composable
 internal fun ChartChoreographer(
+    modifier: Modifier = Modifier,
     title: @Composable () -> Unit,
     legend: @Composable () -> Unit,
     legendPosition: LegendPosition,
     chart: @Composable () -> Unit,
 ) {
-    Surface {
+    Surface(modifier = modifier) {
         Column {
             Box(
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier.fillMaxWidth().padding(bottom = 16.dp),
                 contentAlignment = Alignment.Center,
                 content = { title() },
             )
             if (legendPosition == LegendPosition.Top) {
                 Box(
-                    modifier = Modifier.fillMaxWidth(),
+                    modifier = Modifier.fillMaxWidth().padding(bottom = 16.dp),
                     contentAlignment = Alignment.Center,
                     content = { legend() },
                 )
@@ -37,7 +38,7 @@ internal fun ChartChoreographer(
             }
             if (legendPosition == LegendPosition.Bottom) {
                 Box(
-                    modifier = Modifier.fillMaxWidth(),
+                    modifier = Modifier.fillMaxWidth().padding(top = 16.dp),
                     contentAlignment = Alignment.Center,
                     content = { legend() },
                 )

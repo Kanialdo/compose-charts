@@ -39,12 +39,14 @@ data class PieChartData(val slices: List<Slice>) {
 
 @Composable
 fun PieChart(
+    modifier: Modifier = Modifier,
     data: PieChartData,
     title: @Composable () -> Unit = {},
     colors: Colors = AutoColors,
     legendPosition: LegendPosition = LegendPosition.Bottom,
 ) {
     ChartChoreographer(
+        modifier = modifier,
         title = title,
         legend = { PieLegend(data, colors) },
         legendPosition = legendPosition,

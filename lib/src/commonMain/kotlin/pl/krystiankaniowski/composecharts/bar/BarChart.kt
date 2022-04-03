@@ -54,6 +54,7 @@ enum class BarChartStyle {
 
 @Composable
 fun BarChart(
+    modifier: Modifier = Modifier,
     data: BarChartData,
     style: BarChartStyle = BarChartStyle.STANDARD,
     title: @Composable () -> Unit = {},
@@ -62,6 +63,7 @@ fun BarChart(
     legendPosition: LegendPosition = LegendPosition.Bottom,
 ) {
     ChartChoreographer(
+        modifier = modifier,
         title = title,
         legend = { BarLegend(data, colors) },
         legendPosition = legendPosition,

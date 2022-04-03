@@ -39,6 +39,7 @@ data class PointChartData(
 
 @Composable
 fun PointChart(
+    modifier: Modifier = Modifier,
     data: PointChartData,
     title: @Composable () -> Unit = {},
     colors: Colors = AutoColors,
@@ -48,6 +49,7 @@ fun PointChart(
 ) {
 
     ChartChoreographer(
+        modifier = Modifier,
         title = title,
         legend = { PointLegend(data, colors) },
         legendPosition = legendPosition,

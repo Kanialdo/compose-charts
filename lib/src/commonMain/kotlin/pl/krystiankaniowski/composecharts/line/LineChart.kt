@@ -64,6 +64,7 @@ data class LineChartStyle(
 
 @Composable
 fun LineChart(
+    modifier: Modifier = Modifier,
     data: LineChartData,
     title: @Composable () -> Unit = {},
     style: LineChartStyle = LineChartStyle(),
@@ -73,6 +74,7 @@ fun LineChart(
 ) {
 
     ChartChoreographer(
+        modifier = modifier,
         title = title,
         legend = { LineLegend(data, style.colors) },
         legendPosition = legendPosition,
