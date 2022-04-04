@@ -4,6 +4,7 @@ import androidx.compose.desktop.ui.tooling.preview.Preview
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.geometry.Offset
+import pl.krystiankaniowski.composecharts.AutoColors
 import kotlin.random.Random
 
 private val data = PointChartData(
@@ -16,7 +17,8 @@ private val data = PointChartData(
                 Offset(0f, 3f),
                 Offset(0f, 2f),
                 Offset(0f, 1f),
-            )
+            ),
+            color = PointChartData.ChartColor.Solid(AutoColors.getColor(0))
         ),
         PointChartData.Series(
             label = "Series B", values = listOf(
@@ -25,7 +27,8 @@ private val data = PointChartData(
                 Offset(3f, 2f),
                 Offset(2f, 1f),
                 Offset(1f, 0f),
-            )
+            ),
+            color = PointChartData.ChartColor.Solid(AutoColors.getColor(1))
         ),
         PointChartData.Series(
             label = "Series C", values = listOf(
@@ -34,7 +37,8 @@ private val data = PointChartData(
                 Offset(3f, 1.5f),
                 Offset(2f, 1.5f),
                 Offset(1f, 1.5f),
-            )
+            ),
+            color = PointChartData.ChartColor.Solid(AutoColors.getColor(2))
         ),
     )
 )
@@ -122,7 +126,8 @@ fun PointChartComplexPreview() {
                 PointChartData.Series(
                     label = "Data",
                     values = points,
-                )
+                    color = PointChartData.ChartColor.Solid(AutoColors.getColor(1))
+                ),
             )
         ),
         title = { Text("Point chart") },
@@ -140,6 +145,7 @@ fun PointChartCustomBoundsPreview() {
                 PointChartData.Series(
                     label = "Data",
                     values = points,
+                    color = PointChartData.ChartColor.Solid(AutoColors.getColor(0))
                 )
             ),
             minX = 0f,
