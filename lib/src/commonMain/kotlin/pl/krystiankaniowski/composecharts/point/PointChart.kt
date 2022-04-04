@@ -151,10 +151,7 @@ private fun PointLegend(data: PointChartData) {
                     series.label,
                     when (series.color) {
                         is PointChartData.ChartColor.Solid -> series.color.color
-                        is PointChartData.ChartColor.Gradient -> Color.Gray // TODO:
-//                        is PointChartData.ChartColor.Gradient -> when (series.color) {
-//                            is PointChartData.ChartColor.YGradient -> Brush.verticalGradient(series.color.stops.map { it.second })
-//                        }
+                        is PointChartData.ChartColor.Gradient -> Color.Unspecified
                     }
                 )
             }
