@@ -23,6 +23,16 @@ data class PointMapper(
     fun offset(x: Float, y: Float) = Offset(x(x), y(y))
 }
 
+data class OneAxisMapper(
+    val srcMin: Float, val srcMax: Float,
+    val dstMin: Float, val dstMax: Float,
+    val inverted: Boolean = true
+) {
+    private val scale = (dstMax - dstMin) / (srcMax - srcMin)
+    fun map(value: Float) = (if (inverted) (srcMax - value) else (value - srcMin)) * scale + dstMin
+    fun map(value: Int) = map(value.toFloat())
+}
+
 interface XMapper {
     fun x(value: Float): Float
     fun x(value: Int): Float
