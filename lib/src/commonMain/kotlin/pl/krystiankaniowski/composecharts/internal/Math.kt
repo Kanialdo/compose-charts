@@ -24,7 +24,9 @@ data class PointMapper(
 }
 
 data class OneAxisMapper(
-    val srcMin: Float, val srcMax: Float, val dstMin: Float, val dstMax: Float, val inverted: Boolean = true
+    val srcMin: Float, val srcMax: Float,
+    val dstMin: Float, val dstMax: Float,
+    val inverted: Boolean = true
 ) {
     private val scale = (dstMax - dstMin) / (srcMax - srcMin)
     fun map(value: Float) = (if (inverted) (srcMax - value) else (value - srcMin)) * scale + dstMin
