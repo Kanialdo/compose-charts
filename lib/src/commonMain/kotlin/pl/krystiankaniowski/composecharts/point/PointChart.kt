@@ -15,6 +15,7 @@ import androidx.compose.ui.graphics.vector.DefaultTintBlendMode
 import androidx.compose.ui.unit.dp
 import pl.krystiankaniowski.composecharts.ChartsTheme
 import pl.krystiankaniowski.composecharts.internal.ChartChoreographer
+import pl.krystiankaniowski.composecharts.internal.OneAxisMapper
 import pl.krystiankaniowski.composecharts.internal.PointMapper
 import pl.krystiankaniowski.composecharts.legend.LegendEntry
 import pl.krystiankaniowski.composecharts.legend.LegendFlow
@@ -118,17 +119,8 @@ fun PointChart(
                         pointMode = mode,
                         brush = when (series.color) {
                             is PointChartData.ChartColor.YGradient -> {
-                                val gradientMapper = PointMapper(
-                                    xSrcMin = 0f,
-                                    xSrcMax = 1f,
-                                    xDstMin = 0f,
-                                    xDstMax = 1f,
-                                    ySrcMin = data.minY,
-                                    ySrcMax = data.maxY,
-                                    yDstMin = 0f,
-                                    yDstMax = 1f,
-                                )
-                                val stops = series.color.stops.reversed().map { gradientMapper.y(it.first) to it.second }.toTypedArray()
+                                val gradientMapper = OneAxisMapper(srcMin = data.minY, srcMax = data.maxY, dstMin = 0f, dstMax = 1f, inverted = true)
+                                val stops = series.color.stops.reversed().map { gradientMapper.map(it.first) to it.second }.toTypedArray()
                                 Brush.verticalGradient(
                                     startY = mapper.yDstMin,
                                     endY = mapper.yDstMax,
