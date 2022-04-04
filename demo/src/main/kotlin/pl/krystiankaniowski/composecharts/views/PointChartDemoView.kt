@@ -56,7 +56,7 @@ fun PointChartDemo() {
     )
 }
 
-@Suppress("MagicNumber")
+@Suppress("MagicNumber", "LongMethod")
 @Composable
 fun PointChartCustomDemo() {
     PointChart(
