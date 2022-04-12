@@ -8,6 +8,7 @@ import androidx.compose.material.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import pl.krystiankaniowski.composecharts.legend.LegendPosition
 
@@ -19,7 +20,10 @@ internal fun ChartChoreographer(
     legendPosition: LegendPosition,
     chart: @Composable () -> Unit,
 ) {
-    Surface(modifier = modifier) {
+    Surface(
+        modifier = modifier,
+        color = Color.Unspecified
+    ) {
         Column {
             Box(
                 modifier = Modifier.fillMaxWidth().padding(bottom = 16.dp),
