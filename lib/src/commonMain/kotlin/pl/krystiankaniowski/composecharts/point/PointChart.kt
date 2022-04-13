@@ -55,7 +55,7 @@ data class PointChartData(
 fun PointChart(
     modifier: Modifier = Modifier,
     data: PointChartData,
-    title: @Composable () -> Unit = {},
+    title: (@Composable () -> Unit)? = null,
     xAxis: PointChartXAxis.Drawer = PointChartXAxis.Auto(),
     yAxis: PointChartYAxis.Drawer = PointChartYAxis.Auto(),
     legendPosition: LegendPosition = LegendPosition.Bottom,

@@ -66,7 +66,7 @@ data class LineChartStyle(
 fun LineChart(
     modifier: Modifier = Modifier,
     data: LineChartData,
-    title: @Composable () -> Unit = {},
+    title: (@Composable () -> Unit)? = null,
     style: LineChartStyle = LineChartStyle(),
     xAxis: LineChartXAxis.Drawer = LineChartXAxis.Auto(),
     yAxis: LineChartYAxis.Drawer = LineChartYAxis.Auto(),

@@ -57,7 +57,7 @@ fun BarChart(
     modifier: Modifier = Modifier,
     data: BarChartData,
     style: BarChartStyle = BarChartStyle.STANDARD,
-    title: @Composable () -> Unit = {},
+    title: (@Composable () -> Unit)? = null,
     colors: Colors = AutoColors,
     yAxis: BarChartYAxis.Drawer = BarChartYAxis.Auto(),
     legendPosition: LegendPosition = LegendPosition.Bottom,
