@@ -41,7 +41,7 @@ data class PieChartData(val slices: List<Slice>) {
 fun PieChart(
     modifier: Modifier = Modifier,
     data: PieChartData,
-    title: @Composable () -> Unit = {},
+    title: (@Composable () -> Unit)? = null,
     colors: Colors = AutoColors,
     legendPosition: LegendPosition = LegendPosition.Bottom,
 ) {
