@@ -1,7 +1,7 @@
 [versions]
 
 androidPlugin = "7.1.3"
-compose = "1.2.0-alpha08"
+compose = "1.2.0-alpha01-dev620"
 detekt = "1.20.0"
 kotlin = "1.6.20"
 
