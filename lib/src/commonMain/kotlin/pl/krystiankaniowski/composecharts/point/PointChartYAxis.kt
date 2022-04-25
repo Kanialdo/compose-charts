@@ -54,7 +54,7 @@ object PointChartYAxis {
             yMapper: YMapper,
             data: PointChartData
         ) {
-            val thresholds = calculateYHelperLines(data.minY, data.maxY)
+            val thresholds = calculateHelperValues(data.minY, data.maxY, desiredCount = 6, withBottomOffset = false, withTopOffset = false)
 
             thresholds.forEach {
                 drawHelperLine(drawScope = drawScope, chartScope = chartScope, yMapper = yMapper, value = it, label = label(it))
