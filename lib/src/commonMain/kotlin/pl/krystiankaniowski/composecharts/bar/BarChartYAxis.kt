@@ -54,7 +54,7 @@ object BarChartYAxis {
             min: Float,
             max: Float,
         ) {
-            val thresholds = calculateHelperValues(min, max, desiredCount = 6, withBottomOffset = false, withTopOffset = false)
+            val thresholds = calculateHelperValues(min, max, desiredCount = 5).filter { it > min && it < max }
 
             for (threshold in thresholds) {
                 val y = yMapper.y(threshold)

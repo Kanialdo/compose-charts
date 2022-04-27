@@ -55,7 +55,7 @@ object LineChartYAxis {
             data: LineChartData
         ) {
 
-            val thresholds = calculateHelperValues(data.minValue, data.maxValue, desiredCount = 6, withBottomOffset = false, withTopOffset = false)
+            val thresholds = calculateHelperValues(data.minValue, data.maxValue, desiredCount = 5).filter { it > data.minValue && it < data.maxValue }
 
             for (threshold in thresholds) {
                 val y = yMapper.y(threshold)

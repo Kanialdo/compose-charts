@@ -1,4 +1,5 @@
-import pl.krystiankaniowski.composecharts.internal.calculateHelperValues
+package pl.krystiankaniowski.composecharts.internal
+
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
@@ -18,5 +19,4 @@ internal class YLinesTest {
     fun test3() {
         assertEquals(listOf(19.2f, 19.8f, 20.4f, 21.0f, 21.6f, 22.2f), calculateHelperValues(19.8f, 21.9f, 5))
     }
-
 }

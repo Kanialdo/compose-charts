@@ -9,7 +9,7 @@ internal fun calculateHelperValues(from: Float, to: Float, desiredCount: Int, wi
 
     val range = (to - from)
 
-    val unroundedTickSize = range / (desiredCount - 1)
+    val unroundedTickSize = range / (desiredCount)
     val x = ceil(log10(unroundedTickSize) - 1)
     val pow10x = 10.0f.pow(x)
 
@@ -32,20 +32,16 @@ internal fun calculateHelperValues(from: Float, to: Float, desiredCount: Int, wi
     val roundedTickRange = ceil(unroundedTickSize / correctedPow10x) * correctedPow10x
 
     val newLowerBound = roundedTickRange * round(from / roundedTickRange)
-    // val newUpperBound = roundedTickRange * round(1 + to / roundedTickRange)
+    val newUpperBound = roundedTickRange * round(1 + to / roundedTickRange)
 
     val items = mutableListOf<Float>()
     var v = if (newLowerBound < from) newLowerBound else newLowerBound - roundedTickRange
     if (withBottomOffset) {
         items.add(v.toFloat())
     }
-    do {
+    while (v < newUpperBound && v <= to) {
         v += roundedTickRange
         items.add(v.toFloat())
-    } while (v <= to)
-
-    if (!withTopOffset) {
-        items.drop(1)
     }
     return items
 }
