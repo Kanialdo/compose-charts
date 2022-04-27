@@ -9,7 +9,7 @@ internal fun calculateHelperValues(from: Float, to: Float, desiredCount: Int, wi
 
     val range = (to - from)
 
-    val unroundedTickSize = range / (desiredCount)
+    val unroundedTickSize = range / (desiredCount - 1)
     val x = ceil(log10(unroundedTickSize) - 1)
     val pow10x = 10.0f.pow(x)
 
@@ -43,5 +43,5 @@ internal fun calculateHelperValues(from: Float, to: Float, desiredCount: Int, wi
         v += roundedTickRange
         items.add(v.toFloat())
     }
-    return items
+    return if (withTopOffset) items else items.dropLast(1)
 }
