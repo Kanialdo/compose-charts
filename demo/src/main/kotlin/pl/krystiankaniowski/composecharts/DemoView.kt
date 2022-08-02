@@ -10,6 +10,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import pl.krystiankaniowski.composecharts.radar.RadarChart
 import pl.krystiankaniowski.composecharts.views.*
 
 val items: List<Pair<String, @Composable () -> Unit>> = listOf(
@@ -21,6 +22,7 @@ val items: List<Pair<String, @Composable () -> Unit>> = listOf(
     "Point chart" to { PointChartDemo() },
     "Point chart custom" to { PointChartCustomDemo() },
     "Pie chart" to { PieChartDemo() },
+    "Radar chart" to { RadarChartDemo() },
     "Legend" to { LegendDemoView() },
     "Legend Flow" to { LegendFlowDemoView() },
 )
