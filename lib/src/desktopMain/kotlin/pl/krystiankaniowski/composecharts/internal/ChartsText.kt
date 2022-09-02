@@ -23,12 +23,12 @@ internal actual fun DrawScope.drawText(
         x = when (anchorX) {
             TextAnchorX.Left -> x
             TextAnchorX.Center -> x - textLine.width / 2
-            TextAnchorX.Right -> x - textLine.width,
+            TextAnchorX.Right -> x - textLine.width
         },
         y = when (anchorY) {
             TextAnchorY.Top -> y
             TextAnchorY.Center -> y + size / 2
-            TextAnchorY.Bottom -> y + size,
+            TextAnchorY.Bottom -> y + size
         },
         paint = Paint().apply {
             this.color = color.toArgb()
