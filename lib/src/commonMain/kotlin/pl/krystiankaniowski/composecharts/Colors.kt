@@ -36,5 +36,7 @@ object AutoColors : Colors {
     override fun getColor(position: Int) = Color(colors[position % colors.size])
 }
 
+fun autoColor(pos: Int) = AutoColors.getColor(pos)
+
 internal fun Colors.resolve(pos: Int, custom: Color) =
     if (custom == Color.Unspecified) this.getColor(pos) else custom
