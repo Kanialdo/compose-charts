@@ -31,6 +31,6 @@ internal actual fun DrawScope.drawText(
             TextAnchorY.Center -> y - size / 2
             TextAnchorY.Bottom -> y - size
         },
-        paint
+        paint,
     )
 }

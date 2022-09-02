@@ -20,7 +20,7 @@ object LineChartYAxis {
             chartScope: Rect,
             yAxisScope: Rect,
             yMapper: YMapper,
-            data: LineChartData
+            data: LineChartData,
         )
 
     }
@@ -33,7 +33,7 @@ object LineChartYAxis {
             chartScope: Rect,
             yAxisScope: Rect,
             yMapper: YMapper,
-            data: LineChartData
+            data: LineChartData,
         ) {
         }
     }
@@ -52,7 +52,7 @@ object LineChartYAxis {
             chartScope: Rect,
             yAxisScope: Rect,
             yMapper: YMapper,
-            data: LineChartData
+            data: LineChartData,
         ) {
 
             val thresholds = calculateHelperValues(data.minValue, data.maxValue, desiredCount = 6).filter { it > data.minValue && it < data.maxValue }
@@ -72,14 +72,14 @@ object LineChartYAxis {
                     anchorX = TextAnchorX.Right,
                     anchorY = TextAnchorY.Center,
                     color = color,
-                    size = textSize.value
+                    size = textSize.value,
                 )
             }
 
             drawScope.drawLine(
                 color = color,
                 start = Offset(yAxisScope.right, yAxisScope.top),
-                end = Offset(yAxisScope.right, yAxisScope.bottom)
+                end = Offset(yAxisScope.right, yAxisScope.bottom),
             )
         }
     }

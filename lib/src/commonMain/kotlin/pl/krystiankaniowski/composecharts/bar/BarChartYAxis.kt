@@ -71,14 +71,14 @@ object BarChartYAxis {
                     anchorX = TextAnchorX.Right,
                     anchorY = TextAnchorY.Center,
                     color = color,
-                    size = textSize.value
+                    size = textSize.value,
                 )
             }
 
             drawScope.drawLine(
                 color = color,
                 start = Offset(yAxisScope.right, yAxisScope.top),
-                end = Offset(yAxisScope.right, yAxisScope.bottom)
+                end = Offset(yAxisScope.right, yAxisScope.bottom),
             )
         }
     }

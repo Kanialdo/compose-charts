@@ -99,7 +99,7 @@ fun PointChartComplexPreview() {
                 PointChartData.Series(
                     label = "Data",
                     values = points,
-                    color = PointChartData.ChartColor.Solid(AutoColors.getColor(1))
+                    color = PointChartData.ChartColor.Solid(AutoColors.getColor(1)),
                 ),
             )
         ),
@@ -118,7 +118,7 @@ fun PointChartCustomBoundsPreview() {
                 PointChartData.Series(
                     label = "Data",
                     values = points,
-                    color = PointChartData.ChartColor.Solid(AutoColors.getColor(0))
+                    color = PointChartData.ChartColor.Solid(AutoColors.getColor(0)),
                 )
             ),
             minX = 0f,

@@ -32,6 +32,6 @@ internal actual fun DrawScope.drawText(
         },
         paint = Paint().apply {
             this.color = color.toArgb()
-        }
+        },
     )
 }

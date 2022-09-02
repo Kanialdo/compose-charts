@@ -31,13 +31,13 @@ import kotlin.math.sin
 
 data class RadarChartData(
     val labels: List<String>,
-    val entries: List<Entry>
+    val entries: List<Entry>,
 ) {
 
     data class Entry(
         val name: String,
         val color: Color,
-        val values: List<Float>
+        val values: List<Float>,
     )
 }
 
@@ -86,19 +86,19 @@ fun RadarChart(
             Canvas(
                 modifier = Modifier
                     .size(size)
-                    .align(Alignment.Center)
+                    .align(Alignment.Center),
             ) {
                 data.labels.forEachIndexed { index, it ->
                     val angle = 2 * PI / data.labels.size * index + PI
                     val point = Offset(
                         x = r * sin(angle).toFloat() + chartArea.center.x,
-                        y = r * cos(angle).toFloat() + chartArea.center.y
+                        y = r * cos(angle).toFloat() + chartArea.center.y,
                     )
                     drawLine(
                         color = style.lineColor,
                         start = chartArea.center,
                         end = point,
-                        strokeWidth = style.lineWidth.toPx()
+                        strokeWidth = style.lineWidth.toPx(),
                     )
                     drawText(
                         text = it,
@@ -118,11 +118,11 @@ fun RadarChart(
                         if (index == 0) {
                             val point = Offset(
                                 x = r * (value / maxValue) * sin(angle).toFloat() + chartArea.center.x,
-                                y = r * (value / maxValue) * cos(angle).toFloat() + chartArea.center.y
+                                y = r * (value / maxValue) * cos(angle).toFloat() + chartArea.center.y,
                             )
                             path.moveTo(
                                 x = point.x,
-                                y = point.y
+                                y = point.y,
                             )
 
                             drawText(
@@ -138,7 +138,7 @@ fun RadarChart(
                         } else {
                             path.lineTo(
                                 x = r * (value / maxValue) * sin(angle).toFloat() + chartArea.center.x,
-                                y = r * (value / maxValue) * cos(angle).toFloat() + chartArea.center.y
+                                y = r * (value / maxValue) * cos(angle).toFloat() + chartArea.center.y,
                             )
                         }
                     }
@@ -153,12 +153,12 @@ fun RadarChart(
                         if (index == 0) {
                             path.moveTo(
                                 x = r * (it / maxValue) * sin(angle).toFloat() + chartArea.center.x,
-                                y = r * (it / maxValue) * cos(angle).toFloat() + chartArea.center.y
+                                y = r * (it / maxValue) * cos(angle).toFloat() + chartArea.center.y,
                             )
                         } else {
                             path.lineTo(
                                 x = r * (it / maxValue) * sin(angle).toFloat() + chartArea.center.x,
-                                y = r * (it / maxValue) * cos(angle).toFloat() + chartArea.center.y
+                                y = r * (it / maxValue) * cos(angle).toFloat() + chartArea.center.y,
                             )
                         }
                     }

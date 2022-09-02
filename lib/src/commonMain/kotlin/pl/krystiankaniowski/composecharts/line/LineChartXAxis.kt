@@ -21,7 +21,7 @@ object LineChartXAxis {
             chartScope: Rect,
             xAxisScope: Rect,
             xMapper: XMapper,
-            data: LineChartData
+            data: LineChartData,
         )
     }
 
@@ -33,7 +33,7 @@ object LineChartXAxis {
             chartScope: Rect,
             xAxisScope: Rect,
             xMapper: XMapper,
-            data: LineChartData
+            data: LineChartData,
         ) {
         }
     }
@@ -42,7 +42,7 @@ object LineChartXAxis {
     fun Auto(
         label: (Int) -> String = { (it + 1).toString() },
         textSize: TextUnit = 24.sp,
-        color: Color = ChartsTheme.axisColor
+        color: Color = ChartsTheme.axisColor,
     ): Drawer = object : Drawer {
 
         override fun requiredHeight(): Float = textSize.value * 1.5f
@@ -52,19 +52,19 @@ object LineChartXAxis {
             chartScope: Rect,
             xAxisScope: Rect,
             xMapper: XMapper,
-            data: LineChartData
+            data: LineChartData,
         ) {
             drawScope.drawLine(
                 color = color,
-                Offset(xAxisScope.left, xAxisScope.top),
-                Offset(xAxisScope.right, xAxisScope.top)
+                start = Offset(xAxisScope.left, xAxisScope.top),
+                end = Offset(xAxisScope.right, xAxisScope.top)
             )
             for (i in 0 until data.size) {
                 val x = xMapper.x(i + 0.5f)
                 drawScope.drawLine(
                     color = color,
-                    Offset(x, xAxisScope.top),
-                    Offset(x, xAxisScope.top + 4f)
+                    start = Offset(x, xAxisScope.top),
+                    end = Offset(x, xAxisScope.top + 4f),
                 )
                 if (data.size <= 10 || (i % (data.size / 10) == 0)) {
                     drawScope.drawText(
@@ -73,7 +73,7 @@ object LineChartXAxis {
                         y = xAxisScope.top + requiredHeight(),
                         anchorX = TextAnchorX.Center,
                         color = color,
-                        size = textSize.value
+                        size = textSize.value,
                     )
                 }
             }

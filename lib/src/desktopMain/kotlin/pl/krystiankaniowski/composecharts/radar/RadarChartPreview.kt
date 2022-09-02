@@ -11,7 +11,7 @@ fun RadarChartPreview() {
             labels = listOf(
                 "A", "B", "C",
             ),
-            entries = emptyList()
+            entries = emptyList(),
         ),
     )
 }

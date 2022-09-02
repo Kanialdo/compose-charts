@@ -71,15 +71,15 @@ fun PointChart(
 
             val contentArea = Rect(
                 top = 0f, bottom = size.height - xAxis.requiredHeight(),
-                left = yAxis.requiredWidth(), right = size.width
+                left = yAxis.requiredWidth(), right = size.width,
             )
             val xAxisArea = Rect(
                 top = contentArea.bottom, bottom = size.height,
-                left = contentArea.left, right = contentArea.right
+                left = contentArea.left, right = contentArea.right,
             )
             val yAxisArea = Rect(
                 top = contentArea.top, bottom = contentArea.bottom,
-                left = 0f, right = contentArea.left
+                left = 0f, right = contentArea.left,
             )
 
             val mapper = PointMapper(
@@ -90,7 +90,7 @@ fun PointChart(
                 ySrcMin = data.minY,
                 ySrcMax = data.maxY,
                 yDstMin = contentArea.top,
-                yDstMax = contentArea.bottom
+                yDstMax = contentArea.bottom,
             )
 
             yAxis.draw(this, contentArea, yAxisArea, mapper, data)

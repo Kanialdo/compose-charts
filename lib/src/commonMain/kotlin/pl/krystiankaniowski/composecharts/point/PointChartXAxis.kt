@@ -23,7 +23,7 @@ object PointChartXAxis {
             chartScope: Rect,
             xAxisScope: Rect,
             xMapper: XMapper,
-            data: PointChartData
+            data: PointChartData,
         )
     }
 
@@ -35,7 +35,7 @@ object PointChartXAxis {
             chartScope: Rect,
             xAxisScope: Rect,
             xMapper: XMapper,
-            data: PointChartData
+            data: PointChartData,
         ) {
         }
     }
@@ -53,7 +53,7 @@ object PointChartXAxis {
 
     abstract class AbstractDrawer(
         private val textSize: TextUnit = 24.sp,
-        private val color: Color = ChartsTheme.axisColor
+        private val color: Color = ChartsTheme.axisColor,
     ) : Drawer {
 
         override fun requiredHeight(): Float = textSize.value * 1.8f
@@ -62,7 +62,7 @@ object PointChartXAxis {
             drawScope.drawLine(
                 color = color,
                 Offset(x, xAxisScope.top),
-                Offset(x, xAxisScope.top + 6f)
+                Offset(x, xAxisScope.top + 6f),
             )
         }
 
@@ -81,7 +81,7 @@ object PointChartXAxis {
                 y = xAxisScope.top + textSize.value + 6f,
                 anchorX = TextAnchorX.Center,
                 color = color,
-                size = textSize.value
+                size = textSize.value,
             )
         }
     }
@@ -90,7 +90,7 @@ object PointChartXAxis {
     fun Auto(
         formatter: (Float) -> String = { it.toString() },
         textSize: TextUnit = 24.sp,
-        color: Color = ChartsTheme.axisColor
+        color: Color = ChartsTheme.axisColor,
     ) = object : AbstractDrawer(textSize) {
 
         override fun draw(
@@ -98,13 +98,13 @@ object PointChartXAxis {
             chartScope: Rect,
             xAxisScope: Rect,
             xMapper: XMapper,
-            data: PointChartData
+            data: PointChartData,
         ) {
 
             drawScope.drawLine(
                 color = color,
-                Offset(xAxisScope.left, xAxisScope.top),
-                Offset(xAxisScope.right, xAxisScope.top)
+                start = Offset(xAxisScope.left, xAxisScope.top),
+                end = Offset(xAxisScope.right, xAxisScope.top),
             )
 
             val startPos = data.minX
@@ -125,7 +125,7 @@ object PointChartXAxis {
     fun Fixed(
         points: List<Label>,
         textSize: TextUnit = 24.sp,
-        color: Color = ChartsTheme.axisColor
+        color: Color = ChartsTheme.axisColor,
     ) = object : AbstractDrawer(textSize) {
 
         override fun draw(
@@ -133,13 +133,13 @@ object PointChartXAxis {
             chartScope: Rect,
             xAxisScope: Rect,
             xMapper: XMapper,
-            data: PointChartData
+            data: PointChartData,
         ) {
 
             drawScope.drawLine(
                 color = color,
-                Offset(xAxisScope.left, xAxisScope.top),
-                Offset(xAxisScope.right, xAxisScope.top)
+                start = Offset(xAxisScope.left, xAxisScope.top),
+                end = Offset(xAxisScope.right, xAxisScope.top),
             )
 
             points.forEach { (label, value) ->
@@ -154,7 +154,7 @@ object PointChartXAxis {
     fun FixedRanges(
         points: List<Range>,
         textSize: TextUnit = 24.sp,
-        color: Color = ChartsTheme.axisColor
+        color: Color = ChartsTheme.axisColor,
     ) = object : AbstractDrawer(textSize) {
 
         override fun draw(
@@ -162,13 +162,13 @@ object PointChartXAxis {
             chartScope: Rect,
             xAxisScope: Rect,
             xMapper: XMapper,
-            data: PointChartData
+            data: PointChartData,
         ) {
 
             drawScope.drawLine(
                 color = color,
-                Offset(xAxisScope.left, xAxisScope.top),
-                Offset(xAxisScope.right, xAxisScope.top)
+                start = Offset(xAxisScope.left, xAxisScope.top),
+                end = Offset(xAxisScope.right, xAxisScope.top),
             )
 
             points.forEachIndexed { index, label ->

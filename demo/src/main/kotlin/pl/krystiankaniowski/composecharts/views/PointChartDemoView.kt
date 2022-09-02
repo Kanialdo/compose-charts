@@ -26,7 +26,7 @@ fun PointChartDemo() {
                         Offset(0f, 2f),
                         Offset(0f, 1f),
                     ),
-                    color = PointChartData.ChartColor.Solid(AutoColors.getColor(0))
+                    color = PointChartData.ChartColor.Solid(AutoColors.getColor(0)),
                 ),
                 PointChartData.Series(
                     label = "Series B",
@@ -37,7 +37,7 @@ fun PointChartDemo() {
                         Offset(2f, 2f),
                         Offset(1f, 1f),
                     ),
-                    color = PointChartData.ChartColor.Solid(AutoColors.getColor(1))
+                    color = PointChartData.ChartColor.Solid(AutoColors.getColor(1)),
                 ),
                 PointChartData.Series(
                     label = "Series C",
@@ -48,7 +48,7 @@ fun PointChartDemo() {
                         Offset(2f, 0f),
                         Offset(1f, 0f),
                     ),
-                    color = PointChartData.ChartColor.Solid(AutoColors.getColor(2))
+                    color = PointChartData.ChartColor.Solid(AutoColors.getColor(2)),
                 ),
             ),
         ),

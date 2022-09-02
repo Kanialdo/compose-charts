@@ -21,7 +21,7 @@ private val legendData = listOf(
 fun LegendDemoView() {
     Box(modifier = Modifier.padding(16.dp)) {
         Legend(
-            data = legendData
+            data = legendData,
         )
     }
 }
@@ -31,7 +31,7 @@ fun LegendDemoView() {
 fun LegendFlowDemoView() {
     Box(modifier = Modifier.padding(16.dp)) {
         LegendFlow(
-            data = legendData
+            data = legendData,
         )
     }
 }
