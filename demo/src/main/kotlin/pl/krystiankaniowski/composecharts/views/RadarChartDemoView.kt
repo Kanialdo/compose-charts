@@ -15,10 +15,12 @@ fun RadarChartDemo() {
             ),
             entries = listOf(
                 RadarChartData.Entry(
+                    name = "Color Red",
                     color = Color.Red,
                     values = listOf(1f, 2f, 3f, 4f, 5f, 6f)
                 ),
                 RadarChartData.Entry(
+                    name = "Color Green",
                     color = Color.Green,
                     values = listOf(3f, 1f, 3f, 1f, 3f, 1f)
                 ),
