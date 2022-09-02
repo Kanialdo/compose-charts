@@ -83,15 +83,15 @@ fun LineChart(
 
             val contentArea = Rect(
                 top = 0f, bottom = size.height - xAxis.requiredHeight(),
-                left = yAxis.requiredWidth(), right = size.width
+                left = yAxis.requiredWidth(), right = size.width,
             )
             val xAxisArea = Rect(
                 top = contentArea.bottom, bottom = size.height,
-                left = contentArea.left, right = contentArea.right
+                left = contentArea.left, right = contentArea.right,
             )
             val yAxisArea = Rect(
                 top = contentArea.top, bottom = contentArea.bottom,
-                left = 0f, right = contentArea.left
+                left = 0f, right = contentArea.left,
             )
 
             val mapper = PointMapper(
@@ -102,7 +102,7 @@ fun LineChart(
                 ySrcMin = 0f,
                 ySrcMax = data.maxValue,
                 yDstMin = contentArea.top,
-                yDstMax = contentArea.bottom
+                yDstMax = contentArea.bottom,
             )
 
             xAxis.draw(this, contentArea, xAxisArea, mapper, data)
@@ -119,7 +119,7 @@ private fun DrawScope.drawLine(
     index: Int,
     line: LineChartData.Line,
     style: LineChartStyle,
-    mapper: PointMapper
+    mapper: PointMapper,
 ) {
     val color = line.color ?: style.colors.getColor(index)
     val path = Path()
@@ -127,19 +127,19 @@ private fun DrawScope.drawLine(
         if (dataIndex == 0) {
             path.moveTo(
                 x = mapper.x(dataIndex + 0.5f),
-                y = mapper.y(point)
+                y = mapper.y(point),
             )
         } else {
             path.lineTo(
                 x = mapper.x(dataIndex + 0.5f),
-                y = mapper.y(point)
+                y = mapper.y(point),
             )
         }
     }
     drawPath(
         color = color,
         path = path,
-        style = Stroke(width = line.lineStyle?.width ?: style.lineStyle.width)
+        style = Stroke(width = line.lineStyle?.width ?: style.lineStyle.width),
     )
 }
 
@@ -156,7 +156,7 @@ private fun DrawScope.drawPoints(
                 drawCircle(
                     color = line.color ?: style.colors.getColor(index),
                     center = mapper.offset(dataIndex + 0.5f, point),
-                    radius = pointStyle.size
+                    radius = pointStyle.size,
                 )
             }
         }
@@ -174,7 +174,7 @@ private fun LineLegend(
             data = data.lines.mapIndexed { index, item ->
                 LegendEntry(
                     item.label,
-                    item.color ?: colors.getColor(index)
+                    item.color ?: colors.getColor(index),
                 )
             }
         )

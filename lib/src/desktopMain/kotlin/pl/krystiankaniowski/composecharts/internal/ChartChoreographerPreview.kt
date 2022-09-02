@@ -23,7 +23,7 @@ private fun ChartChoreographerPreview() {
             Box(
                 modifier = Modifier.border(1.dp, color = Color.LightGray),
                 contentAlignment = Alignment.Center,
-                content = { Text("Legend") }
+                content = { Text("Legend") },
             )
         },
         legendPosition = LegendPosition.Bottom,
@@ -31,7 +31,7 @@ private fun ChartChoreographerPreview() {
             Box(
                 modifier = Modifier.border(1.dp, color = Color.Gray).fillMaxSize(),
                 contentAlignment = Alignment.Center,
-                content = { Text("Chart") }
+                content = { Text("Chart") },
             )
         }
     )
@@ -46,7 +46,7 @@ private fun ChartChoreographerNoTitlePreview() {
             Box(
                 modifier = Modifier.border(1.dp, color = Color.LightGray),
                 contentAlignment = Alignment.Center,
-                content = { Text("Legend") }
+                content = { Text("Legend") },
             )
         },
         legendPosition = LegendPosition.Bottom,
@@ -54,7 +54,7 @@ private fun ChartChoreographerNoTitlePreview() {
             Box(
                 modifier = Modifier.border(1.dp, color = Color.Gray).fillMaxSize(),
                 contentAlignment = Alignment.Center,
-                content = { Text("Chart") }
+                content = { Text("Chart") },
             )
         }
     )

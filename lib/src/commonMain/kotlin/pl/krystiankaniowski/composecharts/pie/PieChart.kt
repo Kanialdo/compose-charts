@@ -29,7 +29,7 @@ data class PieChartData(val slices: List<Slice>) {
     data class Slice(
         val label: String,
         val value: Float,
-        val color: Color = Color.Unspecified
+        val color: Color = Color.Unspecified,
     )
 
     internal val sum = slices.sumOf { it.value.toDouble() }.toFloat()
@@ -69,7 +69,7 @@ fun PieChart(
                         startAngle = start,
                         sweepAngle = end,
                         useCenter = true,
-                        paint = Paint().apply { color = colors.resolve(index, slice.color) }
+                        paint = Paint().apply { color = colors.resolve(index, slice.color) },
                     )
                     start += end
                 }
@@ -89,7 +89,7 @@ private fun PieLegend(
             data = data.slices.mapIndexed { index, item ->
                 LegendEntry(
                     item.label,
-                    colors.resolve(index, item.color)
+                    colors.resolve(index, item.color),
                 )
             }
         )

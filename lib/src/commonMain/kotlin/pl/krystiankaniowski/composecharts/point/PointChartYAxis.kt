@@ -20,7 +20,7 @@ object PointChartYAxis {
             chartScope: Rect,
             yAxisScope: Rect,
             yMapper: YMapper,
-            data: PointChartData
+            data: PointChartData,
         )
     }
 
@@ -32,7 +32,7 @@ object PointChartYAxis {
             chartScope: Rect,
             yAxisScope: Rect,
             yMapper: YMapper,
-            data: PointChartData
+            data: PointChartData,
         ) {
         }
     }
@@ -44,7 +44,7 @@ object PointChartYAxis {
         color: Color = ChartsTheme.axisColor,
     ): Drawer = object : DrawerImpl(
         textSize,
-        color
+        color,
     ) {
         override fun requiredWidth() = 80f
         override fun draw(
@@ -52,7 +52,7 @@ object PointChartYAxis {
             chartScope: Rect,
             yAxisScope: Rect,
             yMapper: YMapper,
-            data: PointChartData
+            data: PointChartData,
         ) {
             val thresholds = calculateHelperValues(data.minY, data.maxY, desiredCount = 6).filter { it > data.minY && it < data.maxY }
 
@@ -70,7 +70,7 @@ object PointChartYAxis {
         color: Color = ChartsTheme.axisColor,
     ): Drawer = object : DrawerImpl(
         textSize,
-        color
+        color,
     ) {
         override fun requiredWidth() = 80f
         override fun draw(
@@ -78,7 +78,7 @@ object PointChartYAxis {
             chartScope: Rect,
             yAxisScope: Rect,
             yMapper: YMapper,
-            data: PointChartData
+            data: PointChartData,
         ) {
             labels.forEach {
                 drawHelperLine(drawScope = drawScope, chartScope = chartScope, yMapper = yMapper, value = it.first, label = it.second)
@@ -98,7 +98,7 @@ object PointChartYAxis {
             drawScope.drawLine(
                 color = color,
                 start = Offset(yAxisScope.right, yAxisScope.top),
-                end = Offset(yAxisScope.right, yAxisScope.bottom)
+                end = Offset(yAxisScope.right, yAxisScope.bottom),
             )
         }
 
@@ -107,7 +107,7 @@ object PointChartYAxis {
             chartScope: Rect,
             yMapper: YMapper,
             value: Float,
-            label: String
+            label: String,
         ) {
             val y = yMapper.y(value)
             drawScope.drawLine(
@@ -123,7 +123,7 @@ object PointChartYAxis {
                 anchorX = TextAnchorX.Right,
                 anchorY = TextAnchorY.Center,
                 color = color,
-                size = textSize.value
+                size = textSize.value,
             )
         }
     }

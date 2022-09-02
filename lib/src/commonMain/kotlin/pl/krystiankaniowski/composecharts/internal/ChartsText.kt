@@ -6,13 +6,13 @@ import androidx.compose.ui.graphics.drawscope.DrawScope
 enum class TextAnchorX {
     Left,
     Center,
-    Right
+    Right,
 }
 
 enum class TextAnchorY {
     Top,
     Center,
-    Bottom
+    Bottom,
 }
 
 internal expect fun DrawScope.drawText(

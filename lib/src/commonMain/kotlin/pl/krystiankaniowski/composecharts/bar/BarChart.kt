@@ -29,7 +29,7 @@ data class BarChartData(val bars: List<Bar>) {
     data class Bar(
         val label: String,
         val values: List<Float>,
-        val color: Color = Color.Unspecified
+        val color: Color = Color.Unspecified,
     ) {
         internal val sum: Float get() = values.sum()
     }
@@ -49,7 +49,7 @@ data class BarChartData(val bars: List<Bar>) {
 enum class BarChartStyle {
     STANDARD,
     STACKED,
-    PROPORTION
+    PROPORTION,
 }
 
 @Composable
@@ -75,11 +75,11 @@ fun BarChart(
 
             val contentArea = Rect(
                 top = 0f, bottom = size.height - 0,
-                left = yAxis.requiredWidth(), right = size.width
+                left = yAxis.requiredWidth(), right = size.width,
             )
             val yAxisArea = Rect(
                 top = contentArea.top, bottom = contentArea.bottom,
-                left = 0f, right = contentArea.left
+                left = 0f, right = contentArea.left,
             )
 
             when (style) {
@@ -94,7 +94,7 @@ fun BarChart(
                         ySrcMin = 0f,
                         ySrcMax = data.maxValue,
                         yDstMin = contentArea.top,
-                        yDstMax = contentArea.bottom
+                        yDstMax = contentArea.bottom,
                     )
 
                     yAxis.draw(this, contentArea, yAxisArea, mapper, mapper.ySrcMin, mapper.ySrcMax)
@@ -106,11 +106,11 @@ fun BarChart(
                                 color = colors.resolve(series, value.color),
                                 topLeft = Offset(
                                     x = mapper.x(pos - w) + series * barWidth,
-                                    y = mapper.y(v)
+                                    y = mapper.y(v),
                                 ),
                                 size = Size(
                                     width = barWidth,
-                                    height = v * mapper.yScale
+                                    height = v * mapper.yScale,
                                 )
                             )
                         }
@@ -132,7 +132,7 @@ fun BarChart(
                         ySrcMin = 0f,
                         ySrcMax = maxOfValues,
                         yDstMin = contentArea.top,
-                        yDstMax = contentArea.bottom
+                        yDstMax = contentArea.bottom,
                     )
 
                     val barWidth = 2 * w * mapper.xScale
@@ -146,11 +146,11 @@ fun BarChart(
                                 color = colors.resolve(j, data.bars[j].color),
                                 topLeft = Offset(
                                     x = mapper.x(i - w),
-                                    y = mapper.y(counter)
+                                    y = mapper.y(counter),
                                 ),
                                 size = Size(
                                     width = barWidth,
-                                    height = counter * mapper.yScale
+                                    height = counter * mapper.yScale,
                                 )
                             )
                             counter -= data.bars[j].values[i]
@@ -172,7 +172,7 @@ fun BarChart(
                         ySrcMin = 0f,
                         ySrcMax = 1f,
                         yDstMin = contentArea.top,
-                        yDstMax = contentArea.bottom
+                        yDstMax = contentArea.bottom,
                     )
 
                     yAxis.draw(this, contentArea, yAxisArea, mapper, mapper.ySrcMin, mapper.ySrcMax)
@@ -186,11 +186,11 @@ fun BarChart(
                                 color = colors.resolve(j, data.bars[j].color),
                                 topLeft = Offset(
                                     x = mapper.x(i - w),
-                                    y = mapper.y(counter / maxValues[i])
+                                    y = mapper.y(counter / maxValues[i]),
                                 ),
                                 size = Size(
                                     width = barWidth,
-                                    height = (counter / maxValues[i]) * mapper.yScale
+                                    height = (counter / maxValues[i]) * mapper.yScale,
                                 )
                             )
                             counter -= data.bars[j].values[i]
@@ -213,7 +213,7 @@ private fun BarLegend(
             data = data.bars.mapIndexed { index, item ->
                 LegendEntry(
                     item.label,
-                    colors.resolve(index, item.color)
+                    colors.resolve(index, item.color),
                 )
             }
         )

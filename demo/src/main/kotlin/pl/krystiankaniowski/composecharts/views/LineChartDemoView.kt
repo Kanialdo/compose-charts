@@ -36,18 +36,18 @@ fun LineChartCustomDemo() {
                 LineChartData.Line(
                     label = "Custom line style",
                     values = listOf(1f, 1f, 1f, 1f, 1f),
-                    lineStyle = LineChartStyle.LineStyle(width = 5f)
+                    lineStyle = LineChartStyle.LineStyle(width = 5f),
                 ),
                 LineChartData.Line(
                     label = "Custom point style",
                     values = listOf(0f, 1f, 2f, 1f, 0f),
-                    pointStyle = LineChartStyle.PointStyle.Filled(size = 5f)
+                    pointStyle = LineChartStyle.PointStyle.Filled(size = 5f),
                 ),
             )
         ),
         style = LineChartStyle(
             lineStyle = LineChartStyle.LineStyle(width = 1f),
-            pointStyle = LineChartStyle.PointStyle.None
+            pointStyle = LineChartStyle.PointStyle.None,
         ),
         title = { Text("Line chart custom style") },
     )

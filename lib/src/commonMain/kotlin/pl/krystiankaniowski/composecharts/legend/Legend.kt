@@ -18,13 +18,13 @@ enum class LegendPosition {
 
 data class LegendEntry(
     val text: String,
-    val color: Color
+    val color: Color,
 )
 
 @Composable
 fun Legend(
     modifier: Modifier = Modifier,
-    data: List<LegendEntry>
+    data: List<LegendEntry>,
 ) {
     Column(modifier = modifier, verticalArrangement = Arrangement.spacedBy(16.dp)) {
         data.forEach {
@@ -36,7 +36,7 @@ fun Legend(
 @Composable
 fun LegendFlow(
     modifier: Modifier = Modifier,
-    data: List<LegendEntry>
+    data: List<LegendEntry>,
 ) {
     FlowRow(modifier = modifier, mainAxisSpacing = 16.dp, crossAxisSpacing = 8.dp) {
         data.forEach {
@@ -47,7 +47,7 @@ fun LegendFlow(
 
 @Composable
 private fun LegendEntry(
-    legendEntry: LegendEntry
+    legendEntry: LegendEntry,
 ) {
     Row {
         Box(modifier = Modifier.size(16.dp).background(legendEntry.color))

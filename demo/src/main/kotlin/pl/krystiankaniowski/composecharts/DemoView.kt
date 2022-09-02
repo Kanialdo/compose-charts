@@ -44,7 +44,7 @@ fun DemoView() {
                             .fillMaxWidth()
                             .clickable { current = index }
                             .padding(vertical = 8.dp, horizontal = 16.dp),
-                        color = if (index == current) MaterialTheme.colors.primary else Color.Unspecified
+                        color = if (index == current) MaterialTheme.colors.primary else Color.Unspecified,
                     )
                 }
             }
