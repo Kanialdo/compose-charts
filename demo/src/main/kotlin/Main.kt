@@ -7,7 +7,10 @@ import androidx.compose.ui.window.application
 import pl.krystiankaniowski.composecharts.DemoView
 
 fun main() = application {
-    Window(onCloseRequest = ::exitApplication) {
+    Window(
+        onCloseRequest = ::exitApplication,
+        title = "Compose charts",
+    ) {
         MaterialTheme(
             colors = if (isSystemInDarkTheme()) darkColors() else lightColors()
         ) {
