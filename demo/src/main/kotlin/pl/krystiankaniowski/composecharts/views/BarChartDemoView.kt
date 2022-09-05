@@ -11,6 +11,9 @@ import pl.krystiankaniowski.composecharts.bar.BarChartStyle
 fun BarChartDemoGrouped() {
     BarChart(
         data = BarChartData(
+            labels = listOf(
+                "C1", "C2", "C3", "C4", "C5",
+            ),
             bars = listOf(
                 BarChartData.Bar(label = "Series A", values = listOf(5f, 4f, 3f, 2f, 1f)),
                 BarChartData.Bar(label = "Series B", values = listOf(1f, 1f, 1f, 1f, 1f)),
@@ -27,6 +30,9 @@ fun BarChartDemoGrouped() {
 fun BarChartDemoStacked() {
     BarChart(
         data = BarChartData(
+            labels = listOf(
+                "C1", "C2", "C3", "C4", "C5",
+            ),
             bars = listOf(
                 BarChartData.Bar(label = "Series A", values = listOf(5f, 4f, 3f, 2f, 1f)),
                 BarChartData.Bar(label = "Series B", values = listOf(1f, 1f, 1f, 1f, 1f)),
@@ -43,6 +49,9 @@ fun BarChartDemoStacked() {
 fun BarChartDemoProportion() {
     BarChart(
         data = BarChartData(
+            labels = listOf(
+                "C1", "C2", "C3", "C4", "C5",
+            ),
             bars = listOf(
                 BarChartData.Bar(label = "Series A", values = listOf(5f, 4f, 3f, 2f, 1f)),
                 BarChartData.Bar(label = "Series B", values = listOf(1f, 1f, 1f, 1f, 1f)),
