@@ -8,7 +8,7 @@ Library supports bar, line, point and pie charts. Compose-charts is developed on
 
 Some examples:
 
-<img width="591" alt="image" src="https://user-images.githubusercontent.com/2984146/171934802-da4fba16-9c5a-4e17-9d5b-0a7a5fb76c4f.png">
+<img width="591" alt="image" src="https://user-images.githubusercontent.com/2984146/188509715-9f41540b-5487-4fb3-86f7-a62449b9bfd8.png">
 <img width="591" alt="image" src="https://user-images.githubusercontent.com/2984146/188506834-c7fc6cfd-17bd-4a5e-9f2a-639f7683e922.png">
 <img width="591" alt="image" src="https://user-images.githubusercontent.com/2984146/171934859-c8a91203-a152-4955-a570-de34785b4e8c.png">
 <img width="591" alt="image" src="https://user-images.githubusercontent.com/2984146/171934902-ed81516b-1b00-4041-8a08-4888d5eae969.png">
