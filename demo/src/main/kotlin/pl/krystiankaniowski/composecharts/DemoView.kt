@@ -2,6 +2,8 @@ package pl.krystiankaniowski.composecharts
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Divider
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
@@ -37,7 +39,7 @@ fun DemoView() {
 
     Surface {
         Row {
-            Column(modifier = Modifier.weight(1f)) {
+            Column(modifier = Modifier.weight(1f).verticalScroll(rememberScrollState())) {
                 items.forEachIndexed { index, (label, _) ->
                     Text(
                         text = label,

@@ -81,36 +81,12 @@ fun PolarChart(
                 top = 0f, bottom = size.value * density.value,
                 left = 0f, right = size.value * density.value,
             )
-            val r = chartArea.center.x
 
             Canvas(
                 modifier = Modifier
                     .size(size)
                     .align(Alignment.Center),
             ) {
-//                data.labels.forEachIndexed { index, it ->
-//                    val angle = 2 * PI / data.labels.size * index + PI
-//                    val point = Offset(
-//                        x = r * sin(angle).toFloat() + chartArea.center.x,
-//                        y = r * cos(angle).toFloat() + chartArea.center.y,
-//                    )
-//                    drawLine(
-//                        color = style.lineColor,
-//                        start = chartArea.center,
-//                        end = point,
-//                        strokeWidth = style.lineWidth.toPx(),
-//                    )
-//                    drawText(
-//                        text = it,
-//                        x = point.x,
-//                        y = point.y,
-//                        color = style.labelColor,
-//                        size = 16.sp.toPx(),
-//                        anchorX = TextAnchorX.Left,
-//                        anchorY = TextAnchorY.Center,
-//                    )
-//                }
-
                 (0..maxValue.toInt()).forEach { value ->
                     drawCircle(
                         color = style.lineColor,
@@ -118,47 +94,19 @@ fun PolarChart(
                         center = chartArea.center,
                         style = Stroke(width = style.lineWidth.toPx()),
                     )
+                    drawText(
+                        text = " $value",
+                        x = chartArea.center.x,
+                        y = chartArea.center.y - ((chartArea.height / 2) / maxValue) * value,
+                        color = style.valueColor,
+                        size = 14.sp.toPx(),
+                        anchorX = TextAnchorX.Left,
+                        anchorY = TextAnchorY.Center,
+                    )
                 }
 
-//                (0..maxValue.toInt()).forEach { value ->
-//                    val path = Path()
-//                    (0..data.labels.size).forEachIndexed { index, it ->
-//                        val angle = 2 * PI / data.labels.size * index + PI
-//                        if (index == 0) {
-//                            val point = Offset(
-//                                x = r * (value / maxValue) * sin(angle).toFloat() + chartArea.center.x,
-//                                y = r * (value / maxValue) * cos(angle).toFloat() + chartArea.center.y,
-//                            )
-//                            path.moveTo(
-//                                x = point.x,
-//                                y = point.y,
-//                            )
-//
-//                            drawText(
-//                                text = " $value",
-//                                x = point.x,
-//                                y = point.y,
-//                                color = style.valueColor,
-//                                size = 14.sp.toPx(),
-//                                anchorX = TextAnchorX.Left,
-//                                anchorY = TextAnchorY.Center,
-//                            )
-//
-//                        } else {
-//                            path.lineTo(
-//                                x = r * (value / maxValue) * sin(angle).toFloat() + chartArea.center.x,
-//                                y = r * (value / maxValue) * cos(angle).toFloat() + chartArea.center.y,
-//                            )
-//                        }
-//                    }
-//                    path.close()
-//                    drawPath(path = path, color = style.lineColor, style = Stroke(width = style.lineWidth.toPx()))
-//                }
-
                 data.entries.forEachIndexed { index, entry ->
-
                     val factor = entry.value / maxValue
-
                     drawArc(
                         color = entry.color.copy(alpha = 0.3f),
                         startAngle = 360f / data.entries.size * index - 90f,

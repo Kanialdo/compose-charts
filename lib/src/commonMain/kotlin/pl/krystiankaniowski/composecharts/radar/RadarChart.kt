@@ -81,7 +81,7 @@ fun RadarChart(
                 top = 0f, bottom = size.value * density.value,
                 left = 0f, right = size.value * density.value,
             )
-            val r = chartArea.center.x
+            val r = chartArea.width / 2
 
             Canvas(
                 modifier = Modifier
