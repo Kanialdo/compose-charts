@@ -9,6 +9,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Rect
+import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.drawscope.Fill
@@ -40,7 +41,7 @@ data class PolarChartData(
     )
 }
 
-data class RadarChartStyle(
+data class PolarChartStyle(
     val lineColor: Color = Color.Gray,
     val lineWidth: Dp = 1.dp,
     val labelColor: Color = Color.Gray,
@@ -48,7 +49,7 @@ data class RadarChartStyle(
 )
 
 @Composable
-fun polarChartStyle() = RadarChartStyle(
+fun polarChartStyle() = PolarChartStyle(
     lineColor = if (MaterialTheme.colors.isLight) Color.LightGray else Color.DarkGray,
     lineWidth = 1.dp,
     labelColor = Color.Gray,
@@ -60,10 +61,10 @@ fun PolarChart(
     modifier: Modifier = Modifier,
     title: (@Composable () -> Unit)? = null,
     data: PolarChartData,
-    style: RadarChartStyle = polarChartStyle(),
+    style: PolarChartStyle = polarChartStyle(),
     legendPosition: LegendPosition = LegendPosition.Bottom,
 ) {
-    val maxValue = data.entries.maxOf { it.values.maxOf { it } }
+    val maxValue = data.entries.maxOf { it.value }
 
     ChartChoreographer(
         modifier = modifier,
@@ -87,92 +88,102 @@ fun PolarChart(
                     .size(size)
                     .align(Alignment.Center),
             ) {
-                data.labels.forEachIndexed { index, it ->
-                    val angle = 2 * PI / data.labels.size * index + PI
-                    val point = Offset(
-                        x = r * sin(angle).toFloat() + chartArea.center.x,
-                        y = r * cos(angle).toFloat() + chartArea.center.y,
-                    )
-                    drawLine(
-                        color = style.lineColor,
-                        start = chartArea.center,
-                        end = point,
-                        strokeWidth = style.lineWidth.toPx(),
-                    )
-                    drawText(
-                        text = it,
-                        x = point.x,
-                        y = point.y,
-                        color = style.labelColor,
-                        size = 16.sp.toPx(),
-                        anchorX = TextAnchorX.Left,
-                        anchorY = TextAnchorY.Center,
-                    )
-                }
+//                data.labels.forEachIndexed { index, it ->
+//                    val angle = 2 * PI / data.labels.size * index + PI
+//                    val point = Offset(
+//                        x = r * sin(angle).toFloat() + chartArea.center.x,
+//                        y = r * cos(angle).toFloat() + chartArea.center.y,
+//                    )
+//                    drawLine(
+//                        color = style.lineColor,
+//                        start = chartArea.center,
+//                        end = point,
+//                        strokeWidth = style.lineWidth.toPx(),
+//                    )
+//                    drawText(
+//                        text = it,
+//                        x = point.x,
+//                        y = point.y,
+//                        color = style.labelColor,
+//                        size = 16.sp.toPx(),
+//                        anchorX = TextAnchorX.Left,
+//                        anchorY = TextAnchorY.Center,
+//                    )
+//                }
 
                 (0..maxValue.toInt()).forEach { value ->
-                    val path = Path()
-                    (0..data.labels.size).forEachIndexed { index, it ->
-                        val angle = 2 * PI / data.labels.size * index + PI
-                        if (index == 0) {
-                            val point = Offset(
-                                x = r * (value / maxValue) * sin(angle).toFloat() + chartArea.center.x,
-                                y = r * (value / maxValue) * cos(angle).toFloat() + chartArea.center.y,
-                            )
-                            path.moveTo(
-                                x = point.x,
-                                y = point.y,
-                            )
-
-                            drawText(
-                                text = " $value",
-                                x = point.x,
-                                y = point.y,
-                                color = style.valueColor,
-                                size = 14.sp.toPx(),
-                                anchorX = TextAnchorX.Left,
-                                anchorY = TextAnchorY.Center,
-                            )
-
-                        } else {
-                            path.lineTo(
-                                x = r * (value / maxValue) * sin(angle).toFloat() + chartArea.center.x,
-                                y = r * (value / maxValue) * cos(angle).toFloat() + chartArea.center.y,
-                            )
-                        }
-                    }
-                    path.close()
-                    drawPath(path = path, color = style.lineColor, style = Stroke(width = style.lineWidth.toPx()))
+                    drawCircle(
+                        color = style.lineColor,
+                        radius = (chartArea.width / 2) / maxValue * value,
+                        center = chartArea.center,
+                        style = Stroke(width = style.lineWidth.toPx()),
+                    )
                 }
 
-                data.entries.forEach { entry ->
-                    val path = Path()
-                    entry.values.forEachIndexed { index, it ->
-                        val angle = 2 * PI / data.labels.size * index + PI
-                        if (index == 0) {
-                            path.moveTo(
-                                x = r * (it / maxValue) * sin(angle).toFloat() + chartArea.center.x,
-                                y = r * (it / maxValue) * cos(angle).toFloat() + chartArea.center.y,
-                            )
-                        } else {
-                            path.lineTo(
-                                x = r * (it / maxValue) * sin(angle).toFloat() + chartArea.center.x,
-                                y = r * (it / maxValue) * cos(angle).toFloat() + chartArea.center.y,
-                            )
-                        }
-                    }
-                    path.close()
-                    drawPath(path = path, color = entry.color.copy(alpha = 0.3f), style = Fill)
-                    drawPath(path = path, color = entry.color, style = Stroke(width = 1f))
-                }
+//                (0..maxValue.toInt()).forEach { value ->
+//                    val path = Path()
+//                    (0..data.labels.size).forEachIndexed { index, it ->
+//                        val angle = 2 * PI / data.labels.size * index + PI
+//                        if (index == 0) {
+//                            val point = Offset(
+//                                x = r * (value / maxValue) * sin(angle).toFloat() + chartArea.center.x,
+//                                y = r * (value / maxValue) * cos(angle).toFloat() + chartArea.center.y,
+//                            )
+//                            path.moveTo(
+//                                x = point.x,
+//                                y = point.y,
+//                            )
+//
+//                            drawText(
+//                                text = " $value",
+//                                x = point.x,
+//                                y = point.y,
+//                                color = style.valueColor,
+//                                size = 14.sp.toPx(),
+//                                anchorX = TextAnchorX.Left,
+//                                anchorY = TextAnchorY.Center,
+//                            )
+//
+//                        } else {
+//                            path.lineTo(
+//                                x = r * (value / maxValue) * sin(angle).toFloat() + chartArea.center.x,
+//                                y = r * (value / maxValue) * cos(angle).toFloat() + chartArea.center.y,
+//                            )
+//                        }
+//                    }
+//                    path.close()
+//                    drawPath(path = path, color = style.lineColor, style = Stroke(width = style.lineWidth.toPx()))
+//                }
 
+                data.entries.forEachIndexed { index, entry ->
+
+                    val factor = entry.value / maxValue
+
+                    drawArc(
+                        color = entry.color.copy(alpha = 0.3f),
+                        startAngle = 360f / data.entries.size * index - 90f,
+                        sweepAngle = 360f / data.entries.size,
+                        useCenter = true,
+                        topLeft = chartArea.center - Offset(chartArea.width / 2 * factor, chartArea.height / 2 * factor),
+                        size = chartArea.size * factor,
+                    )
+                    drawArc(
+                        color = entry.color,
+                        startAngle = 360f / data.entries.size * index - 90f,
+                        sweepAngle = 360f / data.entries.size,
+                        useCenter = true,
+                        topLeft = chartArea.center - Offset(chartArea.width / 2 * factor, chartArea.height / 2 * factor),
+                        size = chartArea.size * factor,
+                        style = Stroke(1.dp.toPx()),
+                    )
+                }
             }
         }
     }
 }
 
 @Composable
-private fun RadarLegend(data: RadarChartData) {
+private fun RadarLegend(data: PolarChartData) {
     Box(modifier = Modifier.border(width = 1.dp, color = ChartsTheme.legendColor)) {
         LegendFlow(
             modifier = Modifier.padding(16.dp),

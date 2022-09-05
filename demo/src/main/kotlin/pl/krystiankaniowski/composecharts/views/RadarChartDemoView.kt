@@ -1,5 +1,6 @@
 package pl.krystiankaniowski.composecharts.views
 
+import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 import pl.krystiankaniowski.composecharts.radar.RadarChart
@@ -9,6 +10,7 @@ import pl.krystiankaniowski.composecharts.radar.RadarChartData
 @Composable
 fun RadarChartDemo() {
     RadarChart(
+        title = { Text("Radar chart") },
         data = RadarChartData(
             labels = listOf(
                 "A", "B", "C", "D", "E", "F",

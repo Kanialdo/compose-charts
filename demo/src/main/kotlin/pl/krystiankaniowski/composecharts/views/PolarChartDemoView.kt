@@ -1,5 +1,6 @@
 package pl.krystiankaniowski.composecharts.views
 
+import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import pl.krystiankaniowski.composecharts.autoColor
 import pl.krystiankaniowski.composecharts.polar.PolarChart
@@ -9,6 +10,7 @@ import pl.krystiankaniowski.composecharts.polar.PolarChartData
 @Composable
 fun PolarChartDemo() {
     PolarChart(
+        title = { Text("Polar chart") },
         data = PolarChartData(
             entries = listOf(
                 PolarChartData.Entry(name = "A", color = autoColor(0), value = 1f),
