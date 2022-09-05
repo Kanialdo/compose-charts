@@ -35,3 +35,8 @@ internal actual fun DrawScope.drawText(
         },
     )
 }
+
+internal actual fun DrawScope.measureText(size: Float, text: String): Float {
+    val textLine = TextLine.make(text, Font(typeface = null, size = size))
+    return textLine.width
+}

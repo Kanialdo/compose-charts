@@ -24,3 +24,5 @@ internal expect fun DrawScope.drawText(
     anchorX: TextAnchorX = TextAnchorX.Left,
     anchorY: TextAnchorY = TextAnchorY.Top,
 )
+
+internal expect fun DrawScope.measureText(size: Float, text: String): Float
