@@ -102,7 +102,7 @@ fun HorizontalBarChart(
                                     y = mapper.y(pos + w) + series * barHeight,
                                 ),
                                 size = Size(
-                                    width = v * mapper.yScale,
+                                    width = v * mapper.xScale,
                                     height = barHeight,
                                 )
                             )
@@ -142,7 +142,7 @@ fun HorizontalBarChart(
                                     y = mapper.y(i + w),
                                 ),
                                 size = Size(
-                                    width = counter * mapper.yScale,
+                                    width = counter * mapper.xScale,
                                     height = barHeight,
                                 )
                             )
