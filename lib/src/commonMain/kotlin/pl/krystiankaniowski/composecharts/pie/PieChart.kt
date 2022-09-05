@@ -58,7 +58,7 @@ fun PieChart(
             val localSize = minOf(width, height)
 
             drawIntoCanvas { canvas ->
-                var start = 0f
+                var start = -90f
                 data.slices.forEachIndexed { index, slice ->
                     val end = (slice.value / data.sum) * 360f
                     canvas.drawArc(

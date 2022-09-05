@@ -9,7 +9,9 @@ Library supports bar, line, point and pie charts. Compose-charts is developed on
 Some examples:
 
 <img width="591" alt="image" src="https://user-images.githubusercontent.com/2984146/171934802-da4fba16-9c5a-4e17-9d5b-0a7a5fb76c4f.png">
+<img width="591" alt="image" src="https://user-images.githubusercontent.com/2984146/188506834-c7fc6cfd-17bd-4a5e-9f2a-639f7683e922.png">
 <img width="591" alt="image" src="https://user-images.githubusercontent.com/2984146/171934859-c8a91203-a152-4955-a570-de34785b4e8c.png">
 <img width="591" alt="image" src="https://user-images.githubusercontent.com/2984146/171934902-ed81516b-1b00-4041-8a08-4888d5eae969.png">
-<img width="591" alt="image" src="https://user-images.githubusercontent.com/2984146/171934919-5c37030d-4a6e-444b-99a9-75504f35e06c.png">
+<img width="591" alt="image" src="https://user-images.githubusercontent.com/2984146/188506816-b7881c6c-c902-45a2-ba87-3fd4d72f25bb.png">
 <img width="591" alt="image" src="https://user-images.githubusercontent.com/2984146/188226639-af80de4e-6645-4f80-b6b5-44d93d791677.png">
+<img width="591" alt="image" src="https://user-images.githubusercontent.com/2984146/188506781-662c30b6-a51e-432c-8498-bd89e3d8668d.png">
