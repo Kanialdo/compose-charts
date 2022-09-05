@@ -22,9 +22,10 @@ import pl.krystiankaniowski.composecharts.legend.LegendFlow
 import pl.krystiankaniowski.composecharts.legend.LegendPosition
 import pl.krystiankaniowski.composecharts.resolve
 
-data class BarChartData(val bars: List<Bar>) {
-
-    constructor(vararg bars: Bar) : this(bars.toList())
+data class BarChartData(
+    val labels: List<String>,
+    val bars: List<Bar>,
+) {
 
     data class Bar(
         val label: String,
@@ -37,6 +38,9 @@ data class BarChartData(val bars: List<Bar>) {
     init {
         check(bars.first().values.size.let { size -> bars.all { it.values.size == size } }) {
             "All bars have to contains same amount of entries"
+        }
+        check(labels.size == bars.first().values.size) {
+            "Amount of labels should be equal to amount of values in each bar"
         }
     }
 
@@ -59,6 +63,7 @@ fun BarChart(
     style: BarChartStyle = BarChartStyle.STANDARD,
     title: (@Composable () -> Unit)? = null,
     colors: Colors = AutoColors,
+    xAxis: BarChartXAxis.Drawer = BarChartXAxis.Auto(),
     yAxis: BarChartYAxis.Drawer = BarChartYAxis.Auto(),
     legendPosition: LegendPosition = LegendPosition.Bottom,
 ) {
@@ -74,8 +79,12 @@ fun BarChart(
             val offset = 1f
 
             val contentArea = Rect(
-                top = 0f, bottom = size.height - 0,
+                top = 0f, bottom = size.height - xAxis.requiredHeight(),
                 left = yAxis.requiredWidth(), right = size.width,
+            )
+            val xAxisArea = Rect(
+                top = contentArea.bottom, bottom = size.height,
+                left = contentArea.left, right = contentArea.right,
             )
             val yAxisArea = Rect(
                 top = contentArea.top, bottom = contentArea.bottom,
@@ -98,6 +107,7 @@ fun BarChart(
                     )
 
                     yAxis.draw(this, contentArea, yAxisArea, mapper, mapper.ySrcMin, mapper.ySrcMax)
+                    xAxis.draw(this, contentArea, xAxisArea, mapper, data)
 
                     val barWidth = 2 * w * mapper.xScale / data.bars.size
                     data.bars.forEachIndexed { series, value ->
@@ -138,6 +148,7 @@ fun BarChart(
                     val barWidth = 2 * w * mapper.xScale
 
                     yAxis.draw(this, contentArea, yAxisArea, mapper, mapper.ySrcMin, mapper.ySrcMax)
+                    xAxis.draw(this, contentArea, xAxisArea, mapper, data)
 
                     for (i in (values - 1) downTo 0) {
                         var counter = maxValues[i]
@@ -176,6 +187,7 @@ fun BarChart(
                     )
 
                     yAxis.draw(this, contentArea, yAxisArea, mapper, mapper.ySrcMin, mapper.ySrcMax)
+                    xAxis.draw(this, contentArea, xAxisArea, mapper, data)
 
                     val barWidth = 2 * w * mapper.xScale
 
@@ -205,7 +217,7 @@ fun BarChart(
 @Composable
 private fun BarLegend(
     data: BarChartData,
-    colors: Colors = AutoColors
+    colors: Colors = AutoColors,
 ) {
     Box(modifier = Modifier.border(width = 1.dp, color = ChartsTheme.legendColor)) {
         LegendFlow(
