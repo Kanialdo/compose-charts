@@ -5,6 +5,7 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
@@ -18,10 +19,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import pl.krystiankaniowski.composecharts.ChartsTheme
-import pl.krystiankaniowski.composecharts.internal.ChartChoreographer
-import pl.krystiankaniowski.composecharts.internal.TextAnchorX
-import pl.krystiankaniowski.composecharts.internal.TextAnchorY
-import pl.krystiankaniowski.composecharts.internal.drawText
+import pl.krystiankaniowski.composecharts.internal.*
 import pl.krystiankaniowski.composecharts.legend.LegendEntry
 import pl.krystiankaniowski.composecharts.legend.LegendFlow
 import pl.krystiankaniowski.composecharts.legend.LegendPosition
@@ -64,7 +62,12 @@ fun RadarChart(
     style: RadarChartStyle = radarChartStyle(),
     legendPosition: LegendPosition = LegendPosition.Bottom,
 ) {
-    val maxValue = data.entries.maxOf { it.values.maxOf { it } }
+
+    val scale = remember(data) {
+        val maxValue = data.entries.maxOf { it.values.maxOf { it } }
+        niceScale(minPoint = 0f, maxPoint = maxValue)
+    }
+    val chartMaxValue = scale.niceMax
 
     ChartChoreographer(
         modifier = modifier,
@@ -111,14 +114,14 @@ fun RadarChart(
                     )
                 }
 
-                (0..maxValue.toInt()).forEach { value ->
+                scale.getHelperLines().forEach { value ->
                     val path = Path()
                     (0..data.labels.size).forEachIndexed { index, it ->
                         val angle = 2 * PI / data.labels.size * index + PI
                         if (index == 0) {
                             val point = Offset(
-                                x = r * (value / maxValue) * sin(angle).toFloat() + chartArea.center.x,
-                                y = r * (value / maxValue) * cos(angle).toFloat() + chartArea.center.y,
+                                x = r * (value / chartMaxValue) * sin(angle).toFloat() + chartArea.center.x,
+                                y = r * (value / chartMaxValue) * cos(angle).toFloat() + chartArea.center.y,
                             )
                             path.moveTo(
                                 x = point.x,
@@ -137,8 +140,8 @@ fun RadarChart(
 
                         } else {
                             path.lineTo(
-                                x = r * (value / maxValue) * sin(angle).toFloat() + chartArea.center.x,
-                                y = r * (value / maxValue) * cos(angle).toFloat() + chartArea.center.y,
+                                x = r * (value / chartMaxValue) * sin(angle).toFloat() + chartArea.center.x,
+                                y = r * (value / chartMaxValue) * cos(angle).toFloat() + chartArea.center.y,
                             )
                         }
                     }
@@ -152,13 +155,13 @@ fun RadarChart(
                         val angle = 2 * PI / data.labels.size * index + PI
                         if (index == 0) {
                             path.moveTo(
-                                x = r * (it / maxValue) * sin(angle).toFloat() + chartArea.center.x,
-                                y = r * (it / maxValue) * cos(angle).toFloat() + chartArea.center.y,
+                                x = r * (it / chartMaxValue) * sin(angle).toFloat() + chartArea.center.x,
+                                y = r * (it / chartMaxValue) * cos(angle).toFloat() + chartArea.center.y,
                             )
                         } else {
                             path.lineTo(
-                                x = r * (it / maxValue) * sin(angle).toFloat() + chartArea.center.x,
-                                y = r * (it / maxValue) * cos(angle).toFloat() + chartArea.center.y,
+                                x = r * (it / chartMaxValue) * sin(angle).toFloat() + chartArea.center.x,
+                                y = r * (it / chartMaxValue) * cos(angle).toFloat() + chartArea.center.y,
                             )
                         }
                     }
