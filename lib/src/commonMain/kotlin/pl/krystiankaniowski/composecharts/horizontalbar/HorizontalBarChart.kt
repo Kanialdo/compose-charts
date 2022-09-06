@@ -19,9 +19,10 @@ import pl.krystiankaniowski.composecharts.legend.LegendEntry
 import pl.krystiankaniowski.composecharts.legend.LegendFlow
 import pl.krystiankaniowski.composecharts.legend.LegendPosition
 
-data class HorizontalBarChartData(val dataSets: List<DataSet>) {
-
-    constructor(vararg dataSets: DataSet) : this(dataSets.toList())
+data class HorizontalBarChartData(
+    val labels: List<String>,
+    val dataSets: List<DataSet>,
+) {
 
     data class DataSet(
         val label: String,
@@ -53,6 +54,7 @@ fun HorizontalBarChart(
     data: HorizontalBarChartData,
     style: HorizontalBarChartStyle = HorizontalBarChartStyle.STANDARD,
     title: (@Composable () -> Unit)? = null,
+    yAxis: HorizontalBarChartYAxis.Drawer = HorizontalBarChartYAxis.Auto(),
     legendPosition: LegendPosition = LegendPosition.Bottom,
 ) {
     ChartChoreographer(
@@ -67,8 +69,8 @@ fun HorizontalBarChart(
             val offset = 1f
 
             val contentArea = Rect(
-                top = 0f, bottom = size.height - 0,
-                left = 0f, right = size.width,
+                top = 0f, bottom = size.height - 0f,
+                left = yAxis.requiredWidth(), right = size.width,
             )
             val yAxisArea = Rect(
                 top = contentArea.top, bottom = contentArea.bottom,
@@ -90,7 +92,7 @@ fun HorizontalBarChart(
                         yDstMax = contentArea.bottom,
                     )
 
-                    // yAxis.draw(this, contentArea, yAxisArea, mapper, mapper.ySrcMin, mapper.ySrcMax)
+                    yAxis.draw(this, contentArea, yAxisArea, mapper, data)
 
                     val barHeight = 2 * w * mapper.yScale / data.dataSets.size
                     data.dataSets.forEachIndexed { series, value ->
@@ -130,7 +132,7 @@ fun HorizontalBarChart(
 
                     val barHeight = 2 * w * mapper.yScale
 
-                    // yAxis.draw(this, contentArea, yAxisArea, mapper, mapper.ySrcMin, mapper.ySrcMax)
+                    yAxis.draw(this, contentArea, yAxisArea, mapper, data)
 
                     for (i in (values - 1) downTo 0) {
                         var counter = maxValues[i]
@@ -168,7 +170,7 @@ fun HorizontalBarChart(
                         yDstMax = contentArea.bottom,
                     )
 
-                    // yAxis.draw(this, contentArea, yAxisArea, mapper, mapper.ySrcMin, mapper.ySrcMax)
+                    yAxis.draw(this, contentArea, yAxisArea, mapper, data)
 
                     val barHeight = 2 * w * mapper.yScale
 

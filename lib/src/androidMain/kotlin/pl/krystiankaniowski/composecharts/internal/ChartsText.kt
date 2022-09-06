@@ -34,3 +34,10 @@ internal actual fun DrawScope.drawText(
         paint,
     )
 }
+
+internal actual fun DrawScope.measureText(size: Float, text: String): Float {
+    val paint = Paint().apply {
+        textSize = size
+    }
+    return paint.measureText(text)
+}

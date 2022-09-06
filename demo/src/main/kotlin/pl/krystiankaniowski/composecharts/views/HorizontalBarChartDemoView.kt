@@ -12,6 +12,9 @@ import pl.krystiankaniowski.composecharts.horizontalbar.HorizontalBarChartStyle
 fun HorizontalBarChartDemoGrouped() {
     HorizontalBarChart(
         data = HorizontalBarChartData(
+            labels = listOf(
+                "C1", "C2", "C3", "C4", "C5",
+            ),
             dataSets = listOf(
                 HorizontalBarChartData.DataSet(label = "Series A", color = autoColor(0), values = listOf(5f, 4f, 3f, 2f, 1f)),
                 HorizontalBarChartData.DataSet(label = "Series B", color = autoColor(1), values = listOf(1f, 1f, 1f, 1f, 1f)),
@@ -28,6 +31,9 @@ fun HorizontalBarChartDemoGrouped() {
 fun HorizontalBarChartDemoStacked() {
     HorizontalBarChart(
         data = HorizontalBarChartData(
+            labels = listOf(
+                "C1", "C2", "C3", "C4", "C5",
+            ),
             dataSets = listOf(
                 HorizontalBarChartData.DataSet(label = "Series A", color = autoColor(0), values = listOf(5f, 4f, 3f, 2f, 1f)),
                 HorizontalBarChartData.DataSet(label = "Series B", color = autoColor(1), values = listOf(1f, 1f, 1f, 1f, 1f)),
@@ -44,6 +50,9 @@ fun HorizontalBarChartDemoStacked() {
 fun HorizontalBarChartDemoProportion() {
     HorizontalBarChart(
         data = HorizontalBarChartData(
+            labels = listOf(
+                "C1", "C2", "C3", "C4", "C5",
+            ),
             dataSets = listOf(
                 HorizontalBarChartData.DataSet(label = "Series A", color = autoColor(0), values = listOf(5f, 4f, 3f, 2f, 1f)),
                 HorizontalBarChartData.DataSet(label = "Series B", color = autoColor(1), values = listOf(1f, 1f, 1f, 1f, 1f)),
