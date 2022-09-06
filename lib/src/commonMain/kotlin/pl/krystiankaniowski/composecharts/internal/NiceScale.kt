@@ -2,6 +2,8 @@ package pl.krystiankaniowski.composecharts.internal
 
 import kotlin.math.ceil
 import kotlin.math.floor
+import kotlin.math.log10
+import kotlin.math.pow
 
 // Basing on Nice Label Algorithm for Charts with minimum ticks - https://stackoverflow.com/a/16363437/5796683
 
@@ -48,12 +50,12 @@ fun niceScale(minPoint: Float, maxPoint: Float, maxTicks: Int = 10): NiceScale {
  * @return a "nice" number to be used for the data range
  */
 private fun niceNum(range: Double, round: Boolean): Double {
-    val exponent: Double = Math.floor(Math.log10(range))
-    val fraction: Double = range / Math.pow(10.0, exponent)
+    val exponent: Double = floor(log10(range))
+    val fraction: Double = range / 10.0.pow(exponent)
     val niceFraction: Double = if (round) {
         if (fraction < 1.5) 1.0 else if (fraction < 3) 2.0 else if (fraction < 7) 5.0 else 10.0
     } else {
         if (fraction <= 1) 1.0 else if (fraction <= 2) 2.0 else if (fraction <= 5) 5.0 else 10.0
     }
-    return niceFraction * Math.pow(10.0, exponent)
+    return niceFraction * 10.0.pow(exponent)
 }
