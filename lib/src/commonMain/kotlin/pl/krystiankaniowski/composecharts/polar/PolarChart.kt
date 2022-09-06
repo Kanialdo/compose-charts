@@ -60,7 +60,7 @@ fun PolarChart(
         val maxValue = data.entries.maxOf { it.value }
         niceScale(minPoint = 0f, maxPoint = maxValue)
     }
-    val chartMaxValue = scale.niceMax
+    val chartMaxValue = scale.niceMax.toFloat()
 
     ChartChoreographer(
         modifier = modifier,
@@ -86,14 +86,14 @@ fun PolarChart(
                 scale.getHelperLines().forEach { value ->
                     drawCircle(
                         color = style.lineColor,
-                        radius = (chartArea.width / 2) / chartMaxValue * value,
+                        radius = ((chartArea.width / 2) / chartMaxValue * value).toFloat(),
                         center = chartArea.center,
                         style = Stroke(width = style.lineWidth.toPx()),
                     )
                     drawText(
                         text = " $value",
                         x = chartArea.center.x,
-                        y = chartArea.center.y - ((chartArea.height / 2) / chartMaxValue) * value,
+                        y = (chartArea.center.y - ((chartArea.height / 2) / chartMaxValue) * value).toFloat(),
                         color = style.valueColor,
                         size = 14.sp.toPx(),
                         anchorX = TextAnchorX.Left,

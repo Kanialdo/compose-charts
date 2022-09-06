@@ -8,14 +8,14 @@ import kotlin.math.pow
 // Basing on Nice Label Algorithm for Charts with minimum ticks - https://stackoverflow.com/a/16363437/5796683
 
 data class NiceScale constructor(
-    val niceMin: Float,
-    val niceMax: Float,
-    val tickSpacing: Float,
+    val niceMin: Double,
+    val niceMax: Double,
+    val tickSpacing: Double,
 ) {
 
-    fun getHelperLines(): List<Float> {
+    fun getHelperLines(): List<Double> {
         var v = niceMin
-        val items = mutableListOf<Float>()
+        val items = mutableListOf<Double>()
         while (v < niceMax) {
             v += tickSpacing
             items.add(v)
@@ -35,9 +35,9 @@ fun niceScale(minPoint: Float, maxPoint: Float, maxTicks: Int = 10): NiceScale {
     val niceMax = ceil(maxPointDouble / tickSpacing) * tickSpacing
 
     return NiceScale(
-        niceMin = niceMin.toFloat(),
-        niceMax = niceMax.toFloat(),
-        tickSpacing = tickSpacing.toFloat(),
+        niceMin = niceMin,
+        niceMax = niceMax,
+        tickSpacing = tickSpacing,
     )
 }
 
