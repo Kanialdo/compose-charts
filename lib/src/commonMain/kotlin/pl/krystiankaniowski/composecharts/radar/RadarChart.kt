@@ -67,7 +67,7 @@ fun RadarChart(
         val maxValue = data.entries.maxOf { it.values.maxOf { it } }
         niceScale(minPoint = 0f, maxPoint = maxValue)
     }
-    val chartMaxValue = scale.niceMax
+    val chartMaxValue = scale.niceMax.toFloat()
 
     ChartChoreographer(
         modifier = modifier,
@@ -120,8 +120,8 @@ fun RadarChart(
                         val angle = 2 * PI / data.labels.size * index + PI
                         if (index == 0) {
                             val point = Offset(
-                                x = r * (value / chartMaxValue) * sin(angle).toFloat() + chartArea.center.x,
-                                y = r * (value / chartMaxValue) * cos(angle).toFloat() + chartArea.center.y,
+                                x = (r * (value / chartMaxValue) * sin(angle) + chartArea.center.x).toFloat(),
+                                y = (r * (value / chartMaxValue) * cos(angle) + chartArea.center.y).toFloat(),
                             )
                             path.moveTo(
                                 x = point.x,
@@ -140,8 +140,8 @@ fun RadarChart(
 
                         } else {
                             path.lineTo(
-                                x = r * (value / chartMaxValue) * sin(angle).toFloat() + chartArea.center.x,
-                                y = r * (value / chartMaxValue) * cos(angle).toFloat() + chartArea.center.y,
+                                x = (r * (value / chartMaxValue) * sin(angle) + chartArea.center.x).toFloat(),
+                                y = (r * (value / chartMaxValue) * cos(angle) + chartArea.center.y).toFloat(),
                             )
                         }
                     }
