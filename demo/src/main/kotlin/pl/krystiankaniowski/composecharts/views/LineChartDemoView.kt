@@ -5,6 +5,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 import pl.krystiankaniowski.composecharts.line.LineChart
 import pl.krystiankaniowski.composecharts.line.LineChartData
+import pl.krystiankaniowski.composecharts.line.LineChartMode
 import pl.krystiankaniowski.composecharts.line.LineChartStyle
 
 @Suppress("MagicNumber")
@@ -21,6 +22,23 @@ fun LineChartDemo() {
         title = { Text("Line chart") },
     )
 }
+
+@Suppress("MagicNumber")
+@Composable
+fun LineStackedChartDemo() {
+    LineChart(
+        data = LineChartData(
+            lines = listOf(
+                LineChartData.Line(label = "Series A", values = listOf(5f, 4f, 3f, 2f, 1f)),
+                LineChartData.Line(label = "Series B", values = listOf(1f, 1f, 1f, 1f, 1f)),
+                LineChartData.Line(label = "Series C", values = listOf(0f, 1f, 2f, 1f, 0f)),
+            )
+        ),
+        title = { Text("Line stacked chart") },
+        mode = LineChartMode.STACKED,
+    )
+}
+
 
 @Suppress("MagicNumber")
 @Composable

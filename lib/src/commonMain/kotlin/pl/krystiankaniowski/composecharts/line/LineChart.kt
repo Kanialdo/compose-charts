@@ -11,6 +11,7 @@ import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.drawscope.DrawScope
+import androidx.compose.ui.graphics.drawscope.Fill
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.unit.dp
 import pl.krystiankaniowski.composecharts.AutoColors
@@ -53,7 +54,7 @@ data class LineChartStyle(
 ) {
 
     data class LineStyle(
-        val width: Float = 5f
+        val width: Float = 5f,
     )
 
     sealed class PointStyle {
@@ -62,12 +63,18 @@ data class LineChartStyle(
     }
 }
 
+enum class LineChartMode {
+    STANDARD,
+    STACKED,
+}
+
 @Composable
 fun LineChart(
     modifier: Modifier = Modifier,
     data: LineChartData,
     title: (@Composable () -> Unit)? = null,
     style: LineChartStyle = LineChartStyle(),
+    mode: LineChartMode = LineChartMode.STANDARD,
     xAxis: LineChartXAxis.Drawer = LineChartXAxis.Auto(),
     yAxis: LineChartYAxis.Drawer = LineChartYAxis.Auto(),
     legendPosition: LegendPosition = LegendPosition.Bottom,
@@ -100,16 +107,39 @@ fun LineChart(
                 xDstMin = contentArea.left,
                 xDstMax = contentArea.right,
                 ySrcMin = 0f,
-                ySrcMax = data.maxValue,
+                ySrcMax = when (mode) {
+                    LineChartMode.STANDARD -> data.maxValue
+                    LineChartMode.STACKED -> FloatArray(data.lines.first().values.size) { index -> data.lines.map { it.values[index] }.sum() }.max()
+                },
                 yDstMin = contentArea.top,
                 yDstMax = contentArea.bottom,
             )
 
             xAxis.draw(this, contentArea, xAxisArea, mapper, data)
             yAxis.draw(this, contentArea, yAxisArea, mapper, data)
-            data.lines.forEachIndexed { index, line ->
-                drawLine(index, line, style, mapper)
-                drawPoints(index, line, style, mapper)
+
+            when (mode) {
+
+                LineChartMode.STANDARD -> {
+                    data.lines.forEachIndexed { index, line ->
+                        drawLine(index, line, style, mapper)
+                        drawPoints(index, line, style, mapper)
+                    }
+                }
+
+                LineChartMode.STACKED -> {
+                    val size = data.lines.first().values.size
+                    val buffor = FloatArray(size) { index -> data.lines.map { it.values[index] }.sum() }.toMutableList()
+                    for (i in (data.lines.size - 1) downTo 0) {
+                        val line = data.lines[i]
+                        drawLineArea(i, line.color, buffor, style, mapper)
+                        if (i > 0) {
+                            for (j in buffor.indices) {
+                                buffor[j] -= line.values[j]
+                            }
+                        }
+                    }
+                }
             }
         }
     }
@@ -143,11 +173,50 @@ private fun DrawScope.drawLine(
     )
 }
 
+private fun DrawScope.drawLineArea(
+    index: Int,
+    color: Color?,
+    values: List<Float>,
+    style: LineChartStyle,
+    mapper: PointMapper,
+) {
+    val color = color ?: style.colors.getColor(index)
+    val path = Path()
+    values.forEachIndexed { dataIndex, point ->
+        if (dataIndex == 0) {
+            path.moveTo(
+                x = mapper.x(dataIndex + 0.5f),
+                y = mapper.y(point),
+            )
+        } else {
+            path.lineTo(
+                x = mapper.x(dataIndex + 0.5f),
+                y = mapper.y(point),
+            )
+        }
+    }
+    path.lineTo(
+        x = mapper.x(values.size - 0.5f),
+        y = mapper.y(0f),
+    )
+    path.lineTo(
+        x = mapper.x(0.5f),
+        y = mapper.y(0f),
+    )
+    path.close()
+
+    drawPath(
+        color = color,
+        path = path,
+        style = Fill,
+    )
+}
+
 private fun DrawScope.drawPoints(
     index: Int,
     line: LineChartData.Line,
     style: LineChartStyle,
-    mapper: PointMapper
+    mapper: PointMapper,
 ) {
     when (val pointStyle = line.pointStyle ?: style.pointStyle) {
         LineChartStyle.PointStyle.None -> {}
@@ -166,7 +235,7 @@ private fun DrawScope.drawPoints(
 @Composable
 private fun LineLegend(
     data: LineChartData,
-    colors: Colors = AutoColors
+    colors: Colors = AutoColors,
 ) {
     Box(modifier = Modifier.border(width = 1.dp, color = ChartsTheme.legendColor)) {
         LegendFlow(
