@@ -22,6 +22,7 @@ val items: List<Pair<String, @Composable () -> Unit>> = listOf(
     "Horizontal bar chart stacked" to { HorizontalBarChartDemoStacked() },
     "Horizontal bar chart proportion" to { HorizontalBarChartDemoProportion() },
     "Line chart" to { LineChartDemo() },
+    "Line stacked chart" to { LineStackedChartDemo() },
     "Line chart custom" to { LineChartCustomDemo() },
     "Point chart" to { PointChartDemo() },
     "Point chart custom" to { PointChartCustomDemo() },
