@@ -39,7 +39,6 @@ fun LineStackedChartDemo() {
     )
 }
 
-
 @Suppress("MagicNumber")
 @Composable
 fun LineChartCustomDemo() {
