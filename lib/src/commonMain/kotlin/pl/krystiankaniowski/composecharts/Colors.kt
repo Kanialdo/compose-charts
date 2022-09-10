@@ -2,11 +2,7 @@ package pl.krystiankaniowski.composecharts
 
 import androidx.compose.ui.graphics.Color
 
-interface Colors {
-    fun getColor(position: Int): Color
-}
-
-object AutoColors : Colors {
+object AutoColors {
 
     private val colors = arrayOf(
         0xFFe6194B,
@@ -33,10 +29,7 @@ object AutoColors : Colors {
         0xFF000000,
     )
 
-    override fun getColor(position: Int) = Color(colors[position % colors.size])
+    fun getColor(position: Int) = Color(colors[position % colors.size])
 }
 
 fun autoColor(pos: Int) = AutoColors.getColor(pos)
-
-internal fun Colors.resolve(pos: Int, custom: Color) =
-    if (custom == Color.Unspecified) this.getColor(pos) else custom

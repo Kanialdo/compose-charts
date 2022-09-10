@@ -5,6 +5,7 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.geometry.Offset
 import pl.krystiankaniowski.composecharts.AutoColors
+import pl.krystiankaniowski.composecharts.autoColor
 import kotlin.random.Random
 
 private val data = PointChartData(
@@ -18,7 +19,7 @@ private val data = PointChartData(
                 Offset(0f, 2f),
                 Offset(0f, 1f),
             ),
-            color = PointChartData.ChartColor.Solid(AutoColors.getColor(0))
+            color = PointChartData.ChartColor.Solid(autoColor(0))
         ),
         PointChartData.Series(
             label = "Series B",
@@ -29,7 +30,7 @@ private val data = PointChartData(
                 Offset(2f, 1f),
                 Offset(1f, 0f),
             ),
-            color = PointChartData.ChartColor.Solid(AutoColors.getColor(1))
+            color = PointChartData.ChartColor.Solid(autoColor(1))
         ),
         PointChartData.Series(
             label = "Series C",
@@ -40,7 +41,7 @@ private val data = PointChartData(
                 Offset(2f, 1.5f),
                 Offset(1f, 1.5f),
             ),
-            color = PointChartData.ChartColor.Solid(AutoColors.getColor(2))
+            color = PointChartData.ChartColor.Solid(autoColor(2))
         ),
     )
 )
@@ -99,7 +100,7 @@ fun PointChartComplexPreview() {
                 PointChartData.Series(
                     label = "Data",
                     values = points,
-                    color = PointChartData.ChartColor.Solid(AutoColors.getColor(1)),
+                    color = PointChartData.ChartColor.Solid(autoColor(1)),
                 ),
             )
         ),
@@ -118,7 +119,7 @@ fun PointChartCustomBoundsPreview() {
                 PointChartData.Series(
                     label = "Data",
                     values = points,
-                    color = PointChartData.ChartColor.Solid(AutoColors.getColor(0)),
+                    color = PointChartData.ChartColor.Solid(autoColor(0)),
                 )
             ),
             minX = 0f,
