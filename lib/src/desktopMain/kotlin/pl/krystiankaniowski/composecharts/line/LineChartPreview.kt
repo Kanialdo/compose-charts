@@ -130,3 +130,29 @@ fun LineStackedChartComplexPreview() {
         title = { Text("Line stacked chart") },
     )
 }
+
+@Preview
+@Composable
+fun LineProportionalChartComplexPreview() {
+    val random = Random(0)
+    val points1 = List(50) { random.nextFloat() * 5 + 1 }
+    val points2 = List(50) { random.nextFloat() * 5 + 1 }
+    val points3 = List(50) { random.nextFloat() * 5 + 1 }
+    LineChart(
+        data = LineChartData(
+            lines = listOf(
+                LineChartData.Line(
+                    label = "Series A", values = points1,
+                ),
+                LineChartData.Line(
+                    label = "Series B", values = points2,
+                ),
+                LineChartData.Line(
+                    label = "Series C", values = points3,
+                ),
+            )
+        ),
+        mode = LineChartMode.PROPORTIONAL,
+        title = { Text("Line proportional chart") },
+    )
+}
