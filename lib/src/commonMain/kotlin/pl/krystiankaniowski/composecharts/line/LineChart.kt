@@ -66,6 +66,7 @@ data class LineChartStyle(
 enum class LineChartMode {
     STANDARD,
     STACKED,
+    PROPORTIONAL,
 }
 
 @Composable
@@ -110,6 +111,7 @@ fun LineChart(
                 ySrcMax = when (mode) {
                     LineChartMode.STANDARD -> data.maxValue
                     LineChartMode.STACKED -> FloatArray(data.lines.first().values.size) { index -> data.lines.map { it.values[index] }.sum() }.max()
+                    LineChartMode.PROPORTIONAL -> 1f
                 },
                 yDstMin = contentArea.top,
                 yDstMax = contentArea.bottom,
@@ -133,6 +135,21 @@ fun LineChart(
                     for (i in (data.lines.size - 1) downTo 0) {
                         val line = data.lines[i]
                         drawLineArea(i, line.color, buffor, style, mapper)
+                        if (i > 0) {
+                            for (j in buffor.indices) {
+                                buffor[j] -= line.values[j]
+                            }
+                        }
+                    }
+                }
+
+                LineChartMode.PROPORTIONAL -> {
+                    val size = data.lines.first().values.size
+                    val total = FloatArray(size) { index -> data.lines.map { it.values[index] }.sum() }.toMutableList()
+                    val buffor = total.toMutableList()
+                    for (i in (data.lines.size - 1) downTo 0) {
+                        val line = data.lines[i]
+                        drawProportionalLineArea(i, line.color, total, buffor, style, mapper)
                         if (i > 0) {
                             for (j in buffor.indices) {
                                 buffor[j] -= line.values[j]
@@ -192,6 +209,47 @@ private fun DrawScope.drawLineArea(
             path.lineTo(
                 x = mapper.x(dataIndex + 0.5f),
                 y = mapper.y(point),
+            )
+        }
+    }
+    path.lineTo(
+        x = mapper.x(values.size - 0.5f),
+        y = mapper.y(0f),
+    )
+    path.lineTo(
+        x = mapper.x(0.5f),
+        y = mapper.y(0f),
+    )
+    path.close()
+
+    drawPath(
+        color = color,
+        path = path,
+        style = Fill,
+    )
+}
+
+
+private fun DrawScope.drawProportionalLineArea(
+    index: Int,
+    color: Color?,
+    total: List<Float>,
+    values: List<Float>,
+    style: LineChartStyle,
+    mapper: PointMapper,
+) {
+    val color = color ?: style.colors.getColor(index)
+    val path = Path()
+    values.forEachIndexed { dataIndex, point ->
+        if (dataIndex == 0) {
+            path.moveTo(
+                x = mapper.x(dataIndex + 0.5f),
+                y = mapper.y(point / total[dataIndex]),
+            )
+        } else {
+            path.lineTo(
+                x = mapper.x(dataIndex + 0.5f),
+                y = mapper.y(point / total[dataIndex]),
             )
         }
     }
