@@ -51,20 +51,27 @@ fun SunbrustChartDemo() {
                             label = "Series A1",
                             color = autoColor(1),
                             value = 1f,
+                            subSlices = listOf(
+                                SunbrustChartData.Slice(
+                                    label = "Series A1.1",
+                                    color = autoColor(2),
+                                    value = 0.5f,
+                                ),
+                            ),
                         ),
                         SunbrustChartData.Slice(
                             label = "Series A2",
-                            color = autoColor(5),
+                            color = autoColor(3),
                             value = 2f,
                             subSlices = listOf(
                                 SunbrustChartData.Slice(
                                     label = "Series A1.1",
-                                    color = autoColor(3),
+                                    color = autoColor(4),
                                     value = 0.5f,
                                 ),
                                 SunbrustChartData.Slice(
                                     label = "Series A1.2",
-                                    color = autoColor(4),
+                                    color = autoColor(5),
                                     value = 0.25f,
                                 ),
                             ),

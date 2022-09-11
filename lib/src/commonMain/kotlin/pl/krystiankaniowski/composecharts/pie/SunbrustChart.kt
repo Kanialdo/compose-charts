@@ -21,7 +21,6 @@ import pl.krystiankaniowski.composecharts.legend.LegendEntry
 import pl.krystiankaniowski.composecharts.legend.LegendFlow
 import pl.krystiankaniowski.composecharts.legend.LegendPosition
 
-
 data class SunbrustChartData(val slices: List<Slice>) {
 
     constructor(vararg slices: Slice) : this(slices.toList())
@@ -34,11 +33,13 @@ data class SunbrustChartData(val slices: List<Slice>) {
     )
 }
 
+private fun SunbrustChartData.deep(): Int = slices.maxOf { it.deep(1) }
+private fun SunbrustChartData.Slice.deep(current: Int): Int = subSlices.maxOfOrNull { it.deep(current = current + 1) } ?: current
+
 @Composable
 fun SunbrustChart(
     modifier: Modifier = Modifier,
     data: SunbrustChartData,
-    cutOut: Float = 0.5f,
     title: (@Composable () -> Unit)? = null,
     legendPosition: LegendPosition = LegendPosition.Bottom,
 ) {
@@ -50,14 +51,14 @@ fun SunbrustChart(
     ) {
 
         val dataSum = remember(data) { data.slices.sumOf { it.value.toDouble() }.toFloat() }
+        val maxLevel = data.deep()
 
         Canvas(Modifier.fillMaxSize()) {
 
             val minSize = minOf(size.width, size.height)
-            val virtualLocalSize = minSize * (cutOut + 1) / 2
-            val topLeft = Offset((size.width - virtualLocalSize) / 2, (size.height - virtualLocalSize) / 2)
-            val size = Size(virtualLocalSize, virtualLocalSize)
-            val lineWidth = (minSize * (1 - cutOut)) / 2
+            val topLeft = Offset((size.width - minSize) / 2, (size.height - minSize) / 2)
+            val size = Size(minSize, minSize)
+            val lineWidth = minSize / (maxLevel + 1) / 2
 
             var currentAngle = -90f
 
@@ -68,8 +69,8 @@ fun SunbrustChart(
                     startAngle = currentAngle,
                     sweepAngle = sliceAngle,
                     level = 1,
-                    maxLevel = 2,
-                    lineWidth = 50f,
+                    maxLevel = maxLevel,
+                    lineWidth = lineWidth,
                     topLeft = topLeft,
                     size = size,
                 )
@@ -89,10 +90,10 @@ private fun DrawScope.drawComponent(
     topLeft: Offset,
     size: Size,
 ) {
-    val m = (size * ((maxLevel - level) / maxLevel.toFloat())).width
+    val m = lineWidth * (maxLevel - level) + lineWidth / 2
     drawArc(
-        topLeft = topLeft + Offset(m / 2, m / 2),
-        size = size * (level / maxLevel.toFloat()),
+        topLeft = topLeft + Offset(m, m),
+        size = Size(size.width - 2 * m, size.width - 2 * m),
         startAngle = startAngle,
         sweepAngle = sweepAngle,
         useCenter = false,
