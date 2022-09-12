@@ -1,4 +1,4 @@
-package pl.krystiankaniowski.composecharts.pie
+package pl.krystiankaniowski.composecharts.circural
 
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.border
