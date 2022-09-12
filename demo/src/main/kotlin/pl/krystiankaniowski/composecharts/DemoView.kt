@@ -1,6 +1,7 @@
 package pl.krystiankaniowski.composecharts
 
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -69,13 +70,25 @@ fun ChartScreen(
     chart: @Composable () -> Unit,
     settings: @Composable () -> Unit,
 ) {
-    Row {
-        Box(modifier = Modifier.weight(@Suppress("MagicNumber") 3f).padding(16.dp)) {
-            chart()
-        }
-        Divider(modifier = Modifier.fillMaxHeight().width(1.dp))
-        Column(modifier = Modifier.weight(1f).verticalScroll(rememberScrollState()).padding(16.dp)) {
-            settings()
-        }
+//    Row {
+//        Box(modifier = Modifier.weight(@Suppress("MagicNumber") 3f).padding(16.dp)) {
+//            chart()
+//        }
+//        Divider(modifier = Modifier.fillMaxHeight().width(1.dp))
+//        Column(modifier = Modifier.weight(1f).verticalScroll(rememberScrollState()).padding(16.dp)) {
+//            settings()
+//        }
+//    }
+    Column {
+        Box(
+            modifier = Modifier.weight(1f).padding(16.dp),
+            content = { chart() },
+        )
+        Divider(modifier = Modifier.fillMaxWidth().height(1.dp))
+        Row(
+            modifier = Modifier.horizontalScroll(rememberScrollState()).padding(top = 16.dp),
+            horizontalArrangement = Arrangement.spacedBy(16.dp),
+            content = { settings() },
+        )
     }
 }
