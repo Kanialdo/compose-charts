@@ -33,9 +33,6 @@ data class SunbrustChartData(val slices: List<Slice>) {
     )
 }
 
-private fun SunbrustChartData.deep(): Int = slices.maxOf { it.deep(1) }
-private fun SunbrustChartData.Slice.deep(current: Int): Int = subSlices.maxOfOrNull { it.deep(current = current + 1) } ?: current
-
 @Composable
 fun SunbrustChart(
     modifier: Modifier = Modifier,
@@ -43,42 +40,45 @@ fun SunbrustChart(
     title: (@Composable () -> Unit)? = null,
     legendPosition: LegendPosition = LegendPosition.Bottom,
 ) {
+
+    val dataSum = remember(data) { data.slices.sumOf { it.value.toDouble() }.toFloat() }
+    val maxLevel = remember(data) { data.deep() }
+
     ChartChoreographer(
         modifier = modifier,
         title = title,
         legend = { SunbrustLegend(data) },
         legendPosition = legendPosition,
     ) {
-
-        val dataSum = remember(data) { data.slices.sumOf { it.value.toDouble() }.toFloat() }
-        val maxLevel = data.deep()
-
         Canvas(Modifier.fillMaxSize()) {
 
             val minSize = minOf(size.width, size.height)
-            val topLeft = Offset((size.width - minSize) / 2, (size.height - minSize) / 2)
-            val size = Size(minSize, minSize)
+            val areaTopLeft = Offset((size.width - minSize) / 2, (size.height - minSize) / 2)
+            val areaSize = Size(minSize, minSize)
             val lineWidth = minSize / (maxLevel + 1) / 2
 
-            var currentAngle = -90f
+            var startAngle = -90f
 
             data.slices.forEach { slice ->
                 val sliceAngle = slice.value / dataSum * 360f
                 drawComponent(
                     slice = slice,
-                    startAngle = currentAngle,
+                    startAngle = startAngle,
                     sweepAngle = sliceAngle,
                     level = 1,
                     maxLevel = maxLevel,
                     lineWidth = lineWidth,
-                    topLeft = topLeft,
-                    size = size,
+                    areaTopLeft = areaTopLeft,
+                    areaSize = areaSize,
                 )
-                currentAngle += sliceAngle
+                startAngle += sliceAngle
             }
         }
     }
 }
+
+private fun SunbrustChartData.deep(): Int = slices.maxOf { it.deep(1) }
+private fun SunbrustChartData.Slice.deep(current: Int): Int = subSlices.maxOfOrNull { it.deep(current = current + 1) } ?: current
 
 private fun DrawScope.drawComponent(
     slice: SunbrustChartData.Slice,
@@ -87,13 +87,13 @@ private fun DrawScope.drawComponent(
     level: Int,
     maxLevel: Int,
     lineWidth: Float,
-    topLeft: Offset,
-    size: Size,
+    areaTopLeft: Offset,
+    areaSize: Size,
 ) {
-    val m = lineWidth * (maxLevel - level) + lineWidth / 2
+    val padding = lineWidth * (maxLevel - level) + lineWidth / 2
     drawArc(
-        topLeft = topLeft + Offset(m, m),
-        size = Size(size.width - 2 * m, size.width - 2 * m),
+        topLeft = areaTopLeft + Offset(padding, padding),
+        size = Size(areaSize.width - 2 * padding, areaSize.width - 2 * padding),
         startAngle = startAngle,
         sweepAngle = sweepAngle,
         useCenter = false,
@@ -110,8 +110,8 @@ private fun DrawScope.drawComponent(
             level = level + 1,
             maxLevel = maxLevel,
             lineWidth = lineWidth,
-            topLeft = topLeft,
-            size = size,
+            areaTopLeft = areaTopLeft,
+            areaSize = areaSize,
         )
         localStartAngle += localSweepAngle
     }
