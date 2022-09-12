@@ -31,6 +31,7 @@ data class DoughnutChartData(val slices: List<Slice>) {
     )
 }
 
+
 @Composable
 fun DoughnutChart(
     modifier: Modifier = Modifier,
@@ -39,78 +40,42 @@ fun DoughnutChart(
     title: (@Composable () -> Unit)? = null,
     legendPosition: LegendPosition = LegendPosition.Bottom,
 ) {
+
+    val safeCutOut = cutOut.coerceIn(0.1f, 0.9f)
+    val dataSum = remember(data) { data.slices.sumOf { it.value.toDouble() }.toFloat() }
+
     ChartChoreographer(
         modifier = modifier,
         title = title,
         legend = { DoughnutLegend(data) },
         legendPosition = legendPosition,
     ) {
-
-        val dataSum = remember(data) { data.slices.sumOf { it.value.toDouble() }.toFloat() }
-
         Canvas(Modifier.fillMaxSize()) {
 
             val minSize = minOf(size.width, size.height)
-            val virtualLocalSize = minSize * (cutOut + 1) / 2
+            val virtualLocalSize = minSize * (safeCutOut + 1) / 2
             val topLeft = Offset((size.width - virtualLocalSize) / 2, (size.height - virtualLocalSize) / 2)
             val size = Size(virtualLocalSize, virtualLocalSize)
-            val lineWidth = (minSize * (1 - cutOut)) / 2
+            val lineWidth = (minSize * (1 - safeCutOut)) / 2
 
-            var currentAngle = -90f
+            var startAngle = -90f
 
             data.slices.forEach { slice ->
                 val sliceAngle = slice.value / dataSum * 360f
                 drawArc(
                     topLeft = topLeft,
                     size = size,
-                    startAngle = currentAngle,
+                    startAngle = startAngle,
                     sweepAngle = sliceAngle,
                     useCenter = false,
                     style = Stroke(width = lineWidth, cap = StrokeCap.Butt),
                     color = slice.color,
                 )
-                currentAngle += sliceAngle
+                startAngle += sliceAngle
             }
         }
     }
 }
-
-//  .forEachIndexed { index, slice ->
-//
-//                        val path = Path()
-//                        val r = localSize / 2
-//                        val angle = 2 * PI * (slice.value / data.sum)
-//                        path.moveTo(
-//                            x = (r * sin(start) + width / 2).toFloat(),
-//                            y = (r * cos(start) + height / 2).toFloat(),
-//                        )
-//                        path.addArcRad(
-//                            oval = Rect(
-//                                center = Offset(width / 2, height / 2),
-//                                radius = localSize / 2
-//                            ),
-//                            startAngleRadians = start.toFloat(),
-//                            sweepAngleRadians = angle.toFloat(),
-//                        )
-//                        start += angle.toFloat()
-//
-//                        path.lineTo(
-//                            x = (r * cutOut * sin(start) + width / 2).toFloat(),
-//                            y = (r * cutOut * cos(start) + height / 2).toFloat(),
-//                        )
-//
-//                        path.addArcRad(
-//                            oval = Rect(
-//                                center = Offset(width / 2, height / 2),
-//                                radius = (localSize / 2) * cutOut,
-//                            ),
-//                            startAngleRadians = start.toFloat(),
-//                            sweepAngleRadians = -angle.toFloat(),
-//                        )
-//
-//                        path.close()
-//                        drawPath(path = path, color = slice.color, style = Fill)
-//                    }
 
 @Composable
 private fun DoughnutLegend(
