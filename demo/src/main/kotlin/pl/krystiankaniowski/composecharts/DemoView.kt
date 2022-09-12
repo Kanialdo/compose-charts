@@ -63,3 +63,19 @@ fun DemoView() {
         }
     }
 }
+
+@Composable
+fun ChartScreen(
+    chart: @Composable () -> Unit,
+    settings: @Composable () -> Unit,
+) {
+    Row {
+        Box(modifier = Modifier.weight(@Suppress("MagicNumber") 3f).padding(16.dp)) {
+            chart()
+        }
+        Divider(modifier = Modifier.fillMaxHeight().width(1.dp))
+        Column(modifier = Modifier.weight(1f).verticalScroll(rememberScrollState()).padding(16.dp)) {
+            settings()
+        }
+    }
+}
