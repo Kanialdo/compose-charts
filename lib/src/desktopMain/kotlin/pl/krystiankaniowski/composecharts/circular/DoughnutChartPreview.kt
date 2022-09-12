@@ -1,4 +1,4 @@
-package pl.krystiankaniowski.composecharts.circural
+package pl.krystiankaniowski.composecharts.circular
 
 import androidx.compose.desktop.ui.tooling.preview.Preview
 import androidx.compose.material.Text

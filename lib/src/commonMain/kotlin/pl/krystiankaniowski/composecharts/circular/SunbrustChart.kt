@@ -1,4 +1,4 @@
-package pl.krystiankaniowski.composecharts.circural
+package pl.krystiankaniowski.composecharts.circular
 
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.border
@@ -27,8 +27,8 @@ data class SunbrustChartData(val slices: List<Slice>) {
 
     data class Slice(
         val label: String,
-        val value: Float,
         val color: Color,
+        val value: Float,
         val subSlices: List<Slice> = emptyList(),
     )
 }
