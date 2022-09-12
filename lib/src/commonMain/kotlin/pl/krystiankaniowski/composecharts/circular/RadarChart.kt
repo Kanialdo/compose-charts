@@ -33,7 +33,7 @@ data class RadarChartData(
 ) {
 
     data class Entry(
-        val name: String,
+        val label: String,
         val color: Color,
         val values: List<Float>,
     )
@@ -182,7 +182,7 @@ private fun RadarLegend(data: RadarChartData) {
             modifier = Modifier.padding(16.dp),
             data = data.entries.map { entry ->
                 LegendEntry(
-                    entry.name,
+                    entry.label,
                     entry.color,
                 )
             }

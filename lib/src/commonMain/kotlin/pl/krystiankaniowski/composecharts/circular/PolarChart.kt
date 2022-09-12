@@ -27,7 +27,7 @@ data class PolarChartData(
 ) {
 
     data class Entry(
-        val name: String,
+        val label: String,
         val color: Color,
         val value: Float,
     )
@@ -133,7 +133,7 @@ private fun RadarLegend(data: PolarChartData) {
             modifier = Modifier.padding(16.dp),
             data = data.entries.map { entry ->
                 LegendEntry(
-                    entry.name,
+                    entry.label,
                     entry.color,
                 )
             }

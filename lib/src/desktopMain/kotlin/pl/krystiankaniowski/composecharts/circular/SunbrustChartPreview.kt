@@ -21,11 +21,7 @@ private fun SunbrustChartPreview() {
                             color = autoColor(1),
                             value = 1f,
                             subSlices = listOf(
-                                SunbrustChartData.Slice(
-                                    label = "Series A1.1",
-                                    color = autoColor(2),
-                                    value = 0.5f,
-                                ),
+                                SunbrustChartData.Slice(label = "Series A1.1", color = autoColor(2), value = 0.5f),
                             ),
                         ),
                         SunbrustChartData.Slice(
@@ -33,30 +29,14 @@ private fun SunbrustChartPreview() {
                             color = autoColor(3),
                             value = 2f,
                             subSlices = listOf(
-                                SunbrustChartData.Slice(
-                                    label = "Series A1.1",
-                                    color = autoColor(4),
-                                    value = 0.5f,
-                                ),
-                                SunbrustChartData.Slice(
-                                    label = "Series A1.2",
-                                    color = autoColor(5),
-                                    value = 0.25f,
-                                ),
+                                SunbrustChartData.Slice(label = "Series A1.1", color = autoColor(4), value = 0.5f),
+                                SunbrustChartData.Slice(label = "Series A1.2", color = autoColor(5), value = 0.25f),
                             ),
                         ),
                     )
                 ),
-                SunbrustChartData.Slice(
-                    label = "Series B",
-                    color = autoColor(6),
-                    value = 2f,
-                ),
-                SunbrustChartData.Slice(
-                    label = "Series C",
-                    color = autoColor(7),
-                    value = 1f,
-                ),
+                SunbrustChartData.Slice(label = "Series B", color = autoColor(6), value = 2f),
+                SunbrustChartData.Slice(label = "Series C", color = autoColor(7), value = 1f),
             ),
         ),
         title = { Text("Sunbrust chart") },

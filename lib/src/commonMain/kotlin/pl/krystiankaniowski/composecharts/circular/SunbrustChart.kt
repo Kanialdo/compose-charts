@@ -27,8 +27,8 @@ data class SunbrustChartData(val slices: List<Slice>) {
 
     data class Slice(
         val label: String,
-        val value: Float,
         val color: Color,
+        val value: Float,
         val subSlices: List<Slice> = emptyList(),
     )
 }
