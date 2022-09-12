@@ -12,15 +12,12 @@ import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import pl.krystiankaniowski.composecharts.AutoColors
 import pl.krystiankaniowski.composecharts.ChartsTheme
-import pl.krystiankaniowski.composecharts.Colors
 import pl.krystiankaniowski.composecharts.internal.ChartChoreographer
 import pl.krystiankaniowski.composecharts.internal.PointMapper
 import pl.krystiankaniowski.composecharts.legend.LegendEntry
 import pl.krystiankaniowski.composecharts.legend.LegendFlow
 import pl.krystiankaniowski.composecharts.legend.LegendPosition
-import pl.krystiankaniowski.composecharts.resolve
 
 data class BarChartData(
     val labels: List<String>,
@@ -30,7 +27,7 @@ data class BarChartData(
     data class Bar(
         val label: String,
         val values: List<Float>,
-        val color: Color = Color.Unspecified,
+        val color: Color,
     ) {
         internal val sum: Float get() = values.sum()
     }
@@ -62,7 +59,6 @@ fun BarChart(
     data: BarChartData,
     style: BarChartStyle = BarChartStyle.STANDARD,
     title: (@Composable () -> Unit)? = null,
-    colors: Colors = AutoColors,
     xAxis: BarChartXAxis.Drawer = BarChartXAxis.Auto(),
     yAxis: BarChartYAxis.Drawer = BarChartYAxis.Auto(),
     legendPosition: LegendPosition = LegendPosition.Bottom,
@@ -70,7 +66,7 @@ fun BarChart(
     ChartChoreographer(
         modifier = modifier,
         title = title,
-        legend = { BarLegend(data, colors) },
+        legend = { BarLegend(data) },
         legendPosition = legendPosition,
     ) {
         Canvas(Modifier.fillMaxSize()) {
@@ -113,7 +109,7 @@ fun BarChart(
                     data.bars.forEachIndexed { series, value ->
                         value.values.forEachIndexed { pos, v ->
                             drawRect(
-                                color = colors.resolve(series, value.color),
+                                color = value.color,
                                 topLeft = Offset(
                                     x = mapper.x(pos - w) + series * barWidth,
                                     y = mapper.y(v),
@@ -154,7 +150,7 @@ fun BarChart(
                         var counter = maxValues[i]
                         for (j in (series - 1) downTo 0) {
                             drawRect(
-                                color = colors.resolve(j, data.bars[j].color),
+                                color = data.bars[j].color,
                                 topLeft = Offset(
                                     x = mapper.x(i - w),
                                     y = mapper.y(counter),
@@ -195,7 +191,7 @@ fun BarChart(
                         var counter = maxValues[i]
                         for (j in (series - 1) downTo 0) {
                             drawRect(
-                                color = colors.resolve(j, data.bars[j].color),
+                                color = data.bars[j].color,
                                 topLeft = Offset(
                                     x = mapper.x(i - w),
                                     y = mapper.y(counter / maxValues[i]),
@@ -217,15 +213,14 @@ fun BarChart(
 @Composable
 private fun BarLegend(
     data: BarChartData,
-    colors: Colors = AutoColors,
 ) {
     Box(modifier = Modifier.border(width = 1.dp, color = ChartsTheme.legendColor)) {
         LegendFlow(
             modifier = Modifier.padding(16.dp),
-            data = data.bars.mapIndexed { index, item ->
+            data = data.bars.map { item ->
                 LegendEntry(
                     item.label,
-                    colors.resolve(index, item.color),
+                    item.color,
                 )
             }
         )

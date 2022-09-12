@@ -2,12 +2,12 @@ package pl.krystiankaniowski.composecharts.legend
 
 import androidx.compose.desktop.ui.tooling.preview.Preview
 import androidx.compose.runtime.Composable
-import pl.krystiankaniowski.composecharts.AutoColors
+import pl.krystiankaniowski.composecharts.autoColor
 
 private val legendData = listOf(
-    LegendEntry(text = "Series A", color = AutoColors.getColor(0)),
-    LegendEntry(text = "Series B", color = AutoColors.getColor(1)),
-    LegendEntry(text = "Series C", color = AutoColors.getColor(2)),
+    LegendEntry(text = "Series A", color = autoColor(0)),
+    LegendEntry(text = "Series B", color = autoColor(1)),
+    LegendEntry(text = "Series C", color = autoColor(2)),
 )
 
 @Preview

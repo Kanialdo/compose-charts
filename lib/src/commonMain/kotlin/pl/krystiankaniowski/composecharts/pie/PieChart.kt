@@ -13,14 +13,11 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Paint
 import androidx.compose.ui.graphics.drawscope.drawIntoCanvas
 import androidx.compose.ui.unit.dp
-import pl.krystiankaniowski.composecharts.AutoColors
 import pl.krystiankaniowski.composecharts.ChartsTheme
-import pl.krystiankaniowski.composecharts.Colors
 import pl.krystiankaniowski.composecharts.internal.ChartChoreographer
 import pl.krystiankaniowski.composecharts.legend.LegendEntry
 import pl.krystiankaniowski.composecharts.legend.LegendFlow
 import pl.krystiankaniowski.composecharts.legend.LegendPosition
-import pl.krystiankaniowski.composecharts.resolve
 
 data class PieChartData(val slices: List<Slice>) {
 
@@ -29,7 +26,7 @@ data class PieChartData(val slices: List<Slice>) {
     data class Slice(
         val label: String,
         val value: Float,
-        val color: Color = Color.Unspecified,
+        val color: Color,
     )
 
     internal val sum = slices.sumOf { it.value.toDouble() }.toFloat()
@@ -42,13 +39,12 @@ fun PieChart(
     modifier: Modifier = Modifier,
     data: PieChartData,
     title: (@Composable () -> Unit)? = null,
-    colors: Colors = AutoColors,
     legendPosition: LegendPosition = LegendPosition.Bottom,
 ) {
     ChartChoreographer(
         modifier = modifier,
         title = title,
-        legend = { PieLegend(data, colors) },
+        legend = { PieLegend(data) },
         legendPosition = legendPosition,
     ) {
         Canvas(Modifier.fillMaxSize()) {
@@ -69,7 +65,7 @@ fun PieChart(
                         startAngle = start,
                         sweepAngle = end,
                         useCenter = true,
-                        paint = Paint().apply { color = colors.resolve(index, slice.color) },
+                        paint = Paint().apply { color = slice.color },
                     )
                     start += end
                 }
@@ -81,15 +77,14 @@ fun PieChart(
 @Composable
 private fun PieLegend(
     data: PieChartData,
-    colors: Colors = AutoColors
 ) {
     Box(modifier = Modifier.border(width = 1.dp, color = ChartsTheme.legendColor)) {
         LegendFlow(
             modifier = Modifier.padding(16.dp),
-            data = data.slices.mapIndexed { index, item ->
+            data = data.slices.map { item ->
                 LegendEntry(
                     item.label,
-                    colors.resolve(index, item.color),
+                    item.color,
                 )
             }
         )

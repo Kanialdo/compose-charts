@@ -5,7 +5,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.PathEffect
-import pl.krystiankaniowski.composecharts.AutoColors
+import pl.krystiankaniowski.composecharts.autoColor
 import pl.krystiankaniowski.composecharts.point.PointChart
 import pl.krystiankaniowski.composecharts.point.PointChartData
 import pl.krystiankaniowski.composecharts.point.PointChartXAxis
@@ -26,7 +26,7 @@ fun PointChartDemo() {
                         Offset(0f, 2f),
                         Offset(0f, 1f),
                     ),
-                    color = PointChartData.ChartColor.Solid(AutoColors.getColor(0)),
+                    color = PointChartData.ChartColor.Solid(autoColor(0)),
                 ),
                 PointChartData.Series(
                     label = "Series B",
@@ -37,7 +37,7 @@ fun PointChartDemo() {
                         Offset(2f, 2f),
                         Offset(1f, 1f),
                     ),
-                    color = PointChartData.ChartColor.Solid(AutoColors.getColor(1)),
+                    color = PointChartData.ChartColor.Solid(autoColor(1)),
                 ),
                 PointChartData.Series(
                     label = "Series C",
@@ -48,7 +48,7 @@ fun PointChartDemo() {
                         Offset(2f, 0f),
                         Offset(1f, 0f),
                     ),
-                    color = PointChartData.ChartColor.Solid(AutoColors.getColor(2)),
+                    color = PointChartData.ChartColor.Solid(autoColor(2)),
                 ),
             ),
         ),
@@ -71,7 +71,7 @@ fun PointChartCustomDemo() {
                         Offset(0f, 2f),
                         Offset(0f, 1f),
                     ),
-                    color = PointChartData.ChartColor.Solid(AutoColors.getColor(1)),
+                    color = PointChartData.ChartColor.Solid(autoColor(1)),
                     pathEffect = PathEffect.dashPathEffect(floatArrayOf(5f, 10f)),
                 ),
                 PointChartData.Series(
