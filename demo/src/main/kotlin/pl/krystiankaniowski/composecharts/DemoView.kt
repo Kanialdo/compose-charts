@@ -29,6 +29,7 @@ val items: List<Pair<String, @Composable () -> Unit>> = listOf(
     "Point chart custom" to { PointChartCustomDemo() },
     "Pie chart" to { PieChartDemo() },
     "Doughnut chart" to { DoughnutChartDemo() },
+    "Sunbrust chart" to { SunbrustChartDemo() },
     "Polar chart" to { PolarChartDemo() },
     "Radar chart" to { RadarChartDemo() },
     "Legend" to { LegendDemoView() },
