@@ -1,4 +1,4 @@
-package pl.krystiankaniowski.composecharts.pie
+package pl.krystiankaniowski.composecharts.circural
 
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.border
@@ -12,6 +12,7 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.StrokeCap
+import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.unit.dp
 import pl.krystiankaniowski.composecharts.ChartsTheme
@@ -20,7 +21,7 @@ import pl.krystiankaniowski.composecharts.legend.LegendEntry
 import pl.krystiankaniowski.composecharts.legend.LegendFlow
 import pl.krystiankaniowski.composecharts.legend.LegendPosition
 
-data class DoughnutChartData(val slices: List<Slice>) {
+data class SunbrustChartData(val slices: List<Slice>) {
 
     constructor(vararg slices: Slice) : this(slices.toList())
 
@@ -28,48 +29,47 @@ data class DoughnutChartData(val slices: List<Slice>) {
         val label: String,
         val value: Float,
         val color: Color,
+        val subSlices: List<Slice> = emptyList(),
     )
 }
 
-
 @Composable
-fun DoughnutChart(
+fun SunbrustChart(
     modifier: Modifier = Modifier,
-    data: DoughnutChartData,
-    cutOut: Float = 0.5f,
+    data: SunbrustChartData,
     title: (@Composable () -> Unit)? = null,
     legendPosition: LegendPosition = LegendPosition.Bottom,
 ) {
 
-    val safeCutOut = cutOut.coerceIn(0.1f, 0.9f)
     val dataSum = remember(data) { data.slices.sumOf { it.value.toDouble() }.toFloat() }
+    val maxLevel = remember(data) { data.deep() }
 
     ChartChoreographer(
         modifier = modifier,
         title = title,
-        legend = { DoughnutLegend(data) },
+        legend = { SunbrustLegend(data) },
         legendPosition = legendPosition,
     ) {
         Canvas(Modifier.fillMaxSize()) {
 
             val minSize = minOf(size.width, size.height)
-            val virtualLocalSize = minSize * (safeCutOut + 1) / 2
-            val topLeft = Offset((size.width - virtualLocalSize) / 2, (size.height - virtualLocalSize) / 2)
-            val size = Size(virtualLocalSize, virtualLocalSize)
-            val lineWidth = (minSize * (1 - safeCutOut)) / 2
+            val areaTopLeft = Offset((size.width - minSize) / 2, (size.height - minSize) / 2)
+            val areaSize = Size(minSize, minSize)
+            val lineWidth = minSize / (maxLevel + 1) / 2
 
             var startAngle = -90f
 
             data.slices.forEach { slice ->
                 val sliceAngle = slice.value / dataSum * 360f
-                drawArc(
-                    topLeft = topLeft,
-                    size = size,
+                drawComponent(
+                    slice = slice,
                     startAngle = startAngle,
                     sweepAngle = sliceAngle,
-                    useCenter = false,
-                    style = Stroke(width = lineWidth, cap = StrokeCap.Butt),
-                    color = slice.color,
+                    level = 1,
+                    maxLevel = maxLevel,
+                    lineWidth = lineWidth,
+                    areaTopLeft = areaTopLeft,
+                    areaSize = areaSize,
                 )
                 startAngle += sliceAngle
             }
@@ -77,9 +77,49 @@ fun DoughnutChart(
     }
 }
 
+private fun SunbrustChartData.deep(): Int = slices.maxOf { it.deep(1) }
+private fun SunbrustChartData.Slice.deep(current: Int): Int = subSlices.maxOfOrNull { it.deep(current = current + 1) } ?: current
+
+private fun DrawScope.drawComponent(
+    slice: SunbrustChartData.Slice,
+    startAngle: Float,
+    sweepAngle: Float,
+    level: Int,
+    maxLevel: Int,
+    lineWidth: Float,
+    areaTopLeft: Offset,
+    areaSize: Size,
+) {
+    val padding = lineWidth * (maxLevel - level) + lineWidth / 2
+    drawArc(
+        topLeft = areaTopLeft + Offset(padding, padding),
+        size = Size(areaSize.width - 2 * padding, areaSize.width - 2 * padding),
+        startAngle = startAngle,
+        sweepAngle = sweepAngle,
+        useCenter = false,
+        style = Stroke(width = lineWidth, cap = StrokeCap.Butt),
+        color = slice.color,
+    )
+    var localStartAngle = startAngle
+    slice.subSlices.forEach {
+        val localSweepAngle = (it.value / slice.value) * sweepAngle
+        drawComponent(
+            slice = it,
+            startAngle = localStartAngle,
+            sweepAngle = localSweepAngle,
+            level = level + 1,
+            maxLevel = maxLevel,
+            lineWidth = lineWidth,
+            areaTopLeft = areaTopLeft,
+            areaSize = areaSize,
+        )
+        localStartAngle += localSweepAngle
+    }
+}
+
 @Composable
-private fun DoughnutLegend(
-    data: DoughnutChartData,
+private fun SunbrustLegend(
+    data: SunbrustChartData,
 ) {
     Box(modifier = Modifier.border(width = 1.dp, color = ChartsTheme.legendColor)) {
         LegendFlow(
