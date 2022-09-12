@@ -1,10 +1,10 @@
-package pl.krystiankaniowski.composecharts.views
+package pl.krystiankaniowski.composecharts.views.circular
 
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
-import pl.krystiankaniowski.composecharts.radar.RadarChart
-import pl.krystiankaniowski.composecharts.radar.RadarChartData
+import pl.krystiankaniowski.composecharts.circular.RadarChart
+import pl.krystiankaniowski.composecharts.circular.RadarChartData
 
 @Suppress("MagicNumber")
 @Composable

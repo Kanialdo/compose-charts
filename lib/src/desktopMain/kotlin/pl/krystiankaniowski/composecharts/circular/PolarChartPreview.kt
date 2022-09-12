@@ -1,4 +1,4 @@
-package pl.krystiankaniowski.composecharts.polar
+package pl.krystiankaniowski.composecharts.circular
 
 import androidx.compose.desktop.ui.tooling.preview.Preview
 import androidx.compose.runtime.Composable
@@ -6,7 +6,7 @@ import pl.krystiankaniowski.composecharts.autoColor
 
 @Preview
 @Composable
-fun PolarChartPreview() {
+private fun PolarChartPreview() {
     PolarChart(
         data = PolarChartData(
             entries = listOf(
@@ -22,7 +22,7 @@ fun PolarChartPreview() {
 
 @Preview
 @Composable
-fun PolarChart2Preview() {
+private fun PolarChart2Preview() {
     PolarChart(
         data = PolarChartData(
             entries = listOf(
@@ -38,7 +38,7 @@ fun PolarChart2Preview() {
 
 @Preview
 @Composable
-fun PolarChart3Preview() {
+private fun PolarChart3Preview() {
     PolarChart(
         data = PolarChartData(
             entries = listOf(

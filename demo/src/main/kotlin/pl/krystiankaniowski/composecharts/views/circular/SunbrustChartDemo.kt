@@ -1,10 +1,10 @@
-package pl.krystiankaniowski.composecharts.views
+package pl.krystiankaniowski.composecharts.views.circular
 
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import pl.krystiankaniowski.composecharts.autoColor
-import pl.krystiankaniowski.composecharts.circural.SunbrustChart
-import pl.krystiankaniowski.composecharts.circural.SunbrustChartData
+import pl.krystiankaniowski.composecharts.circular.SunbrustChart
+import pl.krystiankaniowski.composecharts.circular.SunbrustChartData
 
 @Suppress("MagicNumber")
 @Composable

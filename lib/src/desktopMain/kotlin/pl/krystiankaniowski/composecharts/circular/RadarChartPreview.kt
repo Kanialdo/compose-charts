@@ -1,4 +1,4 @@
-package pl.krystiankaniowski.composecharts.radar
+package pl.krystiankaniowski.composecharts.circular
 
 import androidx.compose.desktop.ui.tooling.preview.Preview
 import androidx.compose.runtime.Composable
@@ -6,7 +6,7 @@ import androidx.compose.ui.graphics.Color
 
 @Preview
 @Composable
-fun RadarChartPreview() {
+private fun RadarChartPreview() {
     RadarChart(
         data = RadarChartData(
             labels = listOf(
@@ -25,7 +25,7 @@ fun RadarChartPreview() {
 
 @Preview
 @Composable
-fun RadarChart2Preview() {
+private fun RadarChart2Preview() {
     RadarChart(
         data = RadarChartData(
             labels = listOf(
@@ -44,7 +44,7 @@ fun RadarChart2Preview() {
 
 @Preview
 @Composable
-fun RadarChart3Preview() {
+private fun RadarChart3Preview() {
     RadarChart(
         data = RadarChartData(
             labels = listOf(

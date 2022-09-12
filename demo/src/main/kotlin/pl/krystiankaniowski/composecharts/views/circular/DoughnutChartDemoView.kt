@@ -1,10 +1,10 @@
-package pl.krystiankaniowski.composecharts.views
+package pl.krystiankaniowski.composecharts.views.circular
 
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import pl.krystiankaniowski.composecharts.autoColor
-import pl.krystiankaniowski.composecharts.circural.DoughnutChart
-import pl.krystiankaniowski.composecharts.circural.DoughnutChartData
+import pl.krystiankaniowski.composecharts.circular.DoughnutChart
+import pl.krystiankaniowski.composecharts.circular.DoughnutChartData
 
 @Suppress("MagicNumber")
 @Composable

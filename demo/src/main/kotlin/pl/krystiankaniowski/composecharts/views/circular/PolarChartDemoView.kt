@@ -1,10 +1,10 @@
-package pl.krystiankaniowski.composecharts.views
+package pl.krystiankaniowski.composecharts.views.circular
 
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import pl.krystiankaniowski.composecharts.autoColor
-import pl.krystiankaniowski.composecharts.polar.PolarChart
-import pl.krystiankaniowski.composecharts.polar.PolarChartData
+import pl.krystiankaniowski.composecharts.circular.PolarChart
+import pl.krystiankaniowski.composecharts.circular.PolarChartData
 
 @Suppress("MagicNumber")
 @Composable

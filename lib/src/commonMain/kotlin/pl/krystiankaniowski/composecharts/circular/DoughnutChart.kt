@@ -1,4 +1,4 @@
-package pl.krystiankaniowski.composecharts.circural
+package pl.krystiankaniowski.composecharts.circular
 
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.border
@@ -30,7 +30,6 @@ data class DoughnutChartData(val slices: List<Slice>) {
         val color: Color,
     )
 }
-
 
 @Composable
 fun DoughnutChart(

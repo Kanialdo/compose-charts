@@ -1,4 +1,4 @@
-package pl.krystiankaniowski.composecharts.radar
+package pl.krystiankaniowski.composecharts.circular
 
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.border

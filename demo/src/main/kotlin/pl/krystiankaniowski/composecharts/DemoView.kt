@@ -13,6 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import pl.krystiankaniowski.composecharts.views.*
+import pl.krystiankaniowski.composecharts.views.circular.*
 
 val items: List<Pair<String, @Composable () -> Unit>> = listOf(
     "Bar chart standard" to { BarChartDemoGrouped() },
