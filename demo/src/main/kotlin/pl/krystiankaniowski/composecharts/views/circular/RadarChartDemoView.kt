@@ -9,7 +9,7 @@ import pl.krystiankaniowski.composecharts.circular.RadarChartData
 import pl.krystiankaniowski.composecharts.views.components.*
 import kotlin.random.Random
 
-@Suppress("MagicNumber")
+@Suppress("MagicNumber", "LongMethod")
 @Composable
 fun RadarChartDemo() {
 
@@ -20,7 +20,7 @@ fun RadarChartDemo() {
             RadarChartData(
                 labels = buildList {
                     for (i in 0 until size) {
-                        add("D${i}")
+                        add("D$i")
                     }
                 },
                 entries = buildList {
