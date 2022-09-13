@@ -37,9 +37,10 @@ fun OptionRemoveData(onClick: () -> Unit) {
 }
 
 @Composable
-fun OptionAddDataSet(onClick: () -> Unit) {
+fun OptionAddDataSet(onClick: (Random) -> Unit) {
+    val random = Random(System.currentTimeMillis())
     Button(
-        onClick = onClick,
+        onClick = { onClick(random) },
         // content = { Text("Add data set") },
         content = { Icon(imageVector = Icons.Default.PlaylistAdd, contentDescription = "Add data set") },
     )
