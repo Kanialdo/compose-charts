@@ -55,7 +55,7 @@ fun PieChart(
 
             drawIntoCanvas { canvas ->
                 var start = -90f
-                data.slices.forEachIndexed { index, slice ->
+                data.slices.forEach{ slice ->
                     val end = (slice.value / data.sum) * 360f
                     canvas.drawArc(
                         rect = Rect(
