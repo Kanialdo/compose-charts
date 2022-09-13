@@ -204,7 +204,7 @@ private fun HorizontalBarLegend(
     Box(modifier = Modifier.border(width = 1.dp, color = ChartsTheme.legendColor)) {
         LegendFlow(
             modifier = Modifier.padding(16.dp),
-            data = data.dataSets.mapIndexed { index, item ->
+            data = data.dataSets.map { item ->
                 LegendEntry(
                     item.label,
                     item.color,

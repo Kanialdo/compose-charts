@@ -1,22 +1,93 @@
 package pl.krystiankaniowski.composecharts.views.circular
 
 import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.graphics.Color
+import androidx.compose.runtime.*
+import pl.krystiankaniowski.composecharts.ChartScreen
+import pl.krystiankaniowski.composecharts.autoColor
 import pl.krystiankaniowski.composecharts.circular.RadarChart
 import pl.krystiankaniowski.composecharts.circular.RadarChartData
+import pl.krystiankaniowski.composecharts.views.components.*
+import kotlin.random.Random
 
-@Suppress("MagicNumber")
+@Suppress("MagicNumber", "LongMethod")
 @Composable
 fun RadarChartDemo() {
-    RadarChart(
-        title = { Text("Radar chart") },
-        data = RadarChartData(
-            labels = listOf("A", "B", "C", "D", "E", "F"),
-            entries = listOf(
-                RadarChartData.Entry(label = "Color Red", color = Color.Red, values = listOf(1f, 2f, 3f, 4f, 5f, 6f)),
-                RadarChartData.Entry(label = "Color Green", color = Color.Green, values = listOf(3f, 1f, 3f, 1f, 3f, 1f)),
+
+    var data by remember {
+        val random = Random(System.currentTimeMillis())
+        val size = 5
+        mutableStateOf(
+            RadarChartData(
+                labels = buildList {
+                    for (i in 0 until size) {
+                        add("D$i")
+                    }
+                },
+                entries = buildList {
+                    for (i in 0 until 3) {
+                        add(createEntry(random, i, size))
+                    }
+                },
             )
-        ),
+        )
+    }
+
+    ChartScreen(
+        chart = {
+            RadarChart(
+                data = data,
+                title = { Text("Radar chart") },
+            )
+        },
+        settings = {
+            OptionRandomize { random ->
+                data = data.copy(
+                    entries = data.entries.map {
+                        it.copy(
+                            values = buildList {
+                                for (i in it.values.indices) {
+                                    add(random.nextFloat())
+                                }
+                            },
+                        )
+                    },
+                )
+            }
+            OptionAddDataSet { random ->
+                val newId = data.entries.size
+                data = data.copy(
+                    entries = data.entries + createEntry(random = random, id = newId, size = data.entries.first().values.size),
+                )
+            }
+            OptionRemoveDataSet {
+                data = data.copy(
+                    entries = data.entries.dropLast(1),
+                )
+            }
+            OptionAddData { random ->
+                data = data.copy(
+                    labels = data.labels + "D${data.entries.first().values.size + 1}",
+                    entries = data.entries.map { it.copy(values = it.values + random.nextFloat()) },
+                )
+            }
+            OptionRemoveData {
+                data = data.copy(
+                    labels = data.labels.dropLast(1),
+                    entries = data.entries.map { it.copy(values = it.values.dropLast(1)) },
+                )
+            }
+        }
+    )
+}
+
+private fun createEntry(random: Random, id: Int, size: Int): RadarChartData.Entry {
+    return RadarChartData.Entry(
+        label = "Data ${id + 1}",
+        color = autoColor(id),
+        values = buildList {
+            for (i in 0 until size) {
+                add(random.nextFloat())
+            }
+        },
     )
 }

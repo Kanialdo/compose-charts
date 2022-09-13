@@ -116,7 +116,7 @@ fun RadarChart(
 
                 scale.getHelperLines().forEach { value ->
                     val path = Path()
-                    (0..data.labels.size).forEachIndexed { index, it ->
+                    (0..data.labels.size).forEachIndexed { index, _ ->
                         val angle = 2 * PI / data.labels.size * index + PI
                         if (index == 0) {
                             val point = Offset(
