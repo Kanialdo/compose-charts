@@ -14,7 +14,6 @@ import pl.krystiankaniowski.composecharts.views.components.OptionAddData
 import pl.krystiankaniowski.composecharts.views.components.OptionRandomize
 import pl.krystiankaniowski.composecharts.views.components.OptionRemoveData
 
-
 @Suppress("MagicNumber")
 @Composable
 fun DoughnutChartDemo() {
