@@ -7,8 +7,8 @@ import pl.krystiankaniowski.composecharts.autoColor
 import pl.krystiankaniowski.composecharts.components.*
 import pl.krystiankaniowski.composecharts.line.LineChart
 import pl.krystiankaniowski.composecharts.line.LineChartData
-import pl.krystiankaniowski.composecharts.randomize
-import pl.krystiankaniowski.composecharts.views.components.*
+import pl.krystiankaniowski.composecharts.utils.generateList
+import pl.krystiankaniowski.composecharts.utils.randomize
 import kotlin.random.Random
 
 @Suppress("MagicNumber", "LongMethod")
@@ -65,10 +65,6 @@ private fun createEntry(random: Random, id: Int, size: Int): LineChartData.Line 
     return LineChartData.Line(
         label = "Data ${id + 1}",
         color = autoColor(id),
-        values = buildList {
-            for (i in 0 until size) {
-                add(random.nextFloat())
-            }
-        },
+        values = generateList(random, size),
     )
 }
