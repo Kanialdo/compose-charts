@@ -1,4 +1,4 @@
-package pl.krystiankaniowski.composecharts.views.components
+package pl.krystiankaniowski.composecharts.components
 
 import androidx.compose.material.Button
 import androidx.compose.material.Icon
