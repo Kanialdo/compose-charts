@@ -7,11 +7,13 @@ import androidx.compose.material.lightColors
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 
+@Suppress("MagicNumber")
 private val LightColors = lightColors(
     primary = Color(0xFFE6194B),
     onPrimary = Color.White,
 )
 
+@Suppress("MagicNumber")
 private val DarkColors = darkColors(
     primary = Color(0xFF9a1636),
     onPrimary = Color.White,
