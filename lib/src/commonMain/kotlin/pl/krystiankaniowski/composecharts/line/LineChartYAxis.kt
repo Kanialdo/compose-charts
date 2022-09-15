@@ -55,7 +55,7 @@ object LineChartYAxis {
             data: LineChartData,
         ) {
 
-            val thresholds = calculateHelperValues(data.minValue, data.maxValue, desiredCount = 6).filter { it > data.minValue && it < data.maxValue }
+            val thresholds = niceScale(minPoint = data.minValue, maxPoint = data.maxValue).getHelperLinesFloat()
 
             for (threshold in thresholds) {
                 val y = yMapper.y(threshold)

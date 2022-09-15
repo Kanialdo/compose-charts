@@ -22,6 +22,16 @@ data class NiceScale constructor(
         }
         return items
     }
+
+    fun getHelperLinesFloat(): List<Float> {
+        var v = niceMin
+        val items = mutableListOf<Float>()
+        while (v < niceMax) {
+            v += tickSpacing
+            items.add(v.toFloat())
+        }
+        return items
+    }
 }
 
 fun niceScale(minPoint: Float, maxPoint: Float, maxTicks: Int = 10): NiceScale {
