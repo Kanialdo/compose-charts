@@ -6,9 +6,9 @@ import pl.krystiankaniowski.composecharts.ChartScreen
 import pl.krystiankaniowski.composecharts.autoColor
 import pl.krystiankaniowski.composecharts.circular.PolarChart
 import pl.krystiankaniowski.composecharts.circular.PolarChartData
-import pl.krystiankaniowski.composecharts.views.components.OptionAddData
-import pl.krystiankaniowski.composecharts.views.components.OptionRandomize
-import pl.krystiankaniowski.composecharts.views.components.OptionRemoveData
+import pl.krystiankaniowski.composecharts.components.OptionAddData
+import pl.krystiankaniowski.composecharts.components.OptionRandomize
+import pl.krystiankaniowski.composecharts.components.OptionRemoveData
 
 @Suppress("MagicNumber")
 @Composable

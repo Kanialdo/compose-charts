@@ -6,7 +6,7 @@ import pl.krystiankaniowski.composecharts.ChartScreen
 import pl.krystiankaniowski.composecharts.autoColor
 import pl.krystiankaniowski.composecharts.circular.RadarChart
 import pl.krystiankaniowski.composecharts.circular.RadarChartData
-import pl.krystiankaniowski.composecharts.views.components.*
+import pl.krystiankaniowski.composecharts.components.*
 import kotlin.random.Random
 
 @Suppress("MagicNumber", "LongMethod")
