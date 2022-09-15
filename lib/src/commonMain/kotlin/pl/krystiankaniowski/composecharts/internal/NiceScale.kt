@@ -1,18 +1,18 @@
 package pl.krystiankaniowski.composecharts.internal
 
-import kotlin.math.ceil
-import kotlin.math.floor
-import kotlin.math.log10
-import kotlin.math.pow
+import kotlin.math.*
 
 // Basing on Nice Label Algorithm for Charts with minimum ticks - https://stackoverflow.com/a/16363437/5796683
 
-data class NiceScale constructor(
+internal data class NiceScale constructor(
     val niceMin: Double,
     val niceMax: Double,
     val tickSpacing: Double,
 ) {
 
+    private val decimalPower = abs(log10(tickSpacing).roundToInt())
+
+    /** Calculate helper lines basic on min and max values of scale */
     fun getHelperLines(beforeMinValues: Int = 0, afterMaxValues: Int = 0): List<Double> {
         var v = niceMin - beforeMinValues * tickSpacing
         val limit = niceMax + afterMaxValues * tickSpacing
@@ -28,9 +28,19 @@ data class NiceScale constructor(
     }
 
     fun getHelperLinesFloat(): List<Float> = getHelperLines().map { it.toFloat() }
+
+    /** Formats value in nice way basing on tickSpacing */
+    fun formatValue(value: Double): String {
+        return value.toBigDecimal()
+            .setScale(decimalPower + 1, 6)
+            .toString()
+            .trimEnd('0').trimEnd { it == '.' || it == ',' }
+    }
 }
 
-fun niceScale(minPoint: Float, maxPoint: Float, maxTicks: Int = 10): NiceScale {
+/** Calculate nice scale basic on min and max value */
+
+internal fun niceScale(minPoint: Float, maxPoint: Float, maxTicks: Int = 10): NiceScale {
 
     val minPointDouble = minPoint.toDouble()
     val maxPointDouble = maxPoint.toDouble()
