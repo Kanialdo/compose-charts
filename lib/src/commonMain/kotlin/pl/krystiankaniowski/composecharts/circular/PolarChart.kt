@@ -91,7 +91,7 @@ fun PolarChart(
                         style = Stroke(width = style.lineWidth.toPx()),
                     )
                     drawText(
-                        text = " $value",
+                        text = scale.formatValue(value),
                         x = chartArea.center.x,
                         y = (chartArea.center.y - ((chartArea.height / 2) / chartMaxValue) * value).toFloat(),
                         color = style.valueColor,

@@ -129,7 +129,7 @@ fun RadarChart(
                             )
 
                             drawText(
-                                text = " $value",
+                                text = scale.formatValue(value),
                                 x = point.x,
                                 y = point.y,
                                 color = style.valueColor,
