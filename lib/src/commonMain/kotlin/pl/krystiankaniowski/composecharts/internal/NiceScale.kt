@@ -13,25 +13,21 @@ data class NiceScale constructor(
     val tickSpacing: Double,
 ) {
 
-    fun getHelperLines(): List<Double> {
-        var v = niceMin
+    fun getHelperLines(beforeMinValues: Int = 0, afterMaxValues: Int = 0): List<Double> {
+        var v = niceMin - beforeMinValues * tickSpacing
+        val limit = niceMax + afterMaxValues * tickSpacing
         val items = mutableListOf<Double>()
-        while (v < niceMax) {
+        while (v < limit) {
             v += tickSpacing
-            items.add(v)
+            // double check to prevent adding cheated values eg. 0.1 + 0.1 + 0.1 == 0.30000000000000004
+            if (v <= limit) {
+                items.add(v)
+            }
         }
         return items
     }
 
-    fun getHelperLinesFloat(): List<Float> {
-        var v = niceMin
-        val items = mutableListOf<Float>()
-        while (v < niceMax) {
-            v += tickSpacing
-            items.add(v.toFloat())
-        }
-        return items
-    }
+    fun getHelperLinesFloat(): List<Float> = getHelperLines().map { it.toFloat() }
 }
 
 fun niceScale(minPoint: Float, maxPoint: Float, maxTicks: Int = 10): NiceScale {
