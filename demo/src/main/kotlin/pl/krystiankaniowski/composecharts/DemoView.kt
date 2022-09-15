@@ -1,18 +1,19 @@
 package pl.krystiankaniowski.composecharts
 
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.horizontalScroll
+import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Divider
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
+import androidx.compose.ui.ImageComposeScene
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.toComposeImageBitmap
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.dp
+import org.jetbrains.skia.Image
 import pl.krystiankaniowski.composecharts.views.*
 import pl.krystiankaniowski.composecharts.views.circular.*
 import pl.krystiankaniowski.composecharts.views.line.*
@@ -72,10 +73,21 @@ fun ChartScreen(
     settings: @Composable () -> Unit,
 ) {
     Column {
-        Box(
-            modifier = Modifier.weight(1f).padding(16.dp),
-            content = { chart() },
-        )
+        BoxWithConstraints(Modifier.weight(1f)) {
+            val image = ImageComposeScene(
+                width = (LocalDensity.current.density * this.maxWidth.value).toInt(),
+                height = (LocalDensity.current.density * this.maxHeight.value).toInt(),
+                content = {
+                    Box(
+                        modifier = Modifier.padding(16.dp),
+                        content = { chart() },
+                    )
+                }
+            ).render()
+            println(image.imageInfo.width)
+            println(image.imageInfo.height)
+            Image(bitmap = image.toComposeImageBitmap(), null)
+        }
         Divider(modifier = Modifier.fillMaxWidth().height(1.dp))
         Row(
             modifier = Modifier.horizontalScroll(rememberScrollState()).padding(top = 16.dp),
