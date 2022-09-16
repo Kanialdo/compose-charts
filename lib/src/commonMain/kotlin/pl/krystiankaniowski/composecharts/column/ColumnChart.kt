@@ -1,4 +1,4 @@
-package pl.krystiankaniowski.composecharts.horizontalbar
+package pl.krystiankaniowski.composecharts.column
 
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.border
@@ -19,48 +19,54 @@ import pl.krystiankaniowski.composecharts.legend.LegendEntry
 import pl.krystiankaniowski.composecharts.legend.LegendFlow
 import pl.krystiankaniowski.composecharts.legend.LegendPosition
 
-data class HorizontalBarChartData(
+data class ColumnChartData(
     val labels: List<String>,
-    val dataSets: List<DataSet>,
+    val columns: List<Column>,
 ) {
 
-    data class DataSet(
+    data class Column(
         val label: String,
-        val color: Color,
         val values: List<Float>,
-    )
+        val color: Color,
+    ) {
+        internal val sum: Float get() = values.sum()
+    }
 
     init {
-        check(dataSets.first().values.size.let { size -> dataSets.all { it.values.size == size } }) {
+        check(columns.first().values.size.let { size -> columns.all { it.values.size == size } }) {
             "All bars have to contains same amount of entries"
+        }
+        check(labels.size == columns.first().values.size) {
+            "Amount of labels should be equal to amount of values in each bar"
         }
     }
 
-    internal val minValue = dataSets.minOf { it.values.minOf { it } }
-    internal val maxValue = dataSets.maxOf { it.values.maxOf { it } }
+    internal val minValue = columns.minOf { it.values.minOf { it } }
+    internal val maxValue = columns.maxOf { it.values.maxOf { it } }
 
-    internal val size: Int get() = dataSets.first().values.size
+    internal val size: Int get() = columns.first().values.size
 }
 
-enum class HorizontalBarChartStyle {
-    STANDARD,
+enum class ColumnChartStyle {
+    GROUPED,
     STACKED,
-    PROPORTION,
+    PROPORTIONAL,
 }
 
 @Composable
-fun HorizontalBarChart(
+fun ColumnChart(
     modifier: Modifier = Modifier,
-    data: HorizontalBarChartData,
-    style: HorizontalBarChartStyle = HorizontalBarChartStyle.STANDARD,
+    data: ColumnChartData,
+    style: ColumnChartStyle = ColumnChartStyle.GROUPED,
     title: (@Composable () -> Unit)? = null,
-    yAxis: HorizontalBarChartYAxis.Drawer = HorizontalBarChartYAxis.Auto(),
+    xAxis: ColumnChartXAxis.Drawer = ColumnChartXAxis.Auto(),
+    yAxis: ColumnChartYAxis.Drawer = ColumnChartYAxis.Auto(),
     legendPosition: LegendPosition = LegendPosition.Bottom,
 ) {
     ChartChoreographer(
         modifier = modifier,
         title = title,
-        legend = { HorizontalBarLegend(data) },
+        legend = { BarLegend(data) },
         legendPosition = legendPosition,
     ) {
         Canvas(Modifier.fillMaxSize()) {
@@ -69,8 +75,12 @@ fun HorizontalBarChart(
             val offset = 1f
 
             val contentArea = Rect(
-                top = 0f, bottom = size.height - 0f,
+                top = 0f, bottom = size.height - xAxis.requiredHeight(),
                 left = yAxis.requiredWidth(), right = size.width,
+            )
+            val xAxisArea = Rect(
+                top = contentArea.bottom, bottom = size.height,
+                left = contentArea.left, right = contentArea.right,
             )
             val yAxisArea = Rect(
                 top = contentArea.top, bottom = contentArea.bottom,
@@ -79,116 +89,119 @@ fun HorizontalBarChart(
 
             when (style) {
 
-                HorizontalBarChartStyle.STANDARD -> {
+                ColumnChartStyle.GROUPED -> {
 
                     val mapper = PointMapper(
-                        xSrcMin = 0f,
-                        xSrcMax = data.maxValue,
+                        xSrcMin = 0f - offset,
+                        xSrcMax = data.size - 1 + offset,
                         xDstMin = contentArea.left,
                         xDstMax = contentArea.right,
-                        ySrcMin = 0f - offset,
-                        ySrcMax = data.size - 1 + offset,
+                        ySrcMin = 0f,
+                        ySrcMax = data.maxValue,
                         yDstMin = contentArea.top,
                         yDstMax = contentArea.bottom,
                     )
 
-                    yAxis.draw(this, contentArea, yAxisArea, mapper, data)
+                    yAxis.draw(this, contentArea, yAxisArea, mapper, mapper.ySrcMin, mapper.ySrcMax)
+                    xAxis.draw(this, contentArea, xAxisArea, mapper, data)
 
-                    val barHeight = 2 * w * mapper.yScale / data.dataSets.size
-                    data.dataSets.forEachIndexed { series, value ->
+                    val barWidth = 2 * w * mapper.xScale / data.columns.size
+                    data.columns.forEachIndexed { series, value ->
                         value.values.forEachIndexed { pos, v ->
                             drawRect(
                                 color = value.color,
                                 topLeft = Offset(
-                                    x = mapper.x(0),
-                                    y = mapper.y(pos + w) + series * barHeight,
+                                    x = mapper.x(pos - w) + series * barWidth,
+                                    y = mapper.y(v),
                                 ),
                                 size = Size(
-                                    width = v * mapper.xScale,
-                                    height = barHeight,
+                                    width = barWidth,
+                                    height = v * mapper.yScale,
                                 )
                             )
                         }
                     }
                 }
 
-                HorizontalBarChartStyle.STACKED -> {
+                ColumnChartStyle.STACKED -> {
 
-                    val series = data.dataSets.size
+                    val series = data.columns.size
                     val values = data.size
-                    val maxValues = FloatArray(values) { index -> data.dataSets.map { it.values[index] }.sum() }
+                    val maxValues = FloatArray(values) { index -> data.columns.map { it.values[index] }.sum() }
                     val maxOfValues = maxValues.maxOf { it }
 
                     val mapper = PointMapper(
-                        xSrcMin = 0f,
-                        xSrcMax = maxOfValues,
+                        xSrcMin = 0f - offset,
+                        xSrcMax = data.size - 1 + offset,
                         xDstMin = contentArea.left,
                         xDstMax = contentArea.right,
-                        ySrcMin = 0f - offset,
-                        ySrcMax = data.size - 1 + offset,
+                        ySrcMin = 0f,
+                        ySrcMax = maxOfValues,
                         yDstMin = contentArea.top,
                         yDstMax = contentArea.bottom,
                     )
 
-                    val barHeight = 2 * w * mapper.yScale
+                    val barWidth = 2 * w * mapper.xScale
 
-                    yAxis.draw(this, contentArea, yAxisArea, mapper, data)
+                    yAxis.draw(this, contentArea, yAxisArea, mapper, mapper.ySrcMin, mapper.ySrcMax)
+                    xAxis.draw(this, contentArea, xAxisArea, mapper, data)
 
                     for (i in (values - 1) downTo 0) {
                         var counter = maxValues[i]
                         for (j in (series - 1) downTo 0) {
                             drawRect(
-                                color = data.dataSets[j].color,
+                                color = data.columns[j].color,
                                 topLeft = Offset(
-                                    x = mapper.x(0),
-                                    y = mapper.y(i + w),
+                                    x = mapper.x(i - w),
+                                    y = mapper.y(counter),
                                 ),
                                 size = Size(
-                                    width = counter * mapper.xScale,
-                                    height = barHeight,
+                                    width = barWidth,
+                                    height = counter * mapper.yScale,
                                 )
                             )
-                            counter -= data.dataSets[j].values[i]
+                            counter -= data.columns[j].values[i]
                         }
                     }
                 }
 
-                HorizontalBarChartStyle.PROPORTION -> {
+                ColumnChartStyle.PROPORTIONAL -> {
 
-                    val series = data.dataSets.size
+                    val series = data.columns.size
                     val values = data.size
-                    val maxValues = FloatArray(values) { index -> data.dataSets.map { it.values[index] }.sum() }
+                    val maxValues = FloatArray(values) { index -> data.columns.map { it.values[index] }.sum() }
 
                     val mapper = PointMapper(
-                        xSrcMin = 0f,
-                        xSrcMax = 1f,
+                        xSrcMin = 0f - offset,
+                        xSrcMax = data.size - 1 + offset,
                         xDstMin = contentArea.left,
                         xDstMax = contentArea.right,
-                        ySrcMin = 0f - offset,
-                        ySrcMax = data.size - 1 + offset,
+                        ySrcMin = 0f,
+                        ySrcMax = 1f,
                         yDstMin = contentArea.top,
                         yDstMax = contentArea.bottom,
                     )
 
-                    yAxis.draw(this, contentArea, yAxisArea, mapper, data)
+                    yAxis.draw(this, contentArea, yAxisArea, mapper, mapper.ySrcMin, mapper.ySrcMax)
+                    xAxis.draw(this, contentArea, xAxisArea, mapper, data)
 
-                    val barHeight = 2 * w * mapper.yScale
+                    val barWidth = 2 * w * mapper.xScale
 
                     for (i in (values - 1) downTo 0) {
                         var counter = maxValues[i]
                         for (j in (series - 1) downTo 0) {
                             drawRect(
-                                color = data.dataSets[j].color,
+                                color = data.columns[j].color,
                                 topLeft = Offset(
-                                    x = mapper.x(0),
-                                    y = mapper.y(i + w),
+                                    x = mapper.x(i - w),
+                                    y = mapper.y(counter / maxValues[i]),
                                 ),
                                 size = Size(
-                                    width = (counter / maxValues[i]) * mapper.xScale,
-                                    height = barHeight,
+                                    width = barWidth,
+                                    height = (counter / maxValues[i]) * mapper.yScale,
                                 )
                             )
-                            counter -= data.dataSets[j].values[i]
+                            counter -= data.columns[j].values[i]
                         }
                     }
                 }
@@ -198,13 +211,13 @@ fun HorizontalBarChart(
 }
 
 @Composable
-private fun HorizontalBarLegend(
-    data: HorizontalBarChartData,
+private fun BarLegend(
+    data: ColumnChartData,
 ) {
     Box(modifier = Modifier.border(width = 1.dp, color = ChartsTheme.legendColor)) {
         LegendFlow(
             modifier = Modifier.padding(16.dp),
-            data = data.dataSets.map { item ->
+            data = data.columns.map { item ->
                 LegendEntry(
                     item.label,
                     item.color,
