@@ -13,7 +13,7 @@ import pl.krystiankaniowski.composecharts.internal.TextAnchorY
 import pl.krystiankaniowski.composecharts.internal.YMapper
 import pl.krystiankaniowski.composecharts.internal.drawText
 
-object HorizontalBarChartYAxis {
+object BarChartYAxis {
 
     interface Drawer {
         fun requiredWidth(): Float
@@ -22,7 +22,7 @@ object HorizontalBarChartYAxis {
             chartScope: Rect,
             yAxisScope: Rect,
             yMapper: YMapper,
-            data: HorizontalBarChartData,
+            data: BarChartData,
         )
     }
 
@@ -34,7 +34,7 @@ object HorizontalBarChartYAxis {
             chartScope: Rect,
             yAxisScope: Rect,
             yMapper: YMapper,
-            data: HorizontalBarChartData,
+            data: BarChartData,
         ) {
         }
     }
@@ -52,7 +52,7 @@ object HorizontalBarChartYAxis {
             chartScope: Rect,
             yAxisScope: Rect,
             yMapper: YMapper,
-            data: HorizontalBarChartData,
+            data: BarChartData,
         ) {
             drawScope.drawLine(
                 color = color,

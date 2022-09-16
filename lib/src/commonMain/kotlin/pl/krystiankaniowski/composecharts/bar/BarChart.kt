@@ -19,7 +19,7 @@ import pl.krystiankaniowski.composecharts.legend.LegendEntry
 import pl.krystiankaniowski.composecharts.legend.LegendFlow
 import pl.krystiankaniowski.composecharts.legend.LegendPosition
 
-data class HorizontalBarChartData(
+data class BarChartData(
     val labels: List<String>,
     val dataSets: List<DataSet>,
 ) {
@@ -42,25 +42,25 @@ data class HorizontalBarChartData(
     internal val size: Int get() = dataSets.first().values.size
 }
 
-enum class HorizontalBarChartStyle {
+enum class BarChartStyle {
     GROUPED,
     STACKED,
-    PROPORTION,
+    PROPORTIONAL,
 }
 
 @Composable
-fun HorizontalBarChart(
+fun BarChart(
     modifier: Modifier = Modifier,
-    data: HorizontalBarChartData,
-    style: HorizontalBarChartStyle = HorizontalBarChartStyle.GROUPED,
+    data: BarChartData,
+    style: BarChartStyle = BarChartStyle.GROUPED,
     title: (@Composable () -> Unit)? = null,
-    yAxis: HorizontalBarChartYAxis.Drawer = HorizontalBarChartYAxis.Auto(),
+    yAxis: BarChartYAxis.Drawer = BarChartYAxis.Auto(),
     legendPosition: LegendPosition = LegendPosition.Bottom,
 ) {
     ChartChoreographer(
         modifier = modifier,
         title = title,
-        legend = { HorizontalBarLegend(data) },
+        legend = { BarLegend(data) },
         legendPosition = legendPosition,
     ) {
         Canvas(Modifier.fillMaxSize()) {
@@ -79,7 +79,7 @@ fun HorizontalBarChart(
 
             when (style) {
 
-                HorizontalBarChartStyle.GROUPED -> {
+                BarChartStyle.GROUPED -> {
 
                     val mapper = PointMapper(
                         xSrcMin = 0f,
@@ -112,7 +112,7 @@ fun HorizontalBarChart(
                     }
                 }
 
-                HorizontalBarChartStyle.STACKED -> {
+                BarChartStyle.STACKED -> {
 
                     val series = data.dataSets.size
                     val values = data.size
@@ -153,7 +153,7 @@ fun HorizontalBarChart(
                     }
                 }
 
-                HorizontalBarChartStyle.PROPORTION -> {
+                BarChartStyle.PROPORTIONAL -> {
 
                     val series = data.dataSets.size
                     val values = data.size
@@ -198,8 +198,8 @@ fun HorizontalBarChart(
 }
 
 @Composable
-private fun HorizontalBarLegend(
-    data: HorizontalBarChartData,
+private fun BarLegend(
+    data: BarChartData,
 ) {
     Box(modifier = Modifier.border(width = 1.dp, color = ChartsTheme.legendColor)) {
         LegendFlow(

@@ -15,15 +15,18 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import pl.krystiankaniowski.composecharts.views.*
 import pl.krystiankaniowski.composecharts.views.circular.*
-import pl.krystiankaniowski.composecharts.views.line.*
+import pl.krystiankaniowski.composecharts.views.line.LineChartCustomDemo
+import pl.krystiankaniowski.composecharts.views.line.LineChartDemo
+import pl.krystiankaniowski.composecharts.views.line.LineProportionalChartDemo
+import pl.krystiankaniowski.composecharts.views.line.LineStackedChartDemo
 
 val items: List<Pair<String, @Composable () -> Unit>> = listOf(
     "Column chart gropued" to { ColumnChartDemoGrouped() },
     "Column chart stacked" to { ColumnChartDemoStacked() },
     "Column chart proportional" to { ColumnChartDemoProportional() },
-    "Horizontal bar chart standard" to { HorizontalBarChartDemoGrouped() },
-    "Horizontal bar chart stacked" to { HorizontalBarChartDemoStacked() },
-    "Horizontal bar chart proportion" to { HorizontalBarChartDemoProportion() },
+    "Bar chart standard" to { BarChartDemoGrouped() },
+    "Bar chart stacked" to { BarChartDemoStacked() },
+    "Bar chart proportion" to { BarChartDemoProportional() },
     "Line chart" to { LineChartDemo() },
     "Line stacked chart" to { LineStackedChartDemo() },
     "Line proportional chart" to { LineProportionalChartDemo() },
