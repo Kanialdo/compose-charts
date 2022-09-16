@@ -1,4 +1,4 @@
-package pl.krystiankaniowski.composecharts.bar
+package pl.krystiankaniowski.composecharts.column
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.geometry.Offset
@@ -11,7 +11,7 @@ import androidx.compose.ui.unit.sp
 import pl.krystiankaniowski.composecharts.ChartsTheme
 import pl.krystiankaniowski.composecharts.internal.*
 
-object BarChartYAxis {
+object ColumnChartYAxis {
 
     interface Drawer {
         fun requiredWidth(): Float

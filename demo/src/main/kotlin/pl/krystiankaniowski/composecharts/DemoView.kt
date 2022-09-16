@@ -18,9 +18,9 @@ import pl.krystiankaniowski.composecharts.views.circular.*
 import pl.krystiankaniowski.composecharts.views.line.*
 
 val items: List<Pair<String, @Composable () -> Unit>> = listOf(
-    "Bar chart standard" to { BarChartDemoGrouped() },
-    "Bar chart stacked" to { BarChartDemoStacked() },
-    "Bar chart proportion" to { BarChartDemoProportion() },
+    "Column chart gropued" to { ColumnChartDemoGrouped() },
+    "Column chart stacked" to { ColumnChartDemoStacked() },
+    "Column chart proportional" to { ColumnChartDemoProportional() },
     "Horizontal bar chart standard" to { HorizontalBarChartDemoGrouped() },
     "Horizontal bar chart stacked" to { HorizontalBarChartDemoStacked() },
     "Horizontal bar chart proportion" to { HorizontalBarChartDemoProportion() },

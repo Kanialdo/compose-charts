@@ -1,4 +1,4 @@
-package pl.krystiankaniowski.composecharts.bar
+package pl.krystiankaniowski.composecharts.column
 
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.border
@@ -19,12 +19,12 @@ import pl.krystiankaniowski.composecharts.legend.LegendEntry
 import pl.krystiankaniowski.composecharts.legend.LegendFlow
 import pl.krystiankaniowski.composecharts.legend.LegendPosition
 
-data class BarChartData(
+data class ColumnChartData(
     val labels: List<String>,
-    val bars: List<Bar>,
+    val columns: List<Column>,
 ) {
 
-    data class Bar(
+    data class Column(
         val label: String,
         val values: List<Float>,
         val color: Color,
@@ -33,34 +33,34 @@ data class BarChartData(
     }
 
     init {
-        check(bars.first().values.size.let { size -> bars.all { it.values.size == size } }) {
+        check(columns.first().values.size.let { size -> columns.all { it.values.size == size } }) {
             "All bars have to contains same amount of entries"
         }
-        check(labels.size == bars.first().values.size) {
+        check(labels.size == columns.first().values.size) {
             "Amount of labels should be equal to amount of values in each bar"
         }
     }
 
-    internal val minValue = bars.minOf { it.values.minOf { it } }
-    internal val maxValue = bars.maxOf { it.values.maxOf { it } }
+    internal val minValue = columns.minOf { it.values.minOf { it } }
+    internal val maxValue = columns.maxOf { it.values.maxOf { it } }
 
-    internal val size: Int get() = bars.first().values.size
+    internal val size: Int get() = columns.first().values.size
 }
 
-enum class BarChartStyle {
-    STANDARD,
+enum class ColumnChartStyle {
+    GROUPED,
     STACKED,
-    PROPORTION,
+    PROPORTIONAL,
 }
 
 @Composable
-fun BarChart(
+fun ColumnChart(
     modifier: Modifier = Modifier,
-    data: BarChartData,
-    style: BarChartStyle = BarChartStyle.STANDARD,
+    data: ColumnChartData,
+    style: ColumnChartStyle = ColumnChartStyle.GROUPED,
     title: (@Composable () -> Unit)? = null,
-    xAxis: BarChartXAxis.Drawer = BarChartXAxis.Auto(),
-    yAxis: BarChartYAxis.Drawer = BarChartYAxis.Auto(),
+    xAxis: ColumnChartXAxis.Drawer = ColumnChartXAxis.Auto(),
+    yAxis: ColumnChartYAxis.Drawer = ColumnChartYAxis.Auto(),
     legendPosition: LegendPosition = LegendPosition.Bottom,
 ) {
     ChartChoreographer(
@@ -89,7 +89,7 @@ fun BarChart(
 
             when (style) {
 
-                BarChartStyle.STANDARD -> {
+                ColumnChartStyle.GROUPED -> {
 
                     val mapper = PointMapper(
                         xSrcMin = 0f - offset,
@@ -105,8 +105,8 @@ fun BarChart(
                     yAxis.draw(this, contentArea, yAxisArea, mapper, mapper.ySrcMin, mapper.ySrcMax)
                     xAxis.draw(this, contentArea, xAxisArea, mapper, data)
 
-                    val barWidth = 2 * w * mapper.xScale / data.bars.size
-                    data.bars.forEachIndexed { series, value ->
+                    val barWidth = 2 * w * mapper.xScale / data.columns.size
+                    data.columns.forEachIndexed { series, value ->
                         value.values.forEachIndexed { pos, v ->
                             drawRect(
                                 color = value.color,
@@ -123,11 +123,11 @@ fun BarChart(
                     }
                 }
 
-                BarChartStyle.STACKED -> {
+                ColumnChartStyle.STACKED -> {
 
-                    val series = data.bars.size
+                    val series = data.columns.size
                     val values = data.size
-                    val maxValues = FloatArray(values) { index -> data.bars.map { it.values[index] }.sum() }
+                    val maxValues = FloatArray(values) { index -> data.columns.map { it.values[index] }.sum() }
                     val maxOfValues = maxValues.maxOf { it }
 
                     val mapper = PointMapper(
@@ -150,7 +150,7 @@ fun BarChart(
                         var counter = maxValues[i]
                         for (j in (series - 1) downTo 0) {
                             drawRect(
-                                color = data.bars[j].color,
+                                color = data.columns[j].color,
                                 topLeft = Offset(
                                     x = mapper.x(i - w),
                                     y = mapper.y(counter),
@@ -160,16 +160,16 @@ fun BarChart(
                                     height = counter * mapper.yScale,
                                 )
                             )
-                            counter -= data.bars[j].values[i]
+                            counter -= data.columns[j].values[i]
                         }
                     }
                 }
 
-                BarChartStyle.PROPORTION -> {
+                ColumnChartStyle.PROPORTIONAL -> {
 
-                    val series = data.bars.size
+                    val series = data.columns.size
                     val values = data.size
-                    val maxValues = FloatArray(values) { index -> data.bars.map { it.values[index] }.sum() }
+                    val maxValues = FloatArray(values) { index -> data.columns.map { it.values[index] }.sum() }
 
                     val mapper = PointMapper(
                         xSrcMin = 0f - offset,
@@ -191,7 +191,7 @@ fun BarChart(
                         var counter = maxValues[i]
                         for (j in (series - 1) downTo 0) {
                             drawRect(
-                                color = data.bars[j].color,
+                                color = data.columns[j].color,
                                 topLeft = Offset(
                                     x = mapper.x(i - w),
                                     y = mapper.y(counter / maxValues[i]),
@@ -201,7 +201,7 @@ fun BarChart(
                                     height = (counter / maxValues[i]) * mapper.yScale,
                                 )
                             )
-                            counter -= data.bars[j].values[i]
+                            counter -= data.columns[j].values[i]
                         }
                     }
                 }
@@ -212,12 +212,12 @@ fun BarChart(
 
 @Composable
 private fun BarLegend(
-    data: BarChartData,
+    data: ColumnChartData,
 ) {
     Box(modifier = Modifier.border(width = 1.dp, color = ChartsTheme.legendColor)) {
         LegendFlow(
             modifier = Modifier.padding(16.dp),
-            data = data.bars.map { item ->
+            data = data.columns.map { item ->
                 LegendEntry(
                     item.label,
                     item.color,

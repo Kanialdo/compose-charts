@@ -3,9 +3,9 @@ package pl.krystiankaniowski.composecharts.views
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import pl.krystiankaniowski.composecharts.autoColor
-import pl.krystiankaniowski.composecharts.horizontalbar.HorizontalBarChart
-import pl.krystiankaniowski.composecharts.horizontalbar.HorizontalBarChartData
-import pl.krystiankaniowski.composecharts.horizontalbar.HorizontalBarChartStyle
+import pl.krystiankaniowski.composecharts.bar.HorizontalBarChart
+import pl.krystiankaniowski.composecharts.bar.HorizontalBarChartData
+import pl.krystiankaniowski.composecharts.bar.HorizontalBarChartStyle
 
 @Suppress("MagicNumber")
 @Composable
@@ -21,7 +21,7 @@ fun HorizontalBarChartDemoGrouped() {
                 HorizontalBarChartData.DataSet(label = "Series C", color = autoColor(2), values = listOf(0f, 1f, 2f, 1f, 0f)),
             )
         ),
-        style = HorizontalBarChartStyle.STANDARD,
+        style = HorizontalBarChartStyle.GROUPED,
         title = { Text("Horizontal bar chart standard") },
     )
 }

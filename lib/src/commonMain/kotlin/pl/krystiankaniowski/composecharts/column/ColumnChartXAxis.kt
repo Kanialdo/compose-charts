@@ -1,4 +1,4 @@
-package pl.krystiankaniowski.composecharts.bar
+package pl.krystiankaniowski.composecharts.column
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.geometry.Offset
@@ -13,7 +13,7 @@ import pl.krystiankaniowski.composecharts.internal.TextAnchorY
 import pl.krystiankaniowski.composecharts.internal.XMapper
 import pl.krystiankaniowski.composecharts.internal.drawText
 
-object BarChartXAxis {
+object ColumnChartXAxis {
 
     interface Drawer {
         fun requiredHeight(): Float
@@ -22,7 +22,7 @@ object BarChartXAxis {
             chartScope: Rect,
             xAxisScope: Rect,
             xMapper: XMapper,
-            data: BarChartData,
+            data: ColumnChartData,
         )
     }
 
@@ -34,7 +34,7 @@ object BarChartXAxis {
             chartScope: Rect,
             xAxisScope: Rect,
             xMapper: XMapper,
-            data: BarChartData,
+            data: ColumnChartData,
         ) {
         }
     }
@@ -52,7 +52,7 @@ object BarChartXAxis {
             chartScope: Rect,
             xAxisScope: Rect,
             xMapper: XMapper,
-            data: BarChartData,
+            data: ColumnChartData,
         ) {
             drawScope.drawLine(
                 color = color,

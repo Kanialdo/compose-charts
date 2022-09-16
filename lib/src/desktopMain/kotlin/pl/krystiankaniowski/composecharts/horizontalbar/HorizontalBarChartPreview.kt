@@ -4,6 +4,9 @@ import androidx.compose.desktop.ui.tooling.preview.Preview
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import pl.krystiankaniowski.composecharts.autoColor
+import pl.krystiankaniowski.composecharts.bar.HorizontalBarChart
+import pl.krystiankaniowski.composecharts.bar.HorizontalBarChartData
+import pl.krystiankaniowski.composecharts.bar.HorizontalBarChartStyle
 
 private val data = HorizontalBarChartData(
     labels = listOf(
@@ -21,7 +24,7 @@ private val data = HorizontalBarChartData(
 fun HorizontalBarChartStandardPreview() {
     HorizontalBarChart(
         data = data,
-        style = HorizontalBarChartStyle.STANDARD,
+        style = HorizontalBarChartStyle.GROUPED,
         title = { Text("Horizontal bar chart standard") },
     )
 }

@@ -1,4 +1,4 @@
-package pl.krystiankaniowski.composecharts.horizontalbar
+package pl.krystiankaniowski.composecharts.bar
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.geometry.Offset

@@ -1,4 +1,4 @@
-package pl.krystiankaniowski.composecharts.horizontalbar
+package pl.krystiankaniowski.composecharts.bar
 
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.border
@@ -43,7 +43,7 @@ data class HorizontalBarChartData(
 }
 
 enum class HorizontalBarChartStyle {
-    STANDARD,
+    GROUPED,
     STACKED,
     PROPORTION,
 }
@@ -52,7 +52,7 @@ enum class HorizontalBarChartStyle {
 fun HorizontalBarChart(
     modifier: Modifier = Modifier,
     data: HorizontalBarChartData,
-    style: HorizontalBarChartStyle = HorizontalBarChartStyle.STANDARD,
+    style: HorizontalBarChartStyle = HorizontalBarChartStyle.GROUPED,
     title: (@Composable () -> Unit)? = null,
     yAxis: HorizontalBarChartYAxis.Drawer = HorizontalBarChartYAxis.Auto(),
     legendPosition: LegendPosition = LegendPosition.Bottom,
@@ -79,7 +79,7 @@ fun HorizontalBarChart(
 
             when (style) {
 
-                HorizontalBarChartStyle.STANDARD -> {
+                HorizontalBarChartStyle.GROUPED -> {
 
                     val mapper = PointMapper(
                         xSrcMin = 0f,
