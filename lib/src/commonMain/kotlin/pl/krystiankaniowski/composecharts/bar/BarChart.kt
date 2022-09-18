@@ -55,6 +55,7 @@ fun BarChart(
     style: BarChartStyle = BarChartStyle.GROUPED,
     title: (@Composable () -> Unit)? = null,
     yAxis: BarChartYAxis.Drawer = BarChartYAxis.Auto(),
+    xAxis: BarChartXAxis.Drawer = BarChartXAxis.Auto(),
     legendPosition: LegendPosition = LegendPosition.Bottom,
 ) {
     ChartChoreographer(
@@ -69,12 +70,16 @@ fun BarChart(
             val offset = 1f
 
             val contentArea = Rect(
-                top = 0f, bottom = size.height - 0f,
+                top = 0f, bottom = size.height - xAxis.requiredHeight(),
                 left = yAxis.requiredWidth(), right = size.width,
             )
             val yAxisArea = Rect(
                 top = contentArea.top, bottom = contentArea.bottom,
                 left = 0f, right = contentArea.left,
+            )
+            val xAxisArea = Rect(
+                top = contentArea.bottom, bottom = size.height,
+                left = contentArea.left, right = contentArea.right,
             )
 
             when (style) {
@@ -93,6 +98,7 @@ fun BarChart(
                     )
 
                     yAxis.draw(this, contentArea, yAxisArea, mapper, data)
+                    xAxis.draw(this, contentArea, xAxisArea, mapper, data.minValue, data.maxValue)
 
                     val barHeight = 2 * w * mapper.yScale / data.dataSets.size
                     data.dataSets.forEachIndexed { series, value ->
@@ -133,6 +139,7 @@ fun BarChart(
                     val barHeight = 2 * w * mapper.yScale
 
                     yAxis.draw(this, contentArea, yAxisArea, mapper, data)
+                    xAxis.draw(this, contentArea, xAxisArea, mapper, data.minValue, data.maxValue)
 
                     for (i in (values - 1) downTo 0) {
                         var counter = maxValues[i]
@@ -171,6 +178,7 @@ fun BarChart(
                     )
 
                     yAxis.draw(this, contentArea, yAxisArea, mapper, data)
+                    xAxis.draw(this, contentArea, xAxisArea, mapper, 0f, 1f)
 
                     val barHeight = 2 * w * mapper.yScale
 
