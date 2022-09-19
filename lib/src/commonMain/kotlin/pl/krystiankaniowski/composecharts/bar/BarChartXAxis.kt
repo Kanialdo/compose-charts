@@ -19,8 +19,7 @@ object BarChartXAxis {
             chartScope: Rect,
             xAxisScope: Rect,
             xMapper: XMapper,
-            min: Float,
-            max: Float,
+            scale: Scale,
         )
     }
 
@@ -32,8 +31,7 @@ object BarChartXAxis {
             chartScope: Rect,
             xAxisScope: Rect,
             xMapper: XMapper,
-            min: Float,
-            max: Float,
+            scale: Scale,
         ) {
         }
     }
@@ -50,21 +48,20 @@ object BarChartXAxis {
             chartScope: Rect,
             xAxisScope: Rect,
             xMapper: XMapper,
-            min: Float,
-            max: Float,
+            scale: Scale,
         ) {
-            val thresholds = niceScale(minPoint = min, maxPoint = max).getHelperLinesFloat()
-
             drawScope.drawLine(
                 color = color,
                 start = Offset(xAxisScope.left, xAxisScope.top),
                 end = Offset(xAxisScope.right, xAxisScope.top)
             )
 
-            thresholds.forEachIndexed { index, threshold ->
+            val helperLines = scale.getHelperLines()
+
+            helperLines.forEachIndexed { index, threshold ->
                 val x = xMapper.x(threshold)
 
-                if (thresholds.size <= 10 || (index % (thresholds.size / 10) == 0)) {
+                if (helperLines.size <= 10 || (index % (helperLines.size / 10) == 0)) {
                     drawScope.drawText(
                         text = label(threshold),
                         x = x,
