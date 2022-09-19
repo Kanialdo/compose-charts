@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Rect
@@ -15,6 +16,7 @@ import androidx.compose.ui.unit.dp
 import pl.krystiankaniowski.composecharts.ChartsTheme
 import pl.krystiankaniowski.composecharts.internal.ChartChoreographer
 import pl.krystiankaniowski.composecharts.internal.PointMapper
+import pl.krystiankaniowski.composecharts.internal.AxisScale
 import pl.krystiankaniowski.composecharts.legend.LegendEntry
 import pl.krystiankaniowski.composecharts.legend.LegendFlow
 import pl.krystiankaniowski.composecharts.legend.LegendPosition
@@ -28,9 +30,7 @@ data class ColumnChartData(
         val label: String,
         val values: List<Float>,
         val color: Color,
-    ) {
-        internal val sum: Float get() = values.sum()
-    }
+    )
 
     init {
         check(columns.first().values.size.let { size -> columns.all { it.values.size == size } }) {
@@ -63,6 +63,18 @@ fun ColumnChart(
     yAxis: ColumnChartYAxis.Drawer = ColumnChartYAxis.Auto(),
     legendPosition: LegendPosition = LegendPosition.Bottom,
 ) {
+
+    val scale = remember(data) {
+        AxisScale.create(
+            min = 0f,
+            max = when (style) {
+                ColumnChartStyle.GROUPED -> data.maxValue
+                ColumnChartStyle.STACKED -> FloatArray(data.size) { index -> data.columns.map { it.values[index] }.sum() }.max()
+                ColumnChartStyle.PROPORTIONAL -> 1f
+            },
+        )
+    }
+
     ChartChoreographer(
         modifier = modifier,
         title = title,
@@ -87,23 +99,23 @@ fun ColumnChart(
                 left = 0f, right = contentArea.left,
             )
 
+            val mapper = PointMapper(
+                xSrcMin = 0f - offset,
+                xSrcMax = data.size - 1 + offset,
+                xDstMin = contentArea.left,
+                xDstMax = contentArea.right,
+                ySrcMin = scale.min,
+                ySrcMax = scale.max,
+                yDstMin = contentArea.top,
+                yDstMax = contentArea.bottom,
+            )
+
+            xAxis.draw(this, contentArea, xAxisArea, mapper, data)
+            yAxis.draw(this, contentArea, yAxisArea, mapper, scale)
+
             when (style) {
 
                 ColumnChartStyle.GROUPED -> {
-
-                    val mapper = PointMapper(
-                        xSrcMin = 0f - offset,
-                        xSrcMax = data.size - 1 + offset,
-                        xDstMin = contentArea.left,
-                        xDstMax = contentArea.right,
-                        ySrcMin = 0f,
-                        ySrcMax = data.maxValue,
-                        yDstMin = contentArea.top,
-                        yDstMax = contentArea.bottom,
-                    )
-
-                    yAxis.draw(this, contentArea, yAxisArea, mapper, mapper.ySrcMin, mapper.ySrcMax)
-                    xAxis.draw(this, contentArea, xAxisArea, mapper, data)
 
                     val barWidth = 2 * w * mapper.xScale / data.columns.size
                     data.columns.forEachIndexed { series, value ->
@@ -128,23 +140,8 @@ fun ColumnChart(
                     val series = data.columns.size
                     val values = data.size
                     val maxValues = FloatArray(values) { index -> data.columns.map { it.values[index] }.sum() }
-                    val maxOfValues = maxValues.maxOf { it }
-
-                    val mapper = PointMapper(
-                        xSrcMin = 0f - offset,
-                        xSrcMax = data.size - 1 + offset,
-                        xDstMin = contentArea.left,
-                        xDstMax = contentArea.right,
-                        ySrcMin = 0f,
-                        ySrcMax = maxOfValues,
-                        yDstMin = contentArea.top,
-                        yDstMax = contentArea.bottom,
-                    )
 
                     val barWidth = 2 * w * mapper.xScale
-
-                    yAxis.draw(this, contentArea, yAxisArea, mapper, mapper.ySrcMin, mapper.ySrcMax)
-                    xAxis.draw(this, contentArea, xAxisArea, mapper, data)
 
                     for (i in (values - 1) downTo 0) {
                         var counter = maxValues[i]
@@ -170,20 +167,6 @@ fun ColumnChart(
                     val series = data.columns.size
                     val values = data.size
                     val maxValues = FloatArray(values) { index -> data.columns.map { it.values[index] }.sum() }
-
-                    val mapper = PointMapper(
-                        xSrcMin = 0f - offset,
-                        xSrcMax = data.size - 1 + offset,
-                        xDstMin = contentArea.left,
-                        xDstMax = contentArea.right,
-                        ySrcMin = 0f,
-                        ySrcMax = 1f,
-                        yDstMin = contentArea.top,
-                        yDstMax = contentArea.bottom,
-                    )
-
-                    yAxis.draw(this, contentArea, yAxisArea, mapper, mapper.ySrcMin, mapper.ySrcMax)
-                    xAxis.draw(this, contentArea, xAxisArea, mapper, data)
 
                     val barWidth = 2 * w * mapper.xScale
 

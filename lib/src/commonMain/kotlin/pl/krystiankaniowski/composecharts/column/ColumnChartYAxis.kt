@@ -20,8 +20,7 @@ object ColumnChartYAxis {
             chartScope: Rect,
             yAxisScope: Rect,
             yMapper: YMapper,
-            min: Float,
-            max: Float,
+            scale: AxisScale,
         )
     }
 
@@ -33,8 +32,7 @@ object ColumnChartYAxis {
             chartScope: Rect,
             yAxisScope: Rect,
             yMapper: YMapper,
-            min: Float,
-            max: Float,
+            scale: AxisScale,
         ) {
         }
     }
@@ -51,12 +49,9 @@ object ColumnChartYAxis {
             chartScope: Rect,
             yAxisScope: Rect,
             yMapper: YMapper,
-            min: Float,
-            max: Float,
+            scale: AxisScale,
         ) {
-            val thresholds = niceScale(minPoint = min, maxPoint =  max).getHelperLinesFloat()
-
-            for (threshold in thresholds) {
+            for (threshold in scale.getHelperLines()) {
                 val y = yMapper.y(threshold)
                 drawScope.drawLine(
                     color = color,

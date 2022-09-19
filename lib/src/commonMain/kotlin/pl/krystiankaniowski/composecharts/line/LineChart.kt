@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.graphics.Color
@@ -17,6 +18,7 @@ import androidx.compose.ui.unit.dp
 import pl.krystiankaniowski.composecharts.ChartsTheme
 import pl.krystiankaniowski.composecharts.internal.ChartChoreographer
 import pl.krystiankaniowski.composecharts.internal.PointMapper
+import pl.krystiankaniowski.composecharts.internal.AxisScale
 import pl.krystiankaniowski.composecharts.legend.LegendEntry
 import pl.krystiankaniowski.composecharts.legend.LegendFlow
 import pl.krystiankaniowski.composecharts.legend.LegendPosition
@@ -78,6 +80,17 @@ fun LineChart(
     legendPosition: LegendPosition = LegendPosition.Bottom,
 ) {
 
+    val scale = remember(data) {
+        AxisScale.create(
+            min = 0f,
+            max = when (mode) {
+                LineChartMode.STANDARD -> data.maxValue
+                LineChartMode.STACKED -> FloatArray(data.lines.first().values.size) { index -> data.lines.map { it.values[index] }.sum() }.max()
+                LineChartMode.PROPORTIONAL -> 1f
+            },
+        )
+    }
+
     ChartChoreographer(
         modifier = modifier,
         title = title,
@@ -104,18 +117,14 @@ fun LineChart(
                 xSrcMax = data.size.toFloat(),
                 xDstMin = contentArea.left,
                 xDstMax = contentArea.right,
-                ySrcMin = 0f,
-                ySrcMax = when (mode) {
-                    LineChartMode.STANDARD -> data.maxValue
-                    LineChartMode.STACKED -> FloatArray(data.lines.first().values.size) { index -> data.lines.map { it.values[index] }.sum() }.max()
-                    LineChartMode.PROPORTIONAL -> 1f
-                },
+                ySrcMin = scale.min,
+                ySrcMax = scale.max,
                 yDstMin = contentArea.top,
                 yDstMax = contentArea.bottom,
             )
 
             xAxis.draw(this, contentArea, xAxisArea, mapper, data)
-            yAxis.draw(this, contentArea, yAxisArea, mapper, data)
+            yAxis.draw(this, contentArea, yAxisArea, mapper, scale)
 
             when (mode) {
 

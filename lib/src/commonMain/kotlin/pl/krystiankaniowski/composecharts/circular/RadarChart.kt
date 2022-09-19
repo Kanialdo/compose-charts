@@ -64,10 +64,12 @@ fun RadarChart(
 ) {
 
     val scale = remember(data) {
-        val maxValue = data.entries.maxOf { it.values.maxOf { it } }
-        niceScale(minPoint = 0f, maxPoint = maxValue)
+        AxisScale.create(
+            min = 0f,
+            max = data.entries.maxOf { it.values.maxOf { it } },
+        )
     }
-    val chartMaxValue = scale.niceMax.toFloat()
+    val chartMaxValue = scale.max
 
     ChartChoreographer(
         modifier = modifier,
