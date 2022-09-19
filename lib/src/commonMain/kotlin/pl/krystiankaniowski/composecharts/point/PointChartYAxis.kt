@@ -20,7 +20,7 @@ object PointChartYAxis {
             chartScope: Rect,
             yAxisScope: Rect,
             yMapper: YMapper,
-            data: PointChartData,
+            scale: Scale,
         )
     }
 
@@ -32,7 +32,7 @@ object PointChartYAxis {
             chartScope: Rect,
             yAxisScope: Rect,
             yMapper: YMapper,
-            data: PointChartData,
+            scale: Scale,
         ) {
         }
     }
@@ -52,11 +52,9 @@ object PointChartYAxis {
             chartScope: Rect,
             yAxisScope: Rect,
             yMapper: YMapper,
-            data: PointChartData,
+            scale: Scale,
         ) {
-            val thresholds = niceScale(minPoint = data.minY, maxPoint = data.maxY).getHelperLinesFloat()
-
-            thresholds.forEach {
+            scale.getHelperLines().forEach {
                 drawHelperLine(drawScope = drawScope, chartScope = chartScope, yMapper = yMapper, value = it, label = label(it))
             }
             drawYAxis(drawScope = drawScope, yAxisScope = yAxisScope)
@@ -78,7 +76,7 @@ object PointChartYAxis {
             chartScope: Rect,
             yAxisScope: Rect,
             yMapper: YMapper,
-            data: PointChartData,
+            scale: Scale,
         ) {
             labels.forEach {
                 drawHelperLine(drawScope = drawScope, chartScope = chartScope, yMapper = yMapper, value = it.first, label = it.second)

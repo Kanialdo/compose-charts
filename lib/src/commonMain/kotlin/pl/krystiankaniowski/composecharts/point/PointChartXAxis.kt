@@ -9,6 +9,7 @@ import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.sp
 import pl.krystiankaniowski.composecharts.ChartsTheme
+import pl.krystiankaniowski.composecharts.internal.Scale
 import pl.krystiankaniowski.composecharts.internal.TextAnchorX
 import pl.krystiankaniowski.composecharts.internal.XMapper
 import pl.krystiankaniowski.composecharts.internal.drawText
@@ -23,7 +24,7 @@ object PointChartXAxis {
             chartScope: Rect,
             xAxisScope: Rect,
             xMapper: XMapper,
-            data: PointChartData,
+            scale: Scale,
         )
     }
 
@@ -35,7 +36,7 @@ object PointChartXAxis {
             chartScope: Rect,
             xAxisScope: Rect,
             xMapper: XMapper,
-            data: PointChartData,
+            scale: Scale,
         ) {
         }
     }
@@ -98,7 +99,7 @@ object PointChartXAxis {
             chartScope: Rect,
             xAxisScope: Rect,
             xMapper: XMapper,
-            data: PointChartData,
+            scale: Scale,
         ) {
 
             drawScope.drawLine(
@@ -107,16 +108,14 @@ object PointChartXAxis {
                 end = Offset(xAxisScope.right, xAxisScope.top),
             )
 
-            val startPos = data.minX
-            val count = 5
-            val step = (data.maxX - data.minX) / count
-            for (i in 0..count) {
-                val xValue = startPos + i * step
-                val x = xMapper.x(xValue)
+            val thresholds = scale.getHelperLines()
+            thresholds.forEachIndexed { index, threshold ->
+                val x = xMapper.x(threshold)
                 drawTag(drawScope, xAxisScope, x)
-                if (count <= 10 || (i % (count / 10) == 0)) {
-                    drawLabel(drawScope, xAxisScope, x, formatter(xValue))
+                if (thresholds.size <= 10 || (index % (thresholds.size / 10) == 0)) {
+                    drawLabel(drawScope, xAxisScope, x, formatter(threshold))
                 }
+
             }
         }
     }
@@ -133,7 +132,7 @@ object PointChartXAxis {
             chartScope: Rect,
             xAxisScope: Rect,
             xMapper: XMapper,
-            data: PointChartData,
+            scale: Scale,
         ) {
 
             drawScope.drawLine(
@@ -162,7 +161,7 @@ object PointChartXAxis {
             chartScope: Rect,
             xAxisScope: Rect,
             xMapper: XMapper,
-            data: PointChartData,
+            scale: Scale,
         ) {
 
             drawScope.drawLine(

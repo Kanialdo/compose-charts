@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Rect
@@ -17,6 +18,7 @@ import pl.krystiankaniowski.composecharts.ChartsTheme
 import pl.krystiankaniowski.composecharts.internal.ChartChoreographer
 import pl.krystiankaniowski.composecharts.internal.OneAxisMapper
 import pl.krystiankaniowski.composecharts.internal.PointMapper
+import pl.krystiankaniowski.composecharts.internal.Scale
 import pl.krystiankaniowski.composecharts.legend.LegendEntry
 import pl.krystiankaniowski.composecharts.legend.LegendFlow
 import pl.krystiankaniowski.composecharts.legend.LegendPosition
@@ -39,7 +41,7 @@ data class PointChartData(
         val pathEffect: PathEffect? = null,
         val alpha: Float = 1.0f,
         val colorFilter: ColorFilter? = null,
-        val blendMode: BlendMode = DefaultTintBlendMode
+        val blendMode: BlendMode = DefaultTintBlendMode,
     )
 
     enum class Mode { Points, Line }
@@ -60,6 +62,20 @@ fun PointChart(
     yAxis: PointChartYAxis.Drawer = PointChartYAxis.Auto(),
     legendPosition: LegendPosition = LegendPosition.Bottom,
 ) {
+
+    val scaleX = remember(data) {
+        Scale.create(
+            min = data.minX,
+            max = data.maxX,
+        )
+    }
+
+    val scaleY = remember(data) {
+        Scale.create(
+            min = data.minY,
+            max = data.maxY,
+        )
+    }
 
     ChartChoreographer(
         modifier = modifier,
@@ -93,8 +109,8 @@ fun PointChart(
                 yDstMax = contentArea.bottom,
             )
 
-            yAxis.draw(this, contentArea, yAxisArea, mapper, data)
-            xAxis.draw(this, contentArea, xAxisArea, mapper, data)
+            xAxis.draw(this, contentArea, xAxisArea, mapper, scaleX)
+            yAxis.draw(this, contentArea, yAxisArea, mapper, scaleY)
 
             data.series.forEach { series ->
                 val points = series.values.map { Offset(mapper.x(it.x), mapper.y(it.y)) }
@@ -114,6 +130,7 @@ fun PointChart(
                         colorFilter = series.colorFilter,
                         blendMode = series.blendMode,
                     )
+
                     is PointChartData.ChartColor.Gradient -> drawPoints(
                         points = points,
                         pointMode = mode,
