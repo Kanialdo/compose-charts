@@ -20,7 +20,7 @@ object LineChartYAxis {
             chartScope: Rect,
             yAxisScope: Rect,
             yMapper: YMapper,
-            scale: NiceScale,
+            scale: Scale,
         )
 
     }
@@ -33,14 +33,14 @@ object LineChartYAxis {
             chartScope: Rect,
             yAxisScope: Rect,
             yMapper: YMapper,
-            scale: NiceScale,
+            scale: Scale,
         ) {
         }
     }
 
     @Composable
     fun Auto(
-        label: (Float) -> String = { it.toString() },
+        label: ((Float) -> String)? = null,
         textSize: TextUnit = 20.sp,
         color: Color = ChartsTheme.axisColor,
     ) = object : Drawer {
@@ -52,12 +52,10 @@ object LineChartYAxis {
             chartScope: Rect,
             yAxisScope: Rect,
             yMapper: YMapper,
-            scale: NiceScale,
+            scale: Scale,
         ) {
 
-            val thresholds = scale.getHelperLinesFloat()
-
-            for (threshold in thresholds) {
+            for (threshold in scale.getHelperLines()) {
                 val y = yMapper.y(threshold)
                 drawScope.drawLine(
                     color = color,
@@ -66,7 +64,7 @@ object LineChartYAxis {
                     pathEffect = PathEffect.dashPathEffect(floatArrayOf(10f, 20f)),
                 )
                 drawScope.drawText(
-                    text = label(threshold),
+                    text = label?.let { it(threshold) } ?: scale.formatValue(threshold),
                     x = requiredWidth() - 10f,
                     y = y,
                     anchorX = TextAnchorX.Right,
