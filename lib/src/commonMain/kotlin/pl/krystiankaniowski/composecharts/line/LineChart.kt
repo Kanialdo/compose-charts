@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.graphics.Color
@@ -79,6 +80,17 @@ fun LineChart(
     legendPosition: LegendPosition = LegendPosition.Bottom,
 ) {
 
+    val scale = remember(data) {
+        Scale.create(
+            min = 0f,
+            max = when (mode) {
+                LineChartMode.STANDARD -> data.maxValue
+                LineChartMode.STACKED -> FloatArray(data.lines.first().values.size) { index -> data.lines.map { it.values[index] }.sum() }.max()
+                LineChartMode.PROPORTIONAL -> 1f
+            },
+        )
+    }
+
     ChartChoreographer(
         modifier = modifier,
         title = title,
@@ -98,15 +110,6 @@ fun LineChart(
             val yAxisArea = Rect(
                 top = contentArea.top, bottom = contentArea.bottom,
                 left = 0f, right = contentArea.left,
-            )
-
-            val scale = Scale.create(
-                min = 0f,
-                max = when (mode) {
-                    LineChartMode.STANDARD -> data.maxValue
-                    LineChartMode.STACKED -> FloatArray(data.lines.first().values.size) { index -> data.lines.map { it.values[index] }.sum() }.max()
-                    LineChartMode.PROPORTIONAL -> 1f
-                },
             )
 
             val mapper = PointMapper(

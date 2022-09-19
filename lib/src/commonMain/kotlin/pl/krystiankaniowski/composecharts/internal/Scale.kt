@@ -3,36 +3,42 @@ package pl.krystiankaniowski.composecharts.internal
 import kotlin.math.*
 
 class Scale private constructor(
-    val min: Float,
-    val max: Float,
-    private val tickSpacing: Float,
+    private val _min: Double,
+    private val _max: Double,
+    private val _tickSpacing: Double,
 ) {
 
-    private val decimalPower = abs(log10(tickSpacing).roundToInt())
+    private val _decimalPower = abs(log10(_tickSpacing).roundToInt())
+
+    val min: Float = _min.toFloat()
+    val max: Float = _max.toFloat()
 
     fun getHelperLines(): List<Float> {
-        var v = min
-        val limit = max
-        val items = mutableListOf<Float>()
+        var v = _min
+        val limit = _max
+        val items = mutableListOf<Double>()
         while (v <= limit) {
-            v += tickSpacing
+            v += _tickSpacing
             // double check to prevent adding cheated values eg. 0.1 + 0.1 + 0.1 == 0.30000000000000004
             if (v <= limit) {
                 items.add(v)
             }
         }
-        return items
+        return items.map { it.toFloat() }
     }
 
     /** Formats value in nice way basing on tickSpacing */
     fun formatValue(value: Float): String {
         return value.toBigDecimal()
-            .setScale(decimalPower + 1, 6)
+            .setScale(_decimalPower + 1, 6)
             .toString()
             .trimEnd('0').trimEnd { it == '.' || it == ',' }
     }
 
     companion object {
+
+        // Basing on Nice Label Algorithm for Charts with minimum ticks - https://stackoverflow.com/a/16363437/5796683
+        /** Calculate nice scale basic on min and max value */
         internal fun create(min: Float, max: Float, maxTicks: Int = 10, forcedZero: Boolean = true): Scale {
 
             val minPointDouble = (if (forcedZero) minOf(min, 0f) else min).toDouble()
@@ -44,9 +50,9 @@ class Scale private constructor(
             val niceMax = ceil(maxPointDouble / tickSpacing) * tickSpacing
 
             return Scale(
-                min = niceMin.toFloat(),
-                max = niceMax.toFloat(),
-                tickSpacing = tickSpacing.toFloat(),
+                _min = niceMin,
+                _max = niceMax,
+                _tickSpacing = tickSpacing,
             )
         }
     }
