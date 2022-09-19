@@ -4,7 +4,7 @@ import kotlin.math.*
 
 // Basing on Nice Label Algorithm for Charts with minimum ticks - https://stackoverflow.com/a/16363437/5796683
 
-internal data class NiceScale constructor(
+data class NiceScale constructor(
     val niceMin: Double,
     val niceMax: Double,
     val tickSpacing: Double,

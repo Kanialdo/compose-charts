@@ -20,7 +20,7 @@ object LineChartYAxis {
             chartScope: Rect,
             yAxisScope: Rect,
             yMapper: YMapper,
-            data: LineChartData,
+            scale: NiceScale,
         )
 
     }
@@ -33,7 +33,7 @@ object LineChartYAxis {
             chartScope: Rect,
             yAxisScope: Rect,
             yMapper: YMapper,
-            data: LineChartData,
+            scale: NiceScale,
         ) {
         }
     }
@@ -52,10 +52,10 @@ object LineChartYAxis {
             chartScope: Rect,
             yAxisScope: Rect,
             yMapper: YMapper,
-            data: LineChartData,
+            scale: NiceScale,
         ) {
 
-            val thresholds = niceScale(minPoint = data.minValue, maxPoint = data.maxValue).getHelperLinesFloat()
+            val thresholds = scale.getHelperLinesFloat()
 
             for (threshold in thresholds) {
                 val y = yMapper.y(threshold)

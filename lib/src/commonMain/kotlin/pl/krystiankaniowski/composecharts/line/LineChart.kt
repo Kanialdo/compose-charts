@@ -17,6 +17,7 @@ import androidx.compose.ui.unit.dp
 import pl.krystiankaniowski.composecharts.ChartsTheme
 import pl.krystiankaniowski.composecharts.internal.ChartChoreographer
 import pl.krystiankaniowski.composecharts.internal.PointMapper
+import pl.krystiankaniowski.composecharts.internal.niceScale
 import pl.krystiankaniowski.composecharts.legend.LegendEntry
 import pl.krystiankaniowski.composecharts.legend.LegendFlow
 import pl.krystiankaniowski.composecharts.legend.LegendPosition
@@ -99,23 +100,28 @@ fun LineChart(
                 left = 0f, right = contentArea.left,
             )
 
+            val scale = niceScale(
+                minPoint = 0f,
+                maxPoint = when (mode) {
+                    LineChartMode.STANDARD -> data.maxValue
+                    LineChartMode.STACKED -> FloatArray(data.lines.first().values.size) { index -> data.lines.map { it.values[index] }.sum() }.max()
+                    LineChartMode.PROPORTIONAL -> 1f
+                },
+            )
+
             val mapper = PointMapper(
                 xSrcMin = 0f,
                 xSrcMax = data.size.toFloat(),
                 xDstMin = contentArea.left,
                 xDstMax = contentArea.right,
-                ySrcMin = 0f,
-                ySrcMax = when (mode) {
-                    LineChartMode.STANDARD -> data.maxValue
-                    LineChartMode.STACKED -> FloatArray(data.lines.first().values.size) { index -> data.lines.map { it.values[index] }.sum() }.max()
-                    LineChartMode.PROPORTIONAL -> 1f
-                },
+                ySrcMin = scale.niceMin.toFloat(),
+                ySrcMax = scale.niceMax.toFloat(),
                 yDstMin = contentArea.top,
                 yDstMax = contentArea.bottom,
             )
 
             xAxis.draw(this, contentArea, xAxisArea, mapper, data)
-            yAxis.draw(this, contentArea, yAxisArea, mapper, data)
+            yAxis.draw(this, contentArea, yAxisArea, mapper, scale)
 
             when (mode) {
 
