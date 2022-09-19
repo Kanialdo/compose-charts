@@ -57,7 +57,7 @@ fun PolarChart(
     legendPosition: LegendPosition = LegendPosition.Bottom,
 ) {
     val scale = remember(data) {
-        Scale.create(
+        AxisScale.create(
             min = 0f,
             max = data.entries.maxOf { it.value },
         )

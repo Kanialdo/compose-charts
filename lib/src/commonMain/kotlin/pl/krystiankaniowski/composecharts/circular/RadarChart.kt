@@ -64,7 +64,7 @@ fun RadarChart(
 ) {
 
     val scale = remember(data) {
-        Scale.create(
+        AxisScale.create(
             min = 0f,
             max = data.entries.maxOf { it.values.maxOf { it } },
         )

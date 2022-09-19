@@ -20,7 +20,7 @@ object LineChartYAxis {
             chartScope: Rect,
             yAxisScope: Rect,
             yMapper: YMapper,
-            scale: Scale,
+            scale: AxisScale,
         )
 
     }
@@ -33,7 +33,7 @@ object LineChartYAxis {
             chartScope: Rect,
             yAxisScope: Rect,
             yMapper: YMapper,
-            scale: Scale,
+            scale: AxisScale,
         ) {
         }
     }
@@ -52,7 +52,7 @@ object LineChartYAxis {
             chartScope: Rect,
             yAxisScope: Rect,
             yMapper: YMapper,
-            scale: Scale,
+            scale: AxisScale,
         ) {
 
             for (threshold in scale.getHelperLines()) {

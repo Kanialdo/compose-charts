@@ -18,7 +18,7 @@ import pl.krystiankaniowski.composecharts.ChartsTheme
 import pl.krystiankaniowski.composecharts.internal.ChartChoreographer
 import pl.krystiankaniowski.composecharts.internal.OneAxisMapper
 import pl.krystiankaniowski.composecharts.internal.PointMapper
-import pl.krystiankaniowski.composecharts.internal.Scale
+import pl.krystiankaniowski.composecharts.internal.AxisScale
 import pl.krystiankaniowski.composecharts.legend.LegendEntry
 import pl.krystiankaniowski.composecharts.legend.LegendFlow
 import pl.krystiankaniowski.composecharts.legend.LegendPosition
@@ -64,14 +64,14 @@ fun PointChart(
 ) {
 
     val scaleX = remember(data) {
-        Scale.create(
+        AxisScale.create(
             min = data.minX,
             max = data.maxX,
         )
     }
 
     val scaleY = remember(data) {
-        Scale.create(
+        AxisScale.create(
             min = data.minY,
             max = data.maxY,
         )

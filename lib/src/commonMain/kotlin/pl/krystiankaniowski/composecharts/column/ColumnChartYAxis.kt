@@ -20,7 +20,7 @@ object ColumnChartYAxis {
             chartScope: Rect,
             yAxisScope: Rect,
             yMapper: YMapper,
-            scale: Scale,
+            scale: AxisScale,
         )
     }
 
@@ -32,7 +32,7 @@ object ColumnChartYAxis {
             chartScope: Rect,
             yAxisScope: Rect,
             yMapper: YMapper,
-            scale: Scale,
+            scale: AxisScale,
         ) {
         }
     }
@@ -49,7 +49,7 @@ object ColumnChartYAxis {
             chartScope: Rect,
             yAxisScope: Rect,
             yMapper: YMapper,
-            scale: Scale,
+            scale: AxisScale,
         ) {
             for (threshold in scale.getHelperLines()) {
                 val y = yMapper.y(threshold)

@@ -9,7 +9,7 @@ import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.sp
 import pl.krystiankaniowski.composecharts.ChartsTheme
-import pl.krystiankaniowski.composecharts.internal.Scale
+import pl.krystiankaniowski.composecharts.internal.AxisScale
 import pl.krystiankaniowski.composecharts.internal.TextAnchorX
 import pl.krystiankaniowski.composecharts.internal.XMapper
 import pl.krystiankaniowski.composecharts.internal.drawText
@@ -24,7 +24,7 @@ object PointChartXAxis {
             chartScope: Rect,
             xAxisScope: Rect,
             xMapper: XMapper,
-            scale: Scale,
+            scale: AxisScale,
         )
     }
 
@@ -36,7 +36,7 @@ object PointChartXAxis {
             chartScope: Rect,
             xAxisScope: Rect,
             xMapper: XMapper,
-            scale: Scale,
+            scale: AxisScale,
         ) {
         }
     }
@@ -99,7 +99,7 @@ object PointChartXAxis {
             chartScope: Rect,
             xAxisScope: Rect,
             xMapper: XMapper,
-            scale: Scale,
+            scale: AxisScale,
         ) {
 
             drawScope.drawLine(
@@ -132,7 +132,7 @@ object PointChartXAxis {
             chartScope: Rect,
             xAxisScope: Rect,
             xMapper: XMapper,
-            scale: Scale,
+            scale: AxisScale,
         ) {
 
             drawScope.drawLine(
@@ -161,7 +161,7 @@ object PointChartXAxis {
             chartScope: Rect,
             xAxisScope: Rect,
             xMapper: XMapper,
-            scale: Scale,
+            scale: AxisScale,
         ) {
 
             drawScope.drawLine(

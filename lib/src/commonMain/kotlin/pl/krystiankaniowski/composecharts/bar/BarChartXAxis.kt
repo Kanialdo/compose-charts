@@ -19,7 +19,7 @@ object BarChartXAxis {
             chartScope: Rect,
             xAxisScope: Rect,
             xMapper: XMapper,
-            scale: Scale,
+            scale: AxisScale,
         )
     }
 
@@ -31,7 +31,7 @@ object BarChartXAxis {
             chartScope: Rect,
             xAxisScope: Rect,
             xMapper: XMapper,
-            scale: Scale,
+            scale: AxisScale,
         ) {
         }
     }
@@ -48,7 +48,7 @@ object BarChartXAxis {
             chartScope: Rect,
             xAxisScope: Rect,
             xMapper: XMapper,
-            scale: Scale,
+            scale: AxisScale,
         ) {
             drawScope.drawLine(
                 color = color,

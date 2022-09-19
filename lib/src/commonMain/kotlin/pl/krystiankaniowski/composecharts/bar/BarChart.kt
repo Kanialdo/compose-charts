@@ -14,10 +14,9 @@ import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import pl.krystiankaniowski.composecharts.ChartsTheme
-import pl.krystiankaniowski.composecharts.column.ColumnChartStyle
 import pl.krystiankaniowski.composecharts.internal.ChartChoreographer
 import pl.krystiankaniowski.composecharts.internal.PointMapper
-import pl.krystiankaniowski.composecharts.internal.Scale
+import pl.krystiankaniowski.composecharts.internal.AxisScale
 import pl.krystiankaniowski.composecharts.legend.LegendEntry
 import pl.krystiankaniowski.composecharts.legend.LegendFlow
 import pl.krystiankaniowski.composecharts.legend.LegendPosition
@@ -63,7 +62,7 @@ fun BarChart(
 ) {
 
     val scale = remember(data) {
-        Scale.create(
+        AxisScale.create(
             min = 0f,
             max = when (style) {
                 BarChartStyle.GROUPED -> data.maxValue

@@ -20,7 +20,7 @@ object PointChartYAxis {
             chartScope: Rect,
             yAxisScope: Rect,
             yMapper: YMapper,
-            scale: Scale,
+            scale: AxisScale,
         )
     }
 
@@ -32,7 +32,7 @@ object PointChartYAxis {
             chartScope: Rect,
             yAxisScope: Rect,
             yMapper: YMapper,
-            scale: Scale,
+            scale: AxisScale,
         ) {
         }
     }
@@ -52,7 +52,7 @@ object PointChartYAxis {
             chartScope: Rect,
             yAxisScope: Rect,
             yMapper: YMapper,
-            scale: Scale,
+            scale: AxisScale,
         ) {
             scale.getHelperLines().forEach {
                 drawHelperLine(drawScope = drawScope, chartScope = chartScope, yMapper = yMapper, value = it, label = label(it))
@@ -76,7 +76,7 @@ object PointChartYAxis {
             chartScope: Rect,
             yAxisScope: Rect,
             yMapper: YMapper,
-            scale: Scale,
+            scale: AxisScale,
         ) {
             labels.forEach {
                 drawHelperLine(drawScope = drawScope, chartScope = chartScope, yMapper = yMapper, value = it.first, label = it.second)

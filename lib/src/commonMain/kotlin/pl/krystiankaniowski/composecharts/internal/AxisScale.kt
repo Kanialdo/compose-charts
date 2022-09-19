@@ -2,7 +2,7 @@ package pl.krystiankaniowski.composecharts.internal
 
 import kotlin.math.*
 
-class Scale private constructor(
+class AxisScale private constructor(
     private val _min: Double,
     private val _max: Double,
     private val _tickSpacing: Double,
@@ -12,6 +12,7 @@ class Scale private constructor(
 
     val min: Float = _min.toFloat()
     val max: Float = _max.toFloat()
+    val tickSpacing: Float = _tickSpacing.toFloat()
 
     fun getHelperLines(): List<Float> {
         var v = _min
@@ -39,7 +40,7 @@ class Scale private constructor(
 
         // Basing on Nice Label Algorithm for Charts with minimum ticks - https://stackoverflow.com/a/16363437/5796683
         /** Calculate nice scale basic on min and max value */
-        internal fun create(min: Float, max: Float, maxTicks: Int = 10, forcedZero: Boolean = true): Scale {
+        internal fun create(min: Float, max: Float, maxTicks: Int = 10, forcedZero: Boolean = true): AxisScale {
 
             val minPointDouble = (if (forcedZero) minOf(min, 0f) else min).toDouble()
             val maxPointDouble = (if (forcedZero) maxOf(max, 0f) else max).toDouble()
@@ -49,7 +50,7 @@ class Scale private constructor(
             val niceMin = floor(minPointDouble / tickSpacing) * tickSpacing
             val niceMax = ceil(maxPointDouble / tickSpacing) * tickSpacing
 
-            return Scale(
+            return AxisScale(
                 _min = niceMin,
                 _max = niceMax,
                 _tickSpacing = tickSpacing,
@@ -57,7 +58,6 @@ class Scale private constructor(
         }
     }
 }
-
 
 /**
  * Returns a "nice" number approximately equal to range Rounds
