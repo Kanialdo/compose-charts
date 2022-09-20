@@ -8,6 +8,7 @@ plugins {
 
 dependencies {
     implementation(compose.desktop.currentOs)
+    implementation(projects.demoShared)
     implementation(projects.lib)
 }
 

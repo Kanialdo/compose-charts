@@ -12,4 +12,6 @@ pluginManagement {
 rootProject.name = "compose-charts"
 
 include(":lib")
-include(":demo")
+include(":demo-shared")
+include(":demo-desktop")
+include(":demo-android")
