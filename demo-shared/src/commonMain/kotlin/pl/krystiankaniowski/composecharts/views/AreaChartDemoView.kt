@@ -1,26 +1,50 @@
-package pl.krystiankaniowski.composecharts.views.line
+package pl.krystiankaniowski.composecharts.views
 
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import pl.krystiankaniowski.composecharts.ChartScreen
+import pl.krystiankaniowski.composecharts.area.AreaChart
+import pl.krystiankaniowski.composecharts.area.AreaChartData
+import pl.krystiankaniowski.composecharts.area.AreaChartMode
 import pl.krystiankaniowski.composecharts.autoColor
 import pl.krystiankaniowski.composecharts.components.*
-import pl.krystiankaniowski.composecharts.line.LineChart
-import pl.krystiankaniowski.composecharts.line.LineChartData
-import pl.krystiankaniowski.composecharts.line.LineChartMode
 import pl.krystiankaniowski.composecharts.utils.generateList
 import pl.krystiankaniowski.composecharts.utils.randomize
 import kotlin.random.Random
 
+@Composable
+fun AreaOverlappingChartDemo() {
+    AreaRawChartDemo(
+        title = "Area Overlapping Chart",
+        mode = AreaChartMode.STANDARD,
+    )
+}
+
+@Composable
+fun AreaStackedChartDemo() {
+    AreaRawChartDemo(
+        title = "Area Stacked Chart",
+        mode = AreaChartMode.STACKED,
+    )
+}
+
+@Composable
+fun AreaProportionalChartDemo() {
+    AreaRawChartDemo(
+        title = "Area Proportional Chart",
+        mode = AreaChartMode.PROPORTIONAL,
+    )
+}
+
 @Suppress("MagicNumber", "LongMethod")
 @Composable
-fun LineStackedChartDemo() {
+private fun AreaRawChartDemo(title: String, mode: AreaChartMode) {
 
     var data by remember {
         val random = Random(System.currentTimeMillis())
         val size = 5
         mutableStateOf(
-            LineChartData(
+            AreaChartData(
                 lines = listOf(
                     createEntry(random, 0, size),
                     createEntry(random, 1, size),
@@ -32,10 +56,10 @@ fun LineStackedChartDemo() {
 
     ChartScreen(
         chart = {
-            LineChart(
+            AreaChart(
                 data = data,
-                title = { Text("Line stacked chart") },
-                mode = LineChartMode.STACKED,
+                title = { Text(title) },
+                mode = mode,
             )
         },
         settings = {
@@ -63,8 +87,8 @@ fun LineStackedChartDemo() {
     )
 }
 
-private fun createEntry(random: Random, id: Int, size: Int): LineChartData.Line {
-    return LineChartData.Line(
+private fun createEntry(random: Random, id: Int, size: Int): AreaChartData.Area {
+    return AreaChartData.Area(
         label = "Data ${id + 1}",
         color = autoColor(id),
         values = generateList(random, size),
