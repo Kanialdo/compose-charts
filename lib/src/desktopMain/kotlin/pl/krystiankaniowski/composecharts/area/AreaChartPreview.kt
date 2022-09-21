@@ -3,7 +3,6 @@ package pl.krystiankaniowski.composecharts.area
 import androidx.compose.desktop.ui.tooling.preview.Preview
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.graphics.Color
 import pl.krystiankaniowski.composecharts.autoColor
 import kotlin.random.Random
 
@@ -61,40 +60,6 @@ fun AreaChartCustomLabelsPreview() {
         ),
         title = { Text("Area chart") },
         xAxis = AreaChartXAxis.Auto(label = { listOf("A", "B", "C", "D", "E")[it] }),
-    )
-}
-
-
-@Preview
-@Composable
-fun AreaChartCustomStylePreview() {
-    AreaChart(
-        data = AreaChartData(
-            lines = listOf(
-                AreaChartData.Area(
-                    label = "Custom color",
-                    values = listOf(5f, 4f, 3f, 2f, 1f),
-                    color = Color.Black,
-                ),
-                AreaChartData.Area(
-                    label = "Custom line style",
-                    values = listOf(1f, 1f, 1f, 1f, 1f),
-                    lineStyle = AreaChartStyle.AreaStyle(width = 5f),
-                    color = autoColor(1),
-                ),
-                AreaChartData.Area(
-                    label = "Custom point style",
-                    values = listOf(0f, 1f, 2f, 1f, 0f),
-                    pointStyle = AreaChartStyle.PointStyle.Filled(size = 5f),
-                    color = autoColor(2),
-                ),
-            )
-        ),
-        style = AreaChartStyle(
-            lineStyle = AreaChartStyle.AreaStyle(width = 1f),
-            pointStyle = AreaChartStyle.PointStyle.None,
-        ),
-        title = { Text("Area chart") },
     )
 }
 

@@ -24,7 +24,7 @@ val items: List<Pair<String, @Composable () -> Unit>> = listOf(
     "Column proportional" to { ColumnProportionalChartDemo() },
     "Bar grouped" to { BarGroupedChartDemo() },
     "Bar stacked" to { BarStackedChartDemo() },
-    "Bar proportional chart" to { BarProportionalChartDemo() },
+    "Bar proportional" to { BarProportionalChartDemo() },
     "Line" to { LineChartDemo() },
     "Line custom" to { LineChartCustomDemo() },
     "Area overlapping" to { AreaOverlappingChartDemo() },

@@ -16,7 +16,7 @@ import kotlin.random.Random
 fun AreaOverlappingChartDemo() {
     AreaRawChartDemo(
         title = "Area Overlapping Chart",
-        mode = AreaChartMode.STANDARD,
+        mode = AreaChartMode.OVERLAPPING,
     )
 }
 
