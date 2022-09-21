@@ -21,12 +21,12 @@ import pl.krystiankaniowski.composecharts.views.line.LineProportionalChartDemo
 import pl.krystiankaniowski.composecharts.views.line.LineStackedChartDemo
 
 val items: List<Pair<String, @Composable () -> Unit>> = listOf(
-    "Column chart grouped" to { ColumnChartDemoGrouped() },
-    "Column chart stacked" to { ColumnChartDemoStacked() },
-    "Column chart proportional" to { ColumnChartDemoProportional() },
-    "Bar chart grouped" to { BarChartDemoGrouped() },
-    "Bar chart stacked" to { BarChartDemoStacked() },
-    "Bar chart proportional" to { BarChartDemoProportional() },
+    "Column grouped" to { ColumnGroupedChartDemo() },
+    "Column stacked" to { ColumnStackedChartDemo() },
+    "Column proportional" to { ColumnProportionalChartDemo() },
+    "Bar grouped" to { BarGroupedChartDemo() },
+    "Bar stacked" to { BarStackedChartDemo() },
+    "Bar proportional chart" to { BarProportionalChartDemo() },
     "Line chart" to { LineChartDemo() },
     "Line stacked chart" to { LineStackedChartDemo() },
     "Line proportional chart" to { LineProportionalChartDemo() },
