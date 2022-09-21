@@ -17,8 +17,6 @@ import pl.krystiankaniowski.composecharts.views.*
 import pl.krystiankaniowski.composecharts.views.circular.*
 import pl.krystiankaniowski.composecharts.views.line.LineChartCustomDemo
 import pl.krystiankaniowski.composecharts.views.line.LineChartDemo
-import pl.krystiankaniowski.composecharts.views.line.LineProportionalChartDemo
-import pl.krystiankaniowski.composecharts.views.line.LineStackedChartDemo
 
 val items: List<Pair<String, @Composable () -> Unit>> = listOf(
     "Column grouped" to { ColumnGroupedChartDemo() },
@@ -26,11 +24,12 @@ val items: List<Pair<String, @Composable () -> Unit>> = listOf(
     "Column proportional" to { ColumnProportionalChartDemo() },
     "Bar grouped" to { BarGroupedChartDemo() },
     "Bar stacked" to { BarStackedChartDemo() },
-    "Bar proportional chart" to { BarProportionalChartDemo() },
-    "Line chart" to { LineChartDemo() },
-    "Line stacked chart" to { LineStackedChartDemo() },
-    "Line proportional chart" to { LineProportionalChartDemo() },
-    "Line chart custom" to { LineChartCustomDemo() },
+    "Bar proportional" to { BarProportionalChartDemo() },
+    "Line" to { LineChartDemo() },
+    "Line custom" to { LineChartCustomDemo() },
+    "Area overlapping" to { AreaOverlappingChartDemo() },
+    "Area stacked" to { AreaStackedChartDemo() },
+    "Area proportional" to { AreaProportionalChartDemo() },
     "Point chart" to { PointChartDemo() },
     "Point chart custom" to { PointChartCustomDemo() },
     "Pie chart" to { PieChartDemo() },

@@ -1,4 +1,4 @@
-package pl.krystiankaniowski.composecharts.line
+package pl.krystiankaniowski.composecharts.area
 
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.border
@@ -12,7 +12,7 @@ import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.drawscope.DrawScope
-import androidx.compose.ui.graphics.drawscope.Stroke
+import androidx.compose.ui.graphics.drawscope.Fill
 import androidx.compose.ui.unit.dp
 import pl.krystiankaniowski.composecharts.ChartsTheme
 import pl.krystiankaniowski.composecharts.internal.AxisScale
@@ -22,16 +22,14 @@ import pl.krystiankaniowski.composecharts.legend.LegendEntry
 import pl.krystiankaniowski.composecharts.legend.LegendFlow
 import pl.krystiankaniowski.composecharts.legend.LegendPosition
 
-data class LineChartData(val lines: List<Line>) {
+data class AreaChartData(val lines: List<Area>) {
 
-    constructor(vararg lines: Line) : this(lines.toList())
+    constructor(vararg lines: Area) : this(lines.toList())
 
-    data class Line(
+    data class Area(
         val label: String,
         val values: List<Float>,
         val color: Color,
-        val lineStyle: LineChartStyle.LineStyle? = null,
-        val pointStyle: LineChartStyle.PointStyle? = null,
     )
 
     init {
@@ -46,43 +44,38 @@ data class LineChartData(val lines: List<Line>) {
     internal val size: Int get() = lines.first().values.size
 }
 
-data class LineChartStyle(
-    val lineStyle: LineStyle = LineStyle(),
-    val pointStyle: PointStyle = PointStyle.Filled(),
-) {
-
-    data class LineStyle(
-        val width: Float = 5f,
-    )
-
-    sealed class PointStyle {
-        object None : PointStyle()
-        data class Filled(val size: Float = 5f) : PointStyle()
-    }
+enum class AreaChartMode {
+    OVERLAPPING,
+    STACKED,
+    PROPORTIONAL,
 }
 
 @Composable
-fun LineChart(
+fun AreaChart(
     modifier: Modifier = Modifier,
-    data: LineChartData,
+    data: AreaChartData,
     title: (@Composable () -> Unit)? = null,
-    style: LineChartStyle = LineChartStyle(),
-    xAxis: LineChartXAxis.Drawer = LineChartXAxis.Auto(),
-    yAxis: LineChartYAxis.Drawer = LineChartYAxis.Auto(),
+    mode: AreaChartMode = AreaChartMode.OVERLAPPING,
+    xAxis: AreaChartXAxis.Drawer = AreaChartXAxis.Auto(),
+    yAxis: AreaChartYAxis.Drawer = AreaChartYAxis.Auto(),
     legendPosition: LegendPosition = LegendPosition.Bottom,
 ) {
 
     val scale = remember(data) {
         AxisScale.create(
-            min = data.minValue,
-            max = data.maxValue,
+            min = 0f,
+            max = when (mode) {
+                AreaChartMode.OVERLAPPING -> data.maxValue
+                AreaChartMode.STACKED -> FloatArray(data.lines.first().values.size) { index -> data.lines.map { it.values[index] }.sum() }.max()
+                AreaChartMode.PROPORTIONAL -> 1f
+            },
         )
     }
 
     ChartChoreographer(
         modifier = modifier,
         title = title,
-        legend = { LineLegend(data) },
+        legend = { AreaLegend(data) },
         legendPosition = legendPosition,
     ) {
         Canvas(Modifier.fillMaxSize()) {
@@ -114,21 +107,54 @@ fun LineChart(
             xAxis.draw(this, contentArea, xAxisArea, mapper, data)
             yAxis.draw(this, contentArea, yAxisArea, mapper, scale)
 
-            data.lines.forEachIndexed { index, line ->
-                drawLine(line, style, mapper)
-                drawPoints(line, style, mapper)
+            when (mode) {
+
+                AreaChartMode.OVERLAPPING -> {
+                    data.lines.forEachIndexed { index, line ->
+                        drawArea(line.color, line.values, mapper)
+                    }
+                }
+
+                AreaChartMode.STACKED -> {
+                    val size = data.lines.first().values.size
+                    val buffor = FloatArray(size) { index -> data.lines.map { it.values[index] }.sum() }.toMutableList()
+                    for (i in (data.lines.size - 1) downTo 0) {
+                        val line = data.lines[i]
+                        drawArea(line.color, buffor, mapper)
+                        if (i > 0) {
+                            for (j in buffor.indices) {
+                                buffor[j] -= line.values[j]
+                            }
+                        }
+                    }
+                }
+
+                AreaChartMode.PROPORTIONAL -> {
+                    val size = data.lines.first().values.size
+                    val total = FloatArray(size) { index -> data.lines.map { it.values[index] }.sum() }.toMutableList()
+                    val buffor = total.toMutableList()
+                    for (i in (data.lines.size - 1) downTo 0) {
+                        val line = data.lines[i]
+                        drawProportionalArea(line.color, total, buffor, mapper)
+                        if (i > 0) {
+                            for (j in buffor.indices) {
+                                buffor[j] -= line.values[j]
+                            }
+                        }
+                    }
+                }
             }
         }
     }
 }
 
-private fun DrawScope.drawLine(
-    line: LineChartData.Line,
-    style: LineChartStyle,
+private fun DrawScope.drawArea(
+    color: Color,
+    values: List<Float>,
     mapper: PointMapper,
 ) {
     val path = Path()
-    line.values.forEachIndexed { dataIndex, point ->
+    values.forEachIndexed { dataIndex, point ->
         if (dataIndex == 0) {
             path.moveTo(
                 x = mapper.x(dataIndex + 0.5f),
@@ -141,35 +167,64 @@ private fun DrawScope.drawLine(
             )
         }
     }
+    path.lineTo(
+        x = mapper.x(values.size - 0.5f),
+        y = mapper.y(0f),
+    )
+    path.lineTo(
+        x = mapper.x(0.5f),
+        y = mapper.y(0f),
+    )
+    path.close()
+
     drawPath(
-        color = line.color,
+        color = color,
         path = path,
-        style = Stroke(width = line.lineStyle?.width ?: style.lineStyle.width),
+        style = Fill,
     )
 }
 
-private fun DrawScope.drawPoints(
-    line: LineChartData.Line,
-    style: LineChartStyle,
+
+private fun DrawScope.drawProportionalArea(
+    color: Color,
+    total: List<Float>,
+    values: List<Float>,
     mapper: PointMapper,
 ) {
-    when (val pointStyle = line.pointStyle ?: style.pointStyle) {
-        LineChartStyle.PointStyle.None -> {}
-        is LineChartStyle.PointStyle.Filled -> {
-            line.values.forEachIndexed { dataIndex, point ->
-                drawCircle(
-                    color = line.color,
-                    center = mapper.offset(dataIndex + 0.5f, point),
-                    radius = pointStyle.size,
-                )
-            }
+    val path = Path()
+    values.forEachIndexed { dataIndex, point ->
+        if (dataIndex == 0) {
+            path.moveTo(
+                x = mapper.x(dataIndex + 0.5f),
+                y = mapper.y(point / total[dataIndex]),
+            )
+        } else {
+            path.lineTo(
+                x = mapper.x(dataIndex + 0.5f),
+                y = mapper.y(point / total[dataIndex]),
+            )
         }
     }
+    path.lineTo(
+        x = mapper.x(values.size - 0.5f),
+        y = mapper.y(0f),
+    )
+    path.lineTo(
+        x = mapper.x(0.5f),
+        y = mapper.y(0f),
+    )
+    path.close()
+
+    drawPath(
+        color = color,
+        path = path,
+        style = Fill,
+    )
 }
 
 @Composable
-private fun LineLegend(
-    data: LineChartData,
+private fun AreaLegend(
+    data: AreaChartData,
 ) {
     Box(modifier = Modifier.border(width = 1.dp, color = ChartsTheme.legendColor)) {
         LegendFlow(
