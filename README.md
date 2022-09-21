@@ -26,6 +26,6 @@ Call `gradle demo:run` to launch Demo catalog
 <img width="591" alt="image" src="https://user-images.githubusercontent.com/2984146/171934902-ed81516b-1b00-4041-8a08-4888d5eae969.png">
 <img width="591" alt="image" src="https://user-images.githubusercontent.com/2984146/190011799-12fa56f1-388d-4a2c-8fc1-97425f04d795.png">
 <img width="591" alt="image" src="https://user-images.githubusercontent.com/2984146/190011812-4b5e24d7-8381-4bca-8d6b-586e4239fd01.png">
-<img width="591" alt="image" src="https://user-images.githubusercontent.com/2984146/190011829-2cfb58c1-85e3-487a-8c69-776eefa1aaf5.png">
+<img width="591" alt="image" src="https://user-images.githubusercontent.com/2984146/191610856-fe80236e-96d2-4c81-9f34-5ffbe840bb8e.png">
 <img width="591" alt="image" src="https://user-images.githubusercontent.com/2984146/190503738-57020093-47cc-4c88-9b8f-d63e1689f99d.png">
 <img width="591" alt="image" src="https://user-images.githubusercontent.com/2984146/190503753-fc3f912e-c12f-4f53-b2dc-1c7197335452.png">
