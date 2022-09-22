@@ -21,7 +21,7 @@ import pl.krystiankaniowski.composecharts.legend.LegendEntry
 import pl.krystiankaniowski.composecharts.legend.LegendFlow
 import pl.krystiankaniowski.composecharts.legend.LegendPosition
 
-data class SunbrustChartData(val slices: List<Slice>) {
+data class SunburstChartData(val slices: List<Slice>) {
 
     constructor(vararg slices: Slice) : this(slices.toList())
 
@@ -34,9 +34,9 @@ data class SunbrustChartData(val slices: List<Slice>) {
 }
 
 @Composable
-fun SunbrustChart(
+fun SunburstChart(
     modifier: Modifier = Modifier,
-    data: SunbrustChartData,
+    data: SunburstChartData,
     title: (@Composable () -> Unit)? = null,
     legendPosition: LegendPosition = LegendPosition.Bottom,
 ) {
@@ -47,7 +47,7 @@ fun SunbrustChart(
     ChartChoreographer(
         modifier = modifier,
         title = title,
-        legend = { SunbrustLegend(data) },
+        legend = { SunburstLegend(data) },
         legendPosition = legendPosition,
     ) {
         Canvas(Modifier.fillMaxSize()) {
@@ -77,11 +77,11 @@ fun SunbrustChart(
     }
 }
 
-private fun SunbrustChartData.deep(): Int = slices.maxOf { it.deep(1) }
-private fun SunbrustChartData.Slice.deep(current: Int): Int = subSlices.maxOfOrNull { it.deep(current = current + 1) } ?: current
+private fun SunburstChartData.deep(): Int = slices.maxOf { it.deep(1) }
+private fun SunburstChartData.Slice.deep(current: Int): Int = subSlices.maxOfOrNull { it.deep(current = current + 1) } ?: current
 
 private fun DrawScope.drawComponent(
-    slice: SunbrustChartData.Slice,
+    slice: SunburstChartData.Slice,
     startAngle: Float,
     sweepAngle: Float,
     level: Int,
@@ -118,8 +118,8 @@ private fun DrawScope.drawComponent(
 }
 
 @Composable
-private fun SunbrustLegend(
-    data: SunbrustChartData,
+private fun SunburstLegend(
+    data: SunburstChartData,
 ) {
     Box(modifier = Modifier.border(width = 1.dp, color = ChartsTheme.legendColor)) {
         LegendFlow(
