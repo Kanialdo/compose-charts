@@ -4,7 +4,6 @@ Kotlin module for drawing charts in android and desktop applications. Based on [
 
 Compose-charts is developed on the occasion of other projects. For now library supports bar, line, point and circular charts.
 
-
 # Roadmap
 
 > :warning: Library is under heavy and turbulent development.
@@ -13,9 +12,14 @@ Current api and package design is not yet finalized. Main goal is to provide bun
 
 # Project structure
 
-**Lib** contains library code and **demo** shows examples of usage.
+* **lib** library code
+* **demo-shared** shared demo code.
+* **demo-android** android demo target.
+* **demo-desktop** desktop demo target.
 
-Call `gradle demo:run` to launch Demo catalog
+🖥️ Call `gradle demo-desktop:run` to launch desktop Demo catalog
+
+📱 Call `gradle demo-android:assemble` to build android Demo catalog
 
 # Examples
 
