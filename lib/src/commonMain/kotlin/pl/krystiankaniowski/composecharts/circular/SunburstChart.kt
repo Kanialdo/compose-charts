@@ -21,18 +21,6 @@ import pl.krystiankaniowski.composecharts.legend.LegendEntry
 import pl.krystiankaniowski.composecharts.legend.LegendFlow
 import pl.krystiankaniowski.composecharts.legend.LegendPosition
 
-data class SunburstChartData(val slices: List<Slice>) {
-
-    constructor(vararg slices: Slice) : this(slices.toList())
-
-    data class Slice(
-        val label: String,
-        val color: Color,
-        val value: Float,
-        val subSlices: List<Slice> = emptyList(),
-    )
-}
-
 @Composable
 fun SunburstChart(
     modifier: Modifier = Modifier,
@@ -75,6 +63,18 @@ fun SunburstChart(
             }
         }
     }
+}
+
+data class SunburstChartData(val slices: List<Slice>) {
+
+    constructor(vararg slices: Slice) : this(slices.toList())
+
+    data class Slice(
+        val label: String,
+        val color: Color,
+        val value: Float,
+        val subSlices: List<Slice> = emptyList(),
+    )
 }
 
 private fun SunburstChartData.deep(): Int = slices.maxOf { it.deep(1) }

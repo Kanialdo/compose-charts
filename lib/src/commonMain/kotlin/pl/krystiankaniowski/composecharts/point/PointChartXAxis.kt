@@ -14,7 +14,6 @@ import pl.krystiankaniowski.composecharts.internal.TextAnchorX
 import pl.krystiankaniowski.composecharts.internal.XMapper
 import pl.krystiankaniowski.composecharts.internal.drawText
 
-
 object PointChartXAxis {
 
     interface Drawer {
@@ -37,8 +36,7 @@ object PointChartXAxis {
             xAxisScope: Rect,
             xMapper: XMapper,
             scale: AxisScale,
-        ) {
-        }
+        ) = Unit
     }
 
     data class Label(
@@ -115,7 +113,6 @@ object PointChartXAxis {
                 if (thresholds.size <= 10 || (index % (thresholds.size / 10) == 0)) {
                     drawLabel(drawScope, xAxisScope, x, formatter(threshold))
                 }
-
             }
         }
     }

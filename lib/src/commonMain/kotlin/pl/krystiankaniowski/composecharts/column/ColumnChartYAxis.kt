@@ -33,8 +33,7 @@ object ColumnChartYAxis {
             yAxisScope: Rect,
             yMapper: YMapper,
             scale: AxisScale,
-        ) {
-        }
+        ) = Unit
     }
 
     @Composable

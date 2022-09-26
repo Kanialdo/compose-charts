@@ -22,7 +22,7 @@ fun PieChartDemo() {
                     createSlice(1, 0.2f),
                     createSlice(2, 0.5f),
                 ),
-            )
+            ),
         )
     }
 
@@ -44,7 +44,7 @@ fun PieChartDemo() {
             OptionRemoveData {
                 data = data.copy(slices = data.slices.dropLast(1))
             }
-        }
+        },
     )
 }
 

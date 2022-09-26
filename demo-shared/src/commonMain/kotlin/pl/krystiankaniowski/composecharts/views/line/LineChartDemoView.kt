@@ -25,7 +25,7 @@ fun LineChartDemo() {
                     createEntry(random, 1, size),
                     createEntry(random, 2, size),
                 ),
-            )
+            ),
         )
     }
 
@@ -57,7 +57,7 @@ fun LineChartDemo() {
             OptionRemoveData {
                 data = data.copy(lines = data.lines.map { it.copy(values = it.values.dropLast(1)) })
             }
-        }
+        },
     )
 }
 

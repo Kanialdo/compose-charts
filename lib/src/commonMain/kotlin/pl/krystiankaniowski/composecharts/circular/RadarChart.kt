@@ -93,7 +93,7 @@ fun RadarChart(
                     .size(size)
                     .align(Alignment.Center),
             ) {
-                data.labels.forEachIndexed { index, it ->
+                data.labels.forEachIndexed { index, value ->
                     val angle = 2 * PI / data.labels.size * index + PI
                     val point = Offset(
                         x = r * sin(angle).toFloat() + chartArea.center.x,
@@ -106,7 +106,7 @@ fun RadarChart(
                         strokeWidth = style.lineWidth.toPx(),
                     )
                     drawText(
-                        text = it,
+                        text = value,
                         x = point.x,
                         y = point.y,
                         color = style.labelColor,
@@ -139,7 +139,6 @@ fun RadarChart(
                                 anchorX = TextAnchorX.Left,
                                 anchorY = TextAnchorY.Center,
                             )
-
                         } else {
                             path.lineTo(
                                 x = (r * (value / chartMaxValue) * sin(angle) + chartArea.center.x).toFloat(),
@@ -153,17 +152,17 @@ fun RadarChart(
 
                 data.entries.forEach { entry ->
                     val path = Path()
-                    entry.values.forEachIndexed { index, it ->
+                    entry.values.forEachIndexed { index, value ->
                         val angle = 2 * PI / data.labels.size * index + PI
                         if (index == 0) {
                             path.moveTo(
-                                x = r * (it / chartMaxValue) * sin(angle).toFloat() + chartArea.center.x,
-                                y = r * (it / chartMaxValue) * cos(angle).toFloat() + chartArea.center.y,
+                                x = r * (value / chartMaxValue) * sin(angle).toFloat() + chartArea.center.x,
+                                y = r * (value / chartMaxValue) * cos(angle).toFloat() + chartArea.center.y,
                             )
                         } else {
                             path.lineTo(
-                                x = r * (it / chartMaxValue) * sin(angle).toFloat() + chartArea.center.x,
-                                y = r * (it / chartMaxValue) * cos(angle).toFloat() + chartArea.center.y,
+                                x = r * (value / chartMaxValue) * sin(angle).toFloat() + chartArea.center.x,
+                                y = r * (value / chartMaxValue) * cos(angle).toFloat() + chartArea.center.y,
                             )
                         }
                     }
@@ -171,7 +170,6 @@ fun RadarChart(
                     drawPath(path = path, color = entry.color.copy(alpha = 0.3f), style = Fill)
                     drawPath(path = path, color = entry.color, style = Stroke(width = 1f))
                 }
-
             }
         }
     }
@@ -187,7 +185,7 @@ private fun RadarLegend(data: RadarChartData) {
                     entry.label,
                     entry.color,
                 )
-            }
+            },
         )
     }
 }

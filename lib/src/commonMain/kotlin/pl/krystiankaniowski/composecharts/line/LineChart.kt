@@ -179,7 +179,7 @@ private fun LineLegend(
                     item.label,
                     item.color,
                 )
-            }
+            },
         )
     }
 }

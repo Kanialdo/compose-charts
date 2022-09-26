@@ -55,7 +55,7 @@ private fun ColumnRawChartDemo(title: String, style: ColumnChartStyle) {
                     createEntry(random, 1, size),
                     createEntry(random, 2, size),
                 ),
-            )
+            ),
         )
     }
 
@@ -94,7 +94,7 @@ private fun ColumnRawChartDemo(title: String, style: ColumnChartStyle) {
                     columns = data.columns.map { it.copy(values = it.values.dropLast(1)) },
                 )
             }
-        }
+        },
     )
 }
 

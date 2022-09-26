@@ -19,21 +19,6 @@ import pl.krystiankaniowski.composecharts.legend.LegendEntry
 import pl.krystiankaniowski.composecharts.legend.LegendFlow
 import pl.krystiankaniowski.composecharts.legend.LegendPosition
 
-data class PieChartData(val slices: List<Slice>) {
-
-    constructor(vararg slices: Slice) : this(slices.toList())
-
-    data class Slice(
-        val label: String,
-        val color: Color,
-        val value: Float,
-    )
-
-    internal val sum = slices.sumOf { it.value.toDouble() }.toFloat()
-
-    internal val size: Int get() = slices.size
-}
-
 @Composable
 fun PieChart(
     modifier: Modifier = Modifier,
@@ -55,12 +40,12 @@ fun PieChart(
 
             drawIntoCanvas { canvas ->
                 var start = -90f
-                data.slices.forEach{ slice ->
+                data.slices.forEach { slice ->
                     val end = (slice.value / data.sum) * 360f
                     canvas.drawArc(
                         rect = Rect(
                             center = Offset(width / 2, height / 2),
-                            radius = localSize / 2
+                            radius = localSize / 2,
                         ),
                         startAngle = start,
                         sweepAngle = end,
@@ -72,6 +57,21 @@ fun PieChart(
             }
         }
     }
+}
+
+data class PieChartData(val slices: List<Slice>) {
+
+    constructor(vararg slices: Slice) : this(slices.toList())
+
+    data class Slice(
+        val label: String,
+        val color: Color,
+        val value: Float,
+    )
+
+    internal val sum = slices.sumOf { it.value.toDouble() }.toFloat()
+
+    internal val size: Int get() = slices.size
 }
 
 @Composable
@@ -86,7 +86,7 @@ private fun PieLegend(
                     item.label,
                     item.color,
                 )
-            }
+            },
         )
     }
 }

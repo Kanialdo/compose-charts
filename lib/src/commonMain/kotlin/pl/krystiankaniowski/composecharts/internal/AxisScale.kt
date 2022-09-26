@@ -3,23 +3,23 @@ package pl.krystiankaniowski.composecharts.internal
 import kotlin.math.*
 
 class AxisScale private constructor(
-    private val _min: Double,
-    private val _max: Double,
-    private val _tickSpacing: Double,
+    private val preciseMin: Double,
+    private val preciseMax: Double,
+    private val preciseTickSpacing: Double,
 ) {
 
-    private val _decimalPower = abs(log10(_tickSpacing).roundToInt())
+    private val _decimalPower = abs(log10(preciseTickSpacing).roundToInt())
 
-    val min: Float = _min.toFloat()
-    val max: Float = _max.toFloat()
-    val tickSpacing: Float = _tickSpacing.toFloat()
+    val min: Float = preciseMin.toFloat()
+    val max: Float = preciseMax.toFloat()
+    val tickSpacing: Float = preciseTickSpacing.toFloat()
 
     fun getHelperLines(): List<Float> {
-        var v = _min
-        val limit = _max
+        var v = preciseMin
+        val limit = preciseMax
         val items = mutableListOf<Double>()
         while (v <= limit) {
-            v += _tickSpacing
+            v += preciseTickSpacing
             // double check to prevent adding cheated values eg. 0.1 + 0.1 + 0.1 == 0.30000000000000004
             if (v <= limit) {
                 items.add(v)
@@ -51,9 +51,9 @@ class AxisScale private constructor(
             val niceMax = ceil(maxPointDouble / tickSpacing) * tickSpacing
 
             return AxisScale(
-                _min = niceMin,
-                _max = niceMax,
-                _tickSpacing = tickSpacing,
+                preciseMin = niceMin,
+                preciseMax = niceMax,
+                preciseTickSpacing = tickSpacing,
             )
         }
     }
@@ -67,6 +67,8 @@ class AxisScale private constructor(
  * @param round whether to round the result
  * @return a "nice" number to be used for the data range
  */
+
+@Suppress("MagicNumber")
 private fun niceNum(range: Double, round: Boolean): Double {
     val exponent: Double = floor(log10(range))
     val fraction: Double = range / 10.0.pow(exponent)

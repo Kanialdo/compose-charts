@@ -22,7 +22,6 @@ object AreaChartYAxis {
             yMapper: YMapper,
             scale: AxisScale,
         )
-
     }
 
     @Composable
@@ -34,8 +33,7 @@ object AreaChartYAxis {
             yAxisScope: Rect,
             yMapper: YMapper,
             scale: AxisScale,
-        ) {
-        }
+        ) = Unit
     }
 
     @Composable

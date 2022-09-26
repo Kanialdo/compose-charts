@@ -138,7 +138,7 @@ private fun RadarLegend(data: PolarChartData) {
                     entry.label,
                     entry.color,
                 )
-            }
+            },
         )
     }
 }

@@ -35,8 +35,7 @@ object BarChartYAxis {
             yAxisScope: Rect,
             yMapper: YMapper,
             data: BarChartData,
-        ) {
-        }
+        ) = Unit
     }
 
     @Composable
@@ -93,8 +92,6 @@ object BarChartYAxis {
 //                    size = textSize.value,
 //                )
 //            }
-
-
         }
     }
 }

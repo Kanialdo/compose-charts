@@ -35,8 +35,7 @@ object ColumnChartXAxis {
             xAxisScope: Rect,
             xMapper: XMapper,
             data: ColumnChartData,
-        ) {
-        }
+        ) = Unit
     }
 
     @Composable
@@ -57,7 +56,7 @@ object ColumnChartXAxis {
             drawScope.drawLine(
                 color = color,
                 start = Offset(xAxisScope.left, xAxisScope.top),
-                end = Offset(xAxisScope.right, xAxisScope.top)
+                end = Offset(xAxisScope.right, xAxisScope.top),
             )
 
             data.labels.forEachIndexed { index, label ->

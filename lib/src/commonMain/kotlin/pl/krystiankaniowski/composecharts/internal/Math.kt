@@ -3,8 +3,14 @@ package pl.krystiankaniowski.composecharts.internal
 import androidx.compose.ui.geometry.Offset
 
 data class PointMapper(
-    val xSrcMin: Float, val xSrcMax: Float, val xDstMin: Float, val xDstMax: Float,
-    val ySrcMin: Float, val ySrcMax: Float, val yDstMin: Float, val yDstMax: Float,
+    val xSrcMin: Float,
+    val xSrcMax: Float,
+    val xDstMin: Float,
+    val xDstMax: Float,
+    val ySrcMin: Float,
+    val ySrcMax: Float,
+    val yDstMin: Float,
+    val yDstMax: Float,
     val yInverted: Boolean = true,
 ) : XMapper, YMapper {
 
@@ -24,8 +30,10 @@ data class PointMapper(
 }
 
 data class OneAxisMapper(
-    val srcMin: Float, val srcMax: Float,
-    val dstMin: Float, val dstMax: Float,
+    val srcMin: Float,
+    val srcMax: Float,
+    val dstMin: Float,
+    val dstMax: Float,
     val inverted: Boolean = true,
 ) {
     private val scale = (dstMax - dstMin) / (srcMax - srcMin)

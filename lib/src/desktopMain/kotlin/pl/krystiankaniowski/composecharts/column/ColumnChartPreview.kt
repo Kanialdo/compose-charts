@@ -5,6 +5,7 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import pl.krystiankaniowski.composecharts.autoColor
 
+@Suppress("MagicNumber")
 private val data = ColumnChartData(
     labels = listOf(
         "C1", "C2", "C3", "C4", "C5",
@@ -13,7 +14,7 @@ private val data = ColumnChartData(
         ColumnChartData.Column(label = "Series A", color = autoColor(0), values = listOf(5f, 4f, 3f, 2f, 1f)),
         ColumnChartData.Column(label = "Series B", color = autoColor(1), values = listOf(1f, 1f, 1f, 1f, 1f)),
         ColumnChartData.Column(label = "Series C", color = autoColor(2), values = listOf(0f, 1f, 2f, 1f, 0f)),
-    )
+    ),
 )
 
 @Preview

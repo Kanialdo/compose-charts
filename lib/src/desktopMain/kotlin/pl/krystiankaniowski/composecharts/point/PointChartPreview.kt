@@ -4,10 +4,10 @@ import androidx.compose.desktop.ui.tooling.preview.Preview
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.geometry.Offset
-import pl.krystiankaniowski.composecharts.AutoColors
 import pl.krystiankaniowski.composecharts.autoColor
 import kotlin.random.Random
 
+@Suppress("MagicNumber")
 private val data = PointChartData(
     series = listOf(
         PointChartData.Series(
@@ -19,7 +19,7 @@ private val data = PointChartData(
                 Offset(0f, 2f),
                 Offset(0f, 1f),
             ),
-            color = PointChartData.ChartColor.Solid(autoColor(0))
+            color = PointChartData.ChartColor.Solid(autoColor(0)),
         ),
         PointChartData.Series(
             label = "Series B",
@@ -30,7 +30,7 @@ private val data = PointChartData(
                 Offset(2f, 1f),
                 Offset(1f, 0f),
             ),
-            color = PointChartData.ChartColor.Solid(autoColor(1))
+            color = PointChartData.ChartColor.Solid(autoColor(1)),
         ),
         PointChartData.Series(
             label = "Series C",
@@ -41,9 +41,9 @@ private val data = PointChartData(
                 Offset(2f, 1.5f),
                 Offset(1f, 1.5f),
             ),
-            color = PointChartData.ChartColor.Solid(autoColor(2))
+            color = PointChartData.ChartColor.Solid(autoColor(2)),
         ),
-    )
+    ),
 )
 
 @Preview
@@ -66,8 +66,8 @@ fun PointChartCustomXAxisPreview() {
                 PointChartXAxis.Label(label = "A", value = 1f),
                 PointChartXAxis.Label(label = "B", value = 2f),
                 PointChartXAxis.Label(label = "C", value = 3f),
-            )
-        )
+            ),
+        ),
     )
 }
 
@@ -79,13 +79,13 @@ fun PointChartCustomXAxisRangePreview() {
         title = { Text("Point chart") },
         xAxis = PointChartXAxis.FixedRanges(
             points = listOf(
-                PointChartXAxis.Range(label = "A", from = 0f, to = 1f,),
-                PointChartXAxis.Range(label = "B", from = 1f, to = 2f,),
-                PointChartXAxis.Range(label = "C", from = 2f, to = 3f,),
-                PointChartXAxis.Range(label = "D", from = 3f, to = 4f,),
-                PointChartXAxis.Range(label = "E", from = 4f, to = 5f,),
-            )
-        )
+                PointChartXAxis.Range(label = "A", from = 0f, to = 1f),
+                PointChartXAxis.Range(label = "B", from = 1f, to = 2f),
+                PointChartXAxis.Range(label = "C", from = 2f, to = 3f),
+                PointChartXAxis.Range(label = "D", from = 3f, to = 4f),
+                PointChartXAxis.Range(label = "E", from = 4f, to = 5f),
+            ),
+        ),
     )
 }
 
@@ -102,7 +102,7 @@ fun PointChartComplexPreview() {
                     values = points,
                     color = PointChartData.ChartColor.Solid(autoColor(1)),
                 ),
-            )
+            ),
         ),
         title = { Text("Point chart") },
     )
@@ -120,7 +120,7 @@ fun PointChartCustomBoundsPreview() {
                     label = "Data",
                     values = points,
                     color = PointChartData.ChartColor.Solid(autoColor(0)),
-                )
+                ),
             ),
             minX = 0f,
             maxX = 10f,

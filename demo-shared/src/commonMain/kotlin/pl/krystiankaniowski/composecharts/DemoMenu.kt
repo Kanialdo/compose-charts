@@ -6,8 +6,6 @@ import pl.krystiankaniowski.composecharts.views.circular.*
 import pl.krystiankaniowski.composecharts.views.line.LineChartCustomDemo
 import pl.krystiankaniowski.composecharts.views.line.LineChartDemo
 
-data class MenuItem(val title: String, val screen: @Composable () -> Unit)
-
 val menuItems = listOf(
     MenuItem(title = "Column grouped", screen = { ColumnGroupedChartDemo() }),
     MenuItem(title = "Column stacked", screen = { ColumnStackedChartDemo() }),
@@ -30,3 +28,5 @@ val menuItems = listOf(
     MenuItem(title = "Legend", screen = { LegendDemoView() }),
     MenuItem(title = "Legend Flow", screen = { LegendFlowDemoView() }),
 )
+
+data class MenuItem(val title: String, val screen: @Composable () -> Unit)

@@ -22,7 +22,7 @@ fun PolarChartDemo() {
                     createEntry(1, 0.2f),
                     createEntry(2, 0.5f),
                 ),
-            )
+            ),
         )
     }
 
@@ -44,7 +44,7 @@ fun PolarChartDemo() {
             OptionRemoveData {
                 data = data.copy(entries = data.entries.dropLast(1))
             }
-        }
+        },
     )
 }
 

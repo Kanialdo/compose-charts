@@ -33,7 +33,7 @@ private fun ChartChoreographerPreview() {
                 contentAlignment = Alignment.Center,
                 content = { Text("Chart") },
             )
-        }
+        },
     )
 }
 
@@ -56,6 +56,6 @@ private fun ChartChoreographerNoTitlePreview() {
                 contentAlignment = Alignment.Center,
                 content = { Text("Chart") },
             )
-        }
+        },
     )
 }

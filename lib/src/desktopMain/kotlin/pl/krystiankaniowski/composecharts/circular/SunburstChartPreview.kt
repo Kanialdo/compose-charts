@@ -33,7 +33,7 @@ private fun SunburstChartPreview() {
                                 SunburstChartData.Slice(label = "Series A1.2", color = autoColor(5), value = 0.25f),
                             ),
                         ),
-                    )
+                    ),
                 ),
                 SunburstChartData.Slice(label = "Series B", color = autoColor(6), value = 2f),
                 SunburstChartData.Slice(label = "Series C", color = autoColor(7), value = 1f),
