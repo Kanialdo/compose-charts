@@ -55,7 +55,7 @@ private fun BarRawChartDemo(title: String, style: BarChartStyle) {
                     createEntry(random, 1, size),
                     createEntry(random, 2, size),
                 ),
-            )
+            ),
         )
     }
 
@@ -94,7 +94,7 @@ private fun BarRawChartDemo(title: String, style: BarChartStyle) {
                     dataSets = data.dataSets.map { it.copy(values = it.values.dropLast(1)) },
                 )
             }
-        }
+        },
     )
 }
 

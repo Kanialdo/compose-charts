@@ -22,7 +22,6 @@ object LineChartYAxis {
             yMapper: YMapper,
             scale: AxisScale,
         )
-
     }
 
     @Composable
@@ -34,8 +33,7 @@ object LineChartYAxis {
             yAxisScope: Rect,
             yMapper: YMapper,
             scale: AxisScale,
-        ) {
-        }
+        ) = Unit
     }
 
     @Composable

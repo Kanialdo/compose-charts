@@ -1,5 +1,5 @@
 import com.github.benmanes.gradle.versions.updates.DependencyUpdatesTask
-import io.gitlab.arturbosch.detekt.Detekt
+import org.gradle.internal.impldep.org.junit.experimental.categories.Categories.CategoryFilter.exclude
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 group = "pl.krystiankaniowski.composecharts"
@@ -28,7 +28,7 @@ allprojects {
     }
 }
 
-subprojects {
+allprojects {
     apply(plugin = "io.gitlab.arturbosch.detekt")
 
     detekt {
@@ -37,10 +37,27 @@ subprojects {
         parallel = true
         autoCorrect = false
         config.setFrom(files(project.rootDir.resolve("config/detekt.yml")))
+        source = files(
+            "src/main/java",
+            "src/main/kotlin",
+            "src/test/java",
+            "src/test/kotlin",
+            "src/commonMain/kotlin",
+            "src/commonTest/kotlin",
+            "src/androidMain/kotlin",
+            "src/androidTest/kotlin",
+            "src/desktopMain/kotlin",
+            "src/desktopTest/kotlin",
+        )
 
         dependencies {
             detektPlugins(rootProject.libs.detekt.plugins.formatting)
         }
+    }
+
+    tasks.withType<io.gitlab.arturbosch.detekt.Detekt> {
+        jvmTarget = "1.8"
+        exclude("**/com/google/accompanist/flowlayout/**")
     }
 }
 

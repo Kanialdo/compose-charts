@@ -88,7 +88,7 @@ fun PointChartCustomDemo() {
                             2f to Color.Green,
                             3f to Color.Yellow,
                             4f to Color.Magenta,
-                        )
+                        ),
                     ),
                     strokeWidth = 2.5f,
                 ),
@@ -111,14 +111,14 @@ fun PointChartCustomDemo() {
                 PointChartXAxis.Label("X1", 1f),
                 PointChartXAxis.Label("X2", 2f),
                 PointChartXAxis.Label("X3", 3f),
-            )
+            ),
         ),
         yAxis = PointChartYAxis.Fixed(
             labels = listOf(
                 1f to "Y1",
                 2f to "Y2",
                 3f to "Y3",
-            )
+            ),
         ),
     )
 }

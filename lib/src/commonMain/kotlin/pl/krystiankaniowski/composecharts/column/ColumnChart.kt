@@ -14,9 +14,9 @@ import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import pl.krystiankaniowski.composecharts.ChartsTheme
+import pl.krystiankaniowski.composecharts.internal.AxisScale
 import pl.krystiankaniowski.composecharts.internal.ChartChoreographer
 import pl.krystiankaniowski.composecharts.internal.PointMapper
-import pl.krystiankaniowski.composecharts.internal.AxisScale
 import pl.krystiankaniowski.composecharts.legend.LegendEntry
 import pl.krystiankaniowski.composecharts.legend.LegendFlow
 import pl.krystiankaniowski.composecharts.legend.LegendPosition
@@ -129,7 +129,7 @@ fun ColumnChart(
                                 size = Size(
                                     width = barWidth,
                                     height = v * mapper.yScale,
-                                )
+                                ),
                             )
                         }
                     }
@@ -155,7 +155,7 @@ fun ColumnChart(
                                 size = Size(
                                     width = barWidth,
                                     height = counter * mapper.yScale,
-                                )
+                                ),
                             )
                             counter -= data.columns[j].values[i]
                         }
@@ -182,7 +182,7 @@ fun ColumnChart(
                                 size = Size(
                                     width = barWidth,
                                     height = (counter / maxValues[i]) * mapper.yScale,
-                                )
+                                ),
                             )
                             counter -= data.columns[j].values[i]
                         }
@@ -205,7 +205,7 @@ private fun BarLegend(
                     item.label,
                     item.color,
                 )
-            }
+            },
         )
     }
 }

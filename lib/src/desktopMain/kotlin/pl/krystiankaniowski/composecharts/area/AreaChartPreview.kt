@@ -6,12 +6,13 @@ import androidx.compose.runtime.Composable
 import pl.krystiankaniowski.composecharts.autoColor
 import kotlin.random.Random
 
+@Suppress("MagicNumber")
 private val data = AreaChartData(
     lines = listOf(
         AreaChartData.Area(label = "Series A", color = autoColor(0), values = listOf(5f, 4f, 3f, 2f, 1f)),
         AreaChartData.Area(label = "Series B", color = autoColor(1), values = listOf(1f, 1f, 1f, 1f, 1f)),
         AreaChartData.Area(label = "Series C", color = autoColor(2), values = listOf(0f, 1f, 2f, 1f, 0f)),
-    )
+    ),
 )
 
 @Preview
@@ -34,7 +35,7 @@ fun AreaChartNotRegularPreview() {
                     color = autoColor(0),
                     values = listOf(1.2f, 8.35f, 16.6f, 54.987f, 62.99f),
                 ),
-            )
+            ),
         ),
         title = { Text("Area chart") },
     )
@@ -56,7 +57,7 @@ fun AreaChartCustomLabelsPreview() {
                     color = autoColor(1),
                     values = listOf(2f, 3f, 5f, 4f, 1f),
                 ),
-            )
+            ),
         ),
         title = { Text("Area chart") },
         xAxis = AreaChartXAxis.Auto(label = { listOf("A", "B", "C", "D", "E")[it] }),
@@ -75,8 +76,8 @@ fun AreaChartComplexPreview() {
                     label = "Series A",
                     color = autoColor(0),
                     values = points,
-                )
-            )
+                ),
+            ),
         ),
         title = { Text("Area chart") },
     )
@@ -101,7 +102,7 @@ fun AreaStackedChartComplexPreview() {
                     color = autoColor(1),
                     values = points2,
                 ),
-            )
+            ),
         ),
         mode = AreaChartMode.STACKED,
         title = { Text("Area stacked chart") },
@@ -127,7 +128,7 @@ fun AreaProportionalChartComplexPreview() {
                 AreaChartData.Area(
                     label = "Series C", color = autoColor(2), values = points3,
                 ),
-            )
+            ),
         ),
         mode = AreaChartMode.PROPORTIONAL,
         title = { Text("Area proportional chart") },

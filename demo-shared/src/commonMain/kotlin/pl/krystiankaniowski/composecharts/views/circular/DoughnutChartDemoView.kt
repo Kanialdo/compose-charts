@@ -28,7 +28,7 @@ fun DoughnutChartDemo() {
                     createSlice(1, 0.2f),
                     createSlice(2, 0.5f),
                 ),
-            )
+            ),
         )
     }
 
@@ -52,7 +52,7 @@ fun DoughnutChartDemo() {
             OptionRemoveData {
                 data = data.copy(slices = data.slices.dropLast(1))
             }
-        }
+        },
     )
 }
 

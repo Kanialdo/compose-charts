@@ -1,6 +1,12 @@
 build:
   maxIssues: 0
 
+complexity:
+  LongMethod:
+    active: false
+  LongParameterList:
+    active: false
+
 formatting:
   FinalNewline:
     active: false
@@ -11,8 +17,16 @@ formatting:
     maxLineLength: 180
   NoWildcardImports:
     active: false
+  TrailingComma:
+    active: true
+    allowTrailingComma: true
+    allowTrailingCommaOnCallSite: true
 
 style:
+  MagicNumber:
+    active: false
+    ignoreAnnotated:
+      - 'Preview'
   MaxLineLength:
     active: true
     maxLineLength: 180
@@ -20,6 +34,10 @@ style:
     active: false
   WildcardImport:
     active: false
+  UnusedPrivateMember:
+    active: true
+    ignoreAnnotated:
+      - 'Preview'
 
 naming:
   FunctionNaming:

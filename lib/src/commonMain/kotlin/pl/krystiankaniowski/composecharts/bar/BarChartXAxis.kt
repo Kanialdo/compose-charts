@@ -32,8 +32,7 @@ object BarChartXAxis {
             xAxisScope: Rect,
             xMapper: XMapper,
             scale: AxisScale,
-        ) {
-        }
+        ) = Unit
     }
 
     @Composable
@@ -53,7 +52,7 @@ object BarChartXAxis {
             drawScope.drawLine(
                 color = color,
                 start = Offset(xAxisScope.left, xAxisScope.top),
-                end = Offset(xAxisScope.right, xAxisScope.top)
+                end = Offset(xAxisScope.right, xAxisScope.top),
             )
 
             val helperLines = scale.getHelperLines()

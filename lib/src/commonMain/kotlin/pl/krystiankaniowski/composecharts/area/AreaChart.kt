@@ -184,7 +184,6 @@ private fun DrawScope.drawArea(
     )
 }
 
-
 private fun DrawScope.drawProportionalArea(
     color: Color,
     total: List<Float>,
@@ -234,7 +233,7 @@ private fun AreaLegend(
                     item.label,
                     item.color,
                 )
-            }
-        )
+            },
+        ),
     }
 }

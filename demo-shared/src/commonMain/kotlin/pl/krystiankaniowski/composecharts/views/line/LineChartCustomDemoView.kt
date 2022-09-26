@@ -31,7 +31,7 @@ fun LineChartCustomDemo() {
                     values = listOf(0f, 1f, 2f, 1f, 0f),
                     pointStyle = LineChartStyle.PointStyle.Filled(size = 5f),
                 ),
-            )
+            ),
         ),
         style = LineChartStyle(
             lineStyle = LineChartStyle.LineStyle(width = 1f),

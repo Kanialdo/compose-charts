@@ -43,7 +43,7 @@ internal class PointMapperTest {
         val mapperWithYInverted = PointMapper(
             xSrcMin = 0f, xSrcMax = 10f, xDstMin = 0f, xDstMax = 100f,
             ySrcMin = 0f, ySrcMax = 10f, yDstMin = 0f, yDstMax = 100f,
-            yInverted = true
+            yInverted = true,
         )
 
         val mapperWithYNotInverted = mapperWithYInverted.copy(yInverted = false)

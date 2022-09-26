@@ -10,7 +10,7 @@ private val data = PieChartData(
         PieChartData.Slice(label = "Series A", color = autoColor(0), value = 1f),
         PieChartData.Slice(label = "Series B", color = autoColor(1), value = 2f),
         PieChartData.Slice(label = "Series C", color = autoColor(2), value = 3f),
-    )
+    ),
 )
 
 @Preview

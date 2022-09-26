@@ -33,8 +33,7 @@ object PointChartYAxis {
             yAxisScope: Rect,
             yMapper: YMapper,
             scale: AxisScale,
-        ) {
-        }
+        ) = Unit
     }
 
     @Composable

@@ -50,7 +50,7 @@ private fun AreaRawChartDemo(title: String, mode: AreaChartMode) {
                     createEntry(random, 1, size),
                     createEntry(random, 2, size),
                 ),
-            )
+            ),
         )
     }
 
@@ -83,7 +83,7 @@ private fun AreaRawChartDemo(title: String, mode: AreaChartMode) {
             OptionRemoveData {
                 data = data.copy(lines = data.lines.map { it.copy(values = it.values.dropLast(1)) })
             }
-        }
+        },
     )
 }
 

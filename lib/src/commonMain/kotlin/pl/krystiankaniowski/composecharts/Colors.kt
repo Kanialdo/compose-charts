@@ -2,8 +2,11 @@ package pl.krystiankaniowski.composecharts
 
 import androidx.compose.ui.graphics.Color
 
+object Colors
+
 object AutoColors {
 
+    @Suppress("MagicNumber")
     private val colors = arrayOf(
         0xFFe6194B,
         0xFF3cb44b,

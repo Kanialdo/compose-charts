@@ -34,8 +34,7 @@ object LineChartXAxis {
             xAxisScope: Rect,
             xMapper: XMapper,
             data: LineChartData,
-        ) {
-        }
+        ) = Unit
     }
 
     @Composable
@@ -57,7 +56,7 @@ object LineChartXAxis {
             drawScope.drawLine(
                 color = color,
                 start = Offset(xAxisScope.left, xAxisScope.top),
-                end = Offset(xAxisScope.right, xAxisScope.top)
+                end = Offset(xAxisScope.right, xAxisScope.top),
             )
             for (i in 0 until data.size) {
                 val x = xMapper.x(i + 0.5f)

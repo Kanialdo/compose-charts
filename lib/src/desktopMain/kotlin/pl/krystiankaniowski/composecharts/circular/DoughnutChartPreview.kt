@@ -10,7 +10,7 @@ private val data = DoughnutChartData(
         DoughnutChartData.Slice(label = "Series A", color = autoColor(0), value = 1f),
         DoughnutChartData.Slice(label = "Series B", color = autoColor(1), value = 2f),
         DoughnutChartData.Slice(label = "Series C", color = autoColor(2), value = 3f),
-    )
+    ),
 )
 
 @Preview

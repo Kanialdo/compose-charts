@@ -28,7 +28,7 @@ fun RadarChartDemo() {
                         add(createEntry(random, i, size))
                     }
                 },
-            )
+            ),
         )
     }
 
@@ -76,7 +76,7 @@ fun RadarChartDemo() {
                     entries = data.entries.map { it.copy(values = it.values.dropLast(1)) },
                 )
             }
-        }
+        },
     )
 }
 
