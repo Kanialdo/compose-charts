@@ -3,8 +3,8 @@ package pl.krystiankaniowski.composecharts.demo
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import pl.krystiankaniowski.composecharts.DemoApplication
 import pl.krystiankaniowski.composecharts.DemoTheme
-import pl.krystiankaniowski.composecharts.DemoView
 
 class MainActivity : ComponentActivity() {
 
@@ -12,7 +12,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             DemoTheme {
-                DemoView()
+                DemoApplication()
             }
         }
     }
