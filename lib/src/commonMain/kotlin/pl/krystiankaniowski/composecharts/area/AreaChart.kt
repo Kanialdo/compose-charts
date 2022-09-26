@@ -234,6 +234,6 @@ private fun AreaLegend(
                     item.color,
                 )
             },
-        ),
+        )
     }
 }

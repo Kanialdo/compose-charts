@@ -111,7 +111,7 @@ private fun SideMenu(menu: List<MenuItem>, selected: MenuItem?, onSelect: (MenuI
             modifier = Modifier
                 .width(DemoDrawerMaxWidth.dp)
                 .fillMaxHeight()
-                .verticalScroll(rememberScrollState())
+                .verticalScroll(rememberScrollState()),
         ) {
             menu.forEach {
                 Surface(contentColor = if (selected == it) MaterialTheme.colors.primary else MaterialTheme.colors.onSurface) {
@@ -125,7 +125,7 @@ private fun SideMenu(menu: List<MenuItem>, selected: MenuItem?, onSelect: (MenuI
     }
 }
 
-const val DemoDrawerMaxWidth = 250
+private const val DemoDrawerMaxWidth = 250
 
 private class DemoDrawerShape : Shape {
     override fun createOutline(
@@ -138,9 +138,9 @@ private class DemoDrawerShape : Shape {
                 offset = Offset.Zero,
                 size = Size(
                     width = min(size.width, DemoDrawerMaxWidth * density.density),
-                    height = size.height
-                )
-            )
+                    height = size.height,
+                ),
+            ),
         )
     }
 }
