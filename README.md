@@ -23,7 +23,7 @@ Current api and package design is not yet finalized. Main goal is to provide bun
 
 # Examples
 
-<img width="591" alt="image" src="https://user-images.githubusercontent.com/2984146/190722664-4c9ae861-6952-4e8f-8535-a04de9c6eefb.png">
+<img width="759" alt="image" src="https://user-images.githubusercontent.com/2984146/193142446-b0b7af7c-ef66-44da-846c-cf9b3b73bfee.png">
 <img width="591" alt="image" src="https://user-images.githubusercontent.com/2984146/191104247-1ad6ca1b-0abb-44b2-8590-09611daa369a.png">
 <img width="591" alt="image" src="https://user-images.githubusercontent.com/2984146/191104274-308148dd-9b41-4667-8802-2698126f257b.png">
 <img width="591" alt="image" src="https://user-images.githubusercontent.com/2984146/191608899-6223d642-0b54-447b-9d29-e122b4e03539.png">
