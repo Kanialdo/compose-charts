@@ -17,9 +17,15 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.MaterialTheme.typography
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.AreaChart
 import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material.icons.filled.ArrowDropUp
-import androidx.compose.material.icons.filled.ChevronRight
+import androidx.compose.material.icons.filled.BarChart
+import androidx.compose.material.icons.filled.BubbleChart
+import androidx.compose.material.icons.filled.Feed
+import androidx.compose.material.icons.filled.PieChart
+import androidx.compose.material.icons.filled.ShowChart
+import androidx.compose.material.icons.filled.Sort
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -28,6 +34,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
 import pl.krystiankaniowski.composecharts.views.AreaOverlappingChartDemo
 import pl.krystiankaniowski.composecharts.views.AreaProportionalChartDemo
@@ -52,11 +59,12 @@ import pl.krystiankaniowski.composecharts.views.line.LineChartDemo
 
 sealed interface MenuEntry {
     data class MenuItem(val title: String, val screen: @Composable () -> Unit) : MenuEntry
-    data class Section(val title: String, val items: List<MenuItem>) : MenuEntry
+    data class Section(val icon: ImageVector, val title: String, val items: List<MenuItem>) : MenuEntry
 }
 
 val menuItems = listOf<MenuEntry>(
     MenuEntry.Section(
+        icon = Icons.Default.BarChart,
         title = "Column",
         items = listOf(
             MenuEntry.MenuItem(title = "Column grouped", screen = { ColumnGroupedChartDemo() }),
@@ -65,6 +73,7 @@ val menuItems = listOf<MenuEntry>(
         ),
     ),
     MenuEntry.Section(
+        icon = Icons.Default.Sort,
         title = "Bar",
         items = listOf(
             MenuEntry.MenuItem(title = "Bar grouped", screen = { BarGroupedChartDemo() }),
@@ -73,6 +82,7 @@ val menuItems = listOf<MenuEntry>(
         ),
     ),
     MenuEntry.Section(
+        icon = Icons.Default.ShowChart,
         title = "Line",
         items = listOf(
             MenuEntry.MenuItem(title = "Line", screen = { LineChartDemo() }),
@@ -80,6 +90,7 @@ val menuItems = listOf<MenuEntry>(
         ),
     ),
     MenuEntry.Section(
+        icon = Icons.Default.BubbleChart,
         title = "Point",
         items = listOf(
             MenuEntry.MenuItem(title = "Point chart", screen = { PointChartDemo() }),
@@ -87,6 +98,7 @@ val menuItems = listOf<MenuEntry>(
         ),
     ),
     MenuEntry.Section(
+        icon = Icons.Default.AreaChart,
         title = "Area",
         items = listOf(
             MenuEntry.MenuItem(title = "Area overlapping", screen = { AreaOverlappingChartDemo() }),
@@ -95,6 +107,7 @@ val menuItems = listOf<MenuEntry>(
         ),
     ),
     MenuEntry.Section(
+        icon = Icons.Default.PieChart,
         title = "Circular",
         items = listOf(
             MenuEntry.MenuItem(title = "Pie", screen = { PieChartDemo() }),
@@ -105,6 +118,7 @@ val menuItems = listOf<MenuEntry>(
         ),
     ),
     MenuEntry.Section(
+        icon = Icons.Default.Feed,
         title = "Legend",
         items = listOf(
             MenuEntry.MenuItem(title = "Legend", screen = { LegendDemoView() }),
@@ -142,7 +156,7 @@ fun ColumnScope.Section(section: MenuEntry.Section, currentMenuItem: MenuEntry.M
         verticalAlignment = Alignment.CenterVertically,
     ) {
         Icon(
-            imageVector = Icons.Default.ChevronRight,
+            imageVector = section.icon,
             contentDescription = null,
         )
         Spacer(modifier = Modifier.width(16.dp))
