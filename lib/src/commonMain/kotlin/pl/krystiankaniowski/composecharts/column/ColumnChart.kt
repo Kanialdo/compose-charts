@@ -21,10 +21,26 @@ import pl.krystiankaniowski.composecharts.legend.LegendEntry
 import pl.krystiankaniowski.composecharts.legend.LegendFlow
 import pl.krystiankaniowski.composecharts.legend.LegendPosition
 
-data class ColumnChartData(
-    val labels: List<String>,
-    val columns: List<Column>,
-) {
+object ColumnChart {
+
+    data class Data(
+        val labels: List<String>,
+        val columns: List<Column>,
+    ) {
+        init {
+            check(columns.first().values.size.let { size -> columns.all { it.values.size == size } }) {
+                "All bars have to contains same amount of entries"
+            }
+            check(labels.size == columns.first().values.size) {
+                "Amount of labels should be equal to amount of values in each bar"
+            }
+        }
+
+        internal val minValue = columns.minOf { it.values.minOf { it } }
+        internal val maxValue = columns.maxOf { it.values.maxOf { it } }
+
+        internal val size: Int get() = columns.first().values.size
+    }
 
     data class Column(
         val label: String,
@@ -32,32 +48,18 @@ data class ColumnChartData(
         val color: Color,
     )
 
-    init {
-        check(columns.first().values.size.let { size -> columns.all { it.values.size == size } }) {
-            "All bars have to contains same amount of entries"
-        }
-        check(labels.size == columns.first().values.size) {
-            "Amount of labels should be equal to amount of values in each bar"
-        }
+    enum class Style {
+        GROUPED,
+        STACKED,
+        PROPORTIONAL,
     }
-
-    internal val minValue = columns.minOf { it.values.minOf { it } }
-    internal val maxValue = columns.maxOf { it.values.maxOf { it } }
-
-    internal val size: Int get() = columns.first().values.size
-}
-
-enum class ColumnChartStyle {
-    GROUPED,
-    STACKED,
-    PROPORTIONAL,
 }
 
 @Composable
 fun ColumnChart(
     modifier: Modifier = Modifier,
-    data: ColumnChartData,
-    style: ColumnChartStyle = ColumnChartStyle.GROUPED,
+    data: ColumnChart.Data,
+    style: ColumnChart.Style = ColumnChart.Style.GROUPED,
     title: (@Composable () -> Unit)? = null,
     xAxis: ColumnChartXAxis.Drawer = ColumnChartXAxis.Auto(),
     yAxis: ColumnChartYAxis.Drawer = ColumnChartYAxis.Auto(),
@@ -68,9 +70,9 @@ fun ColumnChart(
         AxisScale.create(
             min = 0f,
             max = when (style) {
-                ColumnChartStyle.GROUPED -> data.maxValue
-                ColumnChartStyle.STACKED -> FloatArray(data.size) { index -> data.columns.map { it.values[index] }.sum() }.max()
-                ColumnChartStyle.PROPORTIONAL -> 1f
+                ColumnChart.Style.GROUPED -> data.maxValue
+                ColumnChart.Style.STACKED -> FloatArray(data.size) { index -> data.columns.map { it.values[index] }.sum() }.max()
+                ColumnChart.Style.PROPORTIONAL -> 1f
             },
         )
     }
@@ -115,7 +117,7 @@ fun ColumnChart(
 
             when (style) {
 
-                ColumnChartStyle.GROUPED -> {
+                ColumnChart.Style.GROUPED -> {
 
                     val barWidth = 2 * w * mapper.xScale / data.columns.size
                     data.columns.forEachIndexed { series, value ->
@@ -135,7 +137,7 @@ fun ColumnChart(
                     }
                 }
 
-                ColumnChartStyle.STACKED -> {
+                ColumnChart.Style.STACKED -> {
 
                     val series = data.columns.size
                     val values = data.size
@@ -162,7 +164,7 @@ fun ColumnChart(
                     }
                 }
 
-                ColumnChartStyle.PROPORTIONAL -> {
+                ColumnChart.Style.PROPORTIONAL -> {
 
                     val series = data.columns.size
                     val values = data.size
@@ -195,7 +197,7 @@ fun ColumnChart(
 
 @Composable
 private fun BarLegend(
-    data: ColumnChartData,
+    data: ColumnChart.Data,
 ) {
     Box(modifier = Modifier.border(width = 1.dp, color = ChartsTheme.legendColor)) {
         LegendFlow(

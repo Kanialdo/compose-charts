@@ -5,11 +5,11 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import pl.krystiankaniowski.composecharts.autoColor
 
-private val data = PieChartData(
+private val data = PieChart.Data(
     slices = listOf(
-        PieChartData.Slice(label = "Series A", color = autoColor(0), value = 1f),
-        PieChartData.Slice(label = "Series B", color = autoColor(1), value = 2f),
-        PieChartData.Slice(label = "Series C", color = autoColor(2), value = 3f),
+        PieChart.Slice(label = "Series A", color = autoColor(0), value = 1f),
+        PieChart.Slice(label = "Series B", color = autoColor(1), value = 2f),
+        PieChart.Slice(label = "Series C", color = autoColor(2), value = 3f),
     ),
 )
 

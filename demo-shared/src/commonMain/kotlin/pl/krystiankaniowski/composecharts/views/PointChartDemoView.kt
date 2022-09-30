@@ -7,7 +7,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.PathEffect
 import pl.krystiankaniowski.composecharts.autoColor
 import pl.krystiankaniowski.composecharts.point.PointChart
-import pl.krystiankaniowski.composecharts.point.PointChartData
 import pl.krystiankaniowski.composecharts.point.PointChartXAxis
 import pl.krystiankaniowski.composecharts.point.PointChartYAxis
 
@@ -15,9 +14,9 @@ import pl.krystiankaniowski.composecharts.point.PointChartYAxis
 @Composable
 fun PointChartDemo() {
     PointChart(
-        data = PointChartData(
+        data = PointChart.Data(
             series = listOf(
-                PointChartData.Series(
+                PointChart.Series(
                     label = "Series A",
                     values = listOf(
                         Offset(0f, 5f),
@@ -26,9 +25,9 @@ fun PointChartDemo() {
                         Offset(0f, 2f),
                         Offset(0f, 1f),
                     ),
-                    color = PointChartData.ChartColor.Solid(autoColor(0)),
+                    color = PointChart.ChartColor.Solid(autoColor(0)),
                 ),
-                PointChartData.Series(
+                PointChart.Series(
                     label = "Series B",
                     values = listOf(
                         Offset(5f, 5f),
@@ -37,9 +36,9 @@ fun PointChartDemo() {
                         Offset(2f, 2f),
                         Offset(1f, 1f),
                     ),
-                    color = PointChartData.ChartColor.Solid(autoColor(1)),
+                    color = PointChart.ChartColor.Solid(autoColor(1)),
                 ),
-                PointChartData.Series(
+                PointChart.Series(
                     label = "Series C",
                     values = listOf(
                         Offset(5f, 0f),
@@ -48,7 +47,7 @@ fun PointChartDemo() {
                         Offset(2f, 0f),
                         Offset(1f, 0f),
                     ),
-                    color = PointChartData.ChartColor.Solid(autoColor(2)),
+                    color = PointChart.ChartColor.Solid(autoColor(2)),
                 ),
             ),
         ),
@@ -60,9 +59,9 @@ fun PointChartDemo() {
 @Composable
 fun PointChartCustomDemo() {
     PointChart(
-        data = PointChartData(
+        data = PointChart.Data(
             series = listOf(
-                PointChartData.Series(
+                PointChart.Series(
                     label = "Series A",
                     values = listOf(
                         Offset(0f, 5f),
@@ -71,10 +70,10 @@ fun PointChartCustomDemo() {
                         Offset(0f, 2f),
                         Offset(0f, 1f),
                     ),
-                    color = PointChartData.ChartColor.Solid(autoColor(1)),
+                    color = PointChart.ChartColor.Solid(autoColor(1)),
                     pathEffect = PathEffect.dashPathEffect(floatArrayOf(5f, 10f)),
                 ),
-                PointChartData.Series(
+                PointChart.Series(
                     label = "Series B",
                     values = listOf(
                         Offset(5f, 5f),
@@ -83,7 +82,7 @@ fun PointChartCustomDemo() {
                         Offset(2f, 2f),
                         Offset(1f, 1f),
                     ),
-                    color = PointChartData.ChartColor.YGradient(
+                    color = PointChart.ChartColor.YGradient(
                         stops = listOf(
                             2f to Color.Green,
                             3f to Color.Yellow,
@@ -92,7 +91,7 @@ fun PointChartCustomDemo() {
                     ),
                     strokeWidth = 2.5f,
                 ),
-                PointChartData.Series(
+                PointChart.Series(
                     label = "Series C",
                     values = listOf(
                         Offset(5f, 0f),
@@ -101,7 +100,7 @@ fun PointChartCustomDemo() {
                         Offset(2f, 0f),
                         Offset(1f, 0f),
                     ),
-                    color = PointChartData.ChartColor.Solid(Color.Cyan),
+                    color = PointChart.ChartColor.Solid(Color.Cyan),
                 ),
             ),
         ),

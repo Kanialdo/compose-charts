@@ -20,10 +20,24 @@ import pl.krystiankaniowski.composecharts.legend.LegendEntry
 import pl.krystiankaniowski.composecharts.legend.LegendFlow
 import pl.krystiankaniowski.composecharts.legend.LegendPosition
 
+object DoughnutChart {
+
+    data class Data(val slices: List<Slice>) {
+
+        constructor(vararg slices: Slice) : this(slices.toList())
+    }
+
+    data class Slice(
+        val label: String,
+        val color: Color,
+        val value: Float,
+    )
+}
+
 @Composable
 fun DoughnutChart(
     modifier: Modifier = Modifier,
-    data: DoughnutChartData,
+    data: DoughnutChart.Data,
     cutOut: Float = 0.5f,
     title: (@Composable () -> Unit)? = null,
     legendPosition: LegendPosition = LegendPosition.Bottom,
@@ -65,20 +79,9 @@ fun DoughnutChart(
     }
 }
 
-data class DoughnutChartData(val slices: List<Slice>) {
-
-    constructor(vararg slices: Slice) : this(slices.toList())
-
-    data class Slice(
-        val label: String,
-        val color: Color,
-        val value: Float,
-    )
-}
-
 @Composable
 private fun DoughnutLegend(
-    data: DoughnutChartData,
+    data: DoughnutChart.Data,
 ) {
     Box(modifier = Modifier.border(width = 1.dp, color = ChartsTheme.legendColor)) {
         LegendFlow(

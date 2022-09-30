@@ -1,12 +1,19 @@
 package pl.krystiankaniowski.composecharts.views.circular
 
 import androidx.compose.material.Text
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import pl.krystiankaniowski.composecharts.ChartScreen
 import pl.krystiankaniowski.composecharts.autoColor
 import pl.krystiankaniowski.composecharts.circular.RadarChart
-import pl.krystiankaniowski.composecharts.circular.RadarChartData
-import pl.krystiankaniowski.composecharts.components.*
+import pl.krystiankaniowski.composecharts.components.OptionAddData
+import pl.krystiankaniowski.composecharts.components.OptionAddDataSet
+import pl.krystiankaniowski.composecharts.components.OptionRandomize
+import pl.krystiankaniowski.composecharts.components.OptionRemoveData
+import pl.krystiankaniowski.composecharts.components.OptionRemoveDataSet
 import kotlin.random.Random
 
 @Suppress("MagicNumber", "LongMethod")
@@ -17,7 +24,7 @@ fun RadarChartDemo() {
         val random = Random(System.currentTimeMillis())
         val size = 5
         mutableStateOf(
-            RadarChartData(
+            RadarChart.Data(
                 labels = buildList {
                     for (i in 0 until size) {
                         add("D$i")
@@ -80,8 +87,8 @@ fun RadarChartDemo() {
     )
 }
 
-private fun createEntry(random: Random, id: Int, size: Int): RadarChartData.Entry {
-    return RadarChartData.Entry(
+private fun createEntry(random: Random, id: Int, size: Int): RadarChart.Entry {
+    return RadarChart.Entry(
         label = "Data ${id + 1}",
         color = autoColor(id),
         values = buildList {

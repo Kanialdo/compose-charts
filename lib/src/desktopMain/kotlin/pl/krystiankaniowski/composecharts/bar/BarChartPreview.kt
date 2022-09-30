@@ -6,14 +6,14 @@ import androidx.compose.runtime.Composable
 import pl.krystiankaniowski.composecharts.autoColor
 
 @Suppress("MagicNumber")
-private val data = BarChartData(
+private val data = BarChart.Data(
     labels = listOf(
         "C1", "C2", "C3", "C4", "C5",
     ),
-    dataSets = listOf(
-        BarChartData.DataSet(label = "Series A", color = autoColor(0), values = listOf(5f, 4f, 3f, 2f, 1f)),
-        BarChartData.DataSet(label = "Series B", color = autoColor(1), values = listOf(1f, 1f, 1f, 1f, 1f)),
-        BarChartData.DataSet(label = "Series C", color = autoColor(2), values = listOf(0f, 1f, 2f, 1f, 0f)),
+    bars = listOf(
+        BarChart.Bar(label = "Series A", color = autoColor(0), values = listOf(5f, 4f, 3f, 2f, 1f)),
+        BarChart.Bar(label = "Series B", color = autoColor(1), values = listOf(1f, 1f, 1f, 1f, 1f)),
+        BarChart.Bar(label = "Series C", color = autoColor(2), values = listOf(0f, 1f, 2f, 1f, 0f)),
     ),
 )
 
@@ -22,7 +22,7 @@ private val data = BarChartData(
 fun BarChartGroupedPreview() {
     BarChart(
         data = data,
-        style = BarChartStyle.GROUPED,
+        style = BarChart.Style.GROUPED,
         title = { Text(" bar chart standard") },
     )
 }
@@ -32,7 +32,7 @@ fun BarChartGroupedPreview() {
 fun BarChartStackedPreview() {
     BarChart(
         data = data,
-        style = BarChartStyle.STACKED,
+        style = BarChart.Style.STACKED,
         title = { Text(" bar chart stacked") },
     )
 }
@@ -42,7 +42,7 @@ fun BarChartStackedPreview() {
 fun BarChartProportionalPreview() {
     BarChart(
         data = data,
-        style = BarChartStyle.PROPORTIONAL,
+        style = BarChart.Style.PROPORTIONAL,
         title = { Text(" bar chart proportion") },
     )
 }

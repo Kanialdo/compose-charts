@@ -1,12 +1,19 @@
 package pl.krystiankaniowski.composecharts.views.line
 
 import androidx.compose.material.Text
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import pl.krystiankaniowski.composecharts.ChartScreen
 import pl.krystiankaniowski.composecharts.autoColor
-import pl.krystiankaniowski.composecharts.components.*
+import pl.krystiankaniowski.composecharts.components.OptionAddData
+import pl.krystiankaniowski.composecharts.components.OptionAddDataSet
+import pl.krystiankaniowski.composecharts.components.OptionRandomize
+import pl.krystiankaniowski.composecharts.components.OptionRemoveData
+import pl.krystiankaniowski.composecharts.components.OptionRemoveDataSet
 import pl.krystiankaniowski.composecharts.line.LineChart
-import pl.krystiankaniowski.composecharts.line.LineChartData
 import pl.krystiankaniowski.composecharts.utils.generateList
 import pl.krystiankaniowski.composecharts.utils.randomize
 import kotlin.random.Random
@@ -19,7 +26,7 @@ fun LineChartDemo() {
         val random = Random(System.currentTimeMillis())
         val size = 5
         mutableStateOf(
-            LineChartData(
+            LineChart.Data(
                 lines = listOf(
                     createEntry(random, 0, size),
                     createEntry(random, 1, size),
@@ -61,8 +68,8 @@ fun LineChartDemo() {
     )
 }
 
-private fun createEntry(random: Random, id: Int, size: Int): LineChartData.Line {
-    return LineChartData.Line(
+private fun createEntry(random: Random, id: Int, size: Int): LineChart.Line {
+    return LineChart.Line(
         label = "Data ${id + 1}",
         color = autoColor(id),
         values = generateList(random, size),

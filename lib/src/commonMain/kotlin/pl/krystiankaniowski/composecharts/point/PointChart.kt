@@ -10,7 +10,13 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Rect
-import androidx.compose.ui.graphics.*
+import androidx.compose.ui.graphics.BlendMode
+import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.graphics.PathEffect
+import androidx.compose.ui.graphics.PointMode
+import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.vector.DefaultTintBlendMode
 import androidx.compose.ui.unit.dp
@@ -23,10 +29,42 @@ import pl.krystiankaniowski.composecharts.legend.LegendEntry
 import pl.krystiankaniowski.composecharts.legend.LegendFlow
 import pl.krystiankaniowski.composecharts.legend.LegendPosition
 
+object PointChart {
+
+    data class Data(
+        val series: List<Series>,
+        internal val minX: Float = series.minOf { it.values.minOf { point -> point.x } },
+        internal val maxX: Float = series.maxOf { it.values.maxOf { point -> point.x } },
+        internal val minY: Float = series.minOf { it.values.minOf { point -> point.y } },
+        internal val maxY: Float = series.maxOf { it.values.maxOf { point -> point.y } },
+    )
+
+    data class Series(
+        val label: String,
+        val values: List<Offset>,
+        val color: ChartColor,
+        val mode: Mode = Mode.Line,
+        val strokeWidth: Float = Stroke.HairlineWidth,
+        val cap: StrokeCap = StrokeCap.Butt,
+        val pathEffect: PathEffect? = null,
+        val alpha: Float = 1.0f,
+        val colorFilter: ColorFilter? = null,
+        val blendMode: BlendMode = DefaultTintBlendMode,
+    )
+
+    enum class Mode { Points, Line }
+
+    sealed interface ChartColor {
+        data class Solid(val color: Color) : ChartColor
+        sealed interface Gradient : ChartColor
+        data class YGradient(val stops: List<Pair<Float, Color>>) : Gradient
+    }
+}
+
 @Composable
 fun PointChart(
     modifier: Modifier = Modifier,
-    data: PointChartData,
+    data: PointChart.Data,
     title: (@Composable () -> Unit)? = null,
     xAxis: PointChartXAxis.Drawer = PointChartXAxis.Auto(),
     yAxis: PointChartYAxis.Drawer = PointChartYAxis.Auto(),
@@ -85,11 +123,11 @@ fun PointChart(
             data.series.forEach { series ->
                 val points = series.values.map { Offset(mapper.x(it.x), mapper.y(it.y)) }
                 val mode = when (series.mode) {
-                    PointChartData.Mode.Points -> PointMode.Points
-                    PointChartData.Mode.Line -> PointMode.Polygon
+                    PointChart.Mode.Points -> PointMode.Points
+                    PointChart.Mode.Line -> PointMode.Polygon
                 }
                 when (series.color) {
-                    is PointChartData.ChartColor.Solid -> drawPoints(
+                    is PointChart.ChartColor.Solid -> drawPoints(
                         points = points,
                         pointMode = mode,
                         color = series.color.color,
@@ -101,11 +139,11 @@ fun PointChart(
                         blendMode = series.blendMode,
                     )
 
-                    is PointChartData.ChartColor.Gradient -> drawPoints(
+                    is PointChart.ChartColor.Gradient -> drawPoints(
                         points = points,
                         pointMode = mode,
                         brush = when (series.color) {
-                            is PointChartData.ChartColor.YGradient -> {
+                            is PointChart.ChartColor.YGradient -> {
                                 val gradientMapper = OneAxisMapper(srcMin = data.minY, srcMax = data.maxY, dstMin = 0f, dstMax = 1f, inverted = true)
                                 val stops = series.color.stops.reversed().map { gradientMapper.map(it.first) to it.second }.toTypedArray()
                                 Brush.verticalGradient(
@@ -128,38 +166,8 @@ fun PointChart(
     }
 }
 
-data class PointChartData(
-    val series: List<Series>,
-    internal val minX: Float = series.minOf { it.values.minOf { point -> point.x } },
-    internal val maxX: Float = series.maxOf { it.values.maxOf { point -> point.x } },
-    internal val minY: Float = series.minOf { it.values.minOf { point -> point.y } },
-    internal val maxY: Float = series.maxOf { it.values.maxOf { point -> point.y } },
-) {
-
-    data class Series(
-        val label: String,
-        val values: List<Offset>,
-        val color: ChartColor,
-        val mode: Mode = Mode.Line,
-        val strokeWidth: Float = Stroke.HairlineWidth,
-        val cap: StrokeCap = StrokeCap.Butt,
-        val pathEffect: PathEffect? = null,
-        val alpha: Float = 1.0f,
-        val colorFilter: ColorFilter? = null,
-        val blendMode: BlendMode = DefaultTintBlendMode,
-    )
-
-    enum class Mode { Points, Line }
-
-    sealed interface ChartColor {
-        data class Solid(val color: Color) : ChartColor
-        sealed interface Gradient : ChartColor
-        data class YGradient(val stops: List<Pair<Float, Color>>) : Gradient
-    }
-}
-
 @Composable
-private fun PointLegend(data: PointChartData) {
+private fun PointLegend(data: PointChart.Data) {
     Box(modifier = Modifier.border(width = 1.dp, color = ChartsTheme.legendColor)) {
         LegendFlow(
             modifier = Modifier.padding(16.dp),
@@ -167,8 +175,8 @@ private fun PointLegend(data: PointChartData) {
                 LegendEntry(
                     text = series.label,
                     color = when (series.color) {
-                        is PointChartData.ChartColor.Solid -> series.color.color
-                        is PointChartData.ChartColor.Gradient -> Color.Unspecified
+                        is PointChart.ChartColor.Solid -> series.color.color
+                        is PointChart.ChartColor.Gradient -> Color.Unspecified
                     },
                 )
             },

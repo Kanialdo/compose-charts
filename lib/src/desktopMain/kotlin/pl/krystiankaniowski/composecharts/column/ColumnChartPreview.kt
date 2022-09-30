@@ -6,14 +6,14 @@ import androidx.compose.runtime.Composable
 import pl.krystiankaniowski.composecharts.autoColor
 
 @Suppress("MagicNumber")
-private val data = ColumnChartData(
+private val data = ColumnChart.Data(
     labels = listOf(
         "C1", "C2", "C3", "C4", "C5",
     ),
     columns = listOf(
-        ColumnChartData.Column(label = "Series A", color = autoColor(0), values = listOf(5f, 4f, 3f, 2f, 1f)),
-        ColumnChartData.Column(label = "Series B", color = autoColor(1), values = listOf(1f, 1f, 1f, 1f, 1f)),
-        ColumnChartData.Column(label = "Series C", color = autoColor(2), values = listOf(0f, 1f, 2f, 1f, 0f)),
+        ColumnChart.Column(label = "Series A", color = autoColor(0), values = listOf(5f, 4f, 3f, 2f, 1f)),
+        ColumnChart.Column(label = "Series B", color = autoColor(1), values = listOf(1f, 1f, 1f, 1f, 1f)),
+        ColumnChart.Column(label = "Series C", color = autoColor(2), values = listOf(0f, 1f, 2f, 1f, 0f)),
     ),
 )
 
@@ -22,7 +22,7 @@ private val data = ColumnChartData(
 fun ColumnChartStandardPreview() {
     ColumnChart(
         data = data,
-        style = ColumnChartStyle.GROUPED,
+        style = ColumnChart.Style.GROUPED,
         title = { Text("Column chart grouped") },
     )
 }
@@ -32,7 +32,7 @@ fun ColumnChartStandardPreview() {
 fun ColumnChartCombinePreview() {
     ColumnChart(
         data = data,
-        style = ColumnChartStyle.STACKED,
+        style = ColumnChart.Style.STACKED,
         title = { Text("Column chart stacked") },
     )
 }
@@ -42,7 +42,7 @@ fun ColumnChartCombinePreview() {
 fun ColumnChartProportionalPreview() {
     ColumnChart(
         data = data,
-        style = ColumnChartStyle.PROPORTIONAL,
+        style = ColumnChart.Style.PROPORTIONAL,
         title = { Text("Column chart proportional") },
     )
 }

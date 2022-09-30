@@ -2,7 +2,11 @@ package pl.krystiankaniowski.composecharts.circular
 
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.border
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxWithConstraints
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
@@ -19,7 +23,11 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import pl.krystiankaniowski.composecharts.ChartsTheme
-import pl.krystiankaniowski.composecharts.internal.*
+import pl.krystiankaniowski.composecharts.internal.AxisScale
+import pl.krystiankaniowski.composecharts.internal.ChartChoreographer
+import pl.krystiankaniowski.composecharts.internal.TextAnchorX
+import pl.krystiankaniowski.composecharts.internal.TextAnchorY
+import pl.krystiankaniowski.composecharts.internal.drawText
 import pl.krystiankaniowski.composecharts.legend.LegendEntry
 import pl.krystiankaniowski.composecharts.legend.LegendFlow
 import pl.krystiankaniowski.composecharts.legend.LegendPosition
@@ -27,27 +35,29 @@ import kotlin.math.PI
 import kotlin.math.cos
 import kotlin.math.sin
 
-data class RadarChartData(
-    val labels: List<String>,
-    val entries: List<Entry>,
-) {
+object RadarChart {
+
+    data class Data(
+        val labels: List<String>,
+        val entries: List<Entry>,
+    )
 
     data class Entry(
         val label: String,
         val color: Color,
         val values: List<Float>,
     )
+
+    data class RadarChartStyle(
+        val lineColor: Color = Color.Gray,
+        val lineWidth: Dp = 1.dp,
+        val labelColor: Color = Color.Gray,
+        val valueColor: Color = Color.Gray,
+    )
 }
 
-data class RadarChartStyle(
-    val lineColor: Color = Color.Gray,
-    val lineWidth: Dp = 1.dp,
-    val labelColor: Color = Color.Gray,
-    val valueColor: Color = Color.Gray,
-)
-
 @Composable
-fun radarChartStyle() = RadarChartStyle(
+fun radarChartStyle() = RadarChart.RadarChartStyle(
     lineColor = if (MaterialTheme.colors.isLight) Color.LightGray else Color.DarkGray,
     lineWidth = 1.dp,
     labelColor = Color.Gray,
@@ -58,8 +68,8 @@ fun radarChartStyle() = RadarChartStyle(
 fun RadarChart(
     modifier: Modifier = Modifier,
     title: (@Composable () -> Unit)? = null,
-    data: RadarChartData,
-    style: RadarChartStyle = radarChartStyle(),
+    data: RadarChart.Data,
+    style: RadarChart.RadarChartStyle = radarChartStyle(),
     legendPosition: LegendPosition = LegendPosition.Bottom,
 ) {
 
@@ -176,7 +186,7 @@ fun RadarChart(
 }
 
 @Composable
-private fun RadarLegend(data: RadarChartData) {
+private fun RadarLegend(data: RadarChart.Data) {
     Box(modifier = Modifier.border(width = 1.dp, color = ChartsTheme.legendColor)) {
         LegendFlow(
             modifier = Modifier.padding(16.dp),
