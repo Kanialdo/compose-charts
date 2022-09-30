@@ -1,13 +1,32 @@
 package pl.krystiankaniowski.composecharts
 
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxWithConstraints
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.*
+import androidx.compose.material.Icon
+import androidx.compose.material.IconButton
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.NavigationRailDefaults
+import androidx.compose.material.Scaffold
+import androidx.compose.material.Surface
+import androidx.compose.material.Text
+import androidx.compose.material.TopAppBar
+import androidx.compose.material.contentColorFor
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Menu
-import androidx.compose.runtime.*
+import androidx.compose.material.rememberScaffoldState
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Rect
@@ -30,7 +49,7 @@ fun DemoApplication() {
     BoxWithConstraints {
 
         val mode = ScreenSize.resolveScreenSize(maxWidth)
-        var menuItem by remember { mutableStateOf(menuItems.first()) }
+        var menuItem by remember { mutableStateOf(menuItems.firstMenuItem()) }
 
         Row {
             when (mode) {
@@ -85,7 +104,7 @@ fun DemoApplication() {
 
 @Composable
 private fun DemoTopBar(
-    menuItem: MenuItem,
+    menuItem: MenuEntry.MenuItem,
     onToggleDrawerClick: () -> Unit,
 ) {
     TopAppBar(
@@ -99,9 +118,8 @@ private fun DemoTopBar(
     )
 }
 
-@OptIn(ExperimentalMaterialApi::class)
 @Composable
-private fun SideMenu(menu: List<MenuItem>, selected: MenuItem?, onSelect: (MenuItem) -> Unit) {
+private fun SideMenu(menu: List<MenuEntry>, selected: MenuEntry.MenuItem?, onSelect: (MenuEntry.MenuItem) -> Unit) {
     Surface(
         color = MaterialTheme.colors.surface,
         contentColor = contentColorFor(MaterialTheme.colors.surface),
@@ -113,14 +131,7 @@ private fun SideMenu(menu: List<MenuItem>, selected: MenuItem?, onSelect: (MenuI
                 .fillMaxHeight()
                 .verticalScroll(rememberScrollState()),
         ) {
-            menu.forEach {
-                Surface(contentColor = if (selected == it) MaterialTheme.colors.primary else MaterialTheme.colors.onSurface) {
-                    ListItem(
-                        modifier = Modifier.clickable { onSelect(it) },
-                        text = { Text(it.title) },
-                    )
-                }
-            }
+            menu.forEach { MenuEntry(menuEntry = it, currentMenuItem = selected, onMenuItemClick = onSelect) }
         }
     }
 }
