@@ -21,7 +21,7 @@ object AreaChartXAxis {
             chartScope: Rect,
             xAxisScope: Rect,
             xMapper: XMapper,
-            data: AreaChartData,
+            data: AreaChart.Data,
         )
     }
 
@@ -33,7 +33,7 @@ object AreaChartXAxis {
             chartScope: Rect,
             xAxisScope: Rect,
             xMapper: XMapper,
-            data: AreaChartData,
+            data: AreaChart.Data,
         ) = Unit
     }
 
@@ -51,7 +51,7 @@ object AreaChartXAxis {
             chartScope: Rect,
             xAxisScope: Rect,
             xMapper: XMapper,
-            data: AreaChartData,
+            data: AreaChart.Data,
         ) {
             drawScope.drawLine(
                 color = color,

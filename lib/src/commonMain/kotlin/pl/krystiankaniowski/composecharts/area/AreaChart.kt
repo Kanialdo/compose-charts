@@ -22,9 +22,23 @@ import pl.krystiankaniowski.composecharts.legend.LegendEntry
 import pl.krystiankaniowski.composecharts.legend.LegendFlow
 import pl.krystiankaniowski.composecharts.legend.LegendPosition
 
-data class AreaChartData(val lines: List<Area>) {
+object AreaChart {
 
-    constructor(vararg lines: Area) : this(lines.toList())
+    data class Data(val areas: List<Area>) {
+
+        constructor(vararg lines: Area) : this(lines.toList())
+
+        init {
+            check(areas.first().values.size.let { size -> areas.all { it.values.size == size } }) {
+                "All lines have to contains same amount of entries"
+            }
+        }
+
+        internal val minValue = areas.minOf { it.values.minOf { it } }
+        internal val maxValue = areas.maxOf { it.values.maxOf { it } }
+
+        internal val size: Int get() = areas.first().values.size
+    }
 
     data class Area(
         val label: String,
@@ -32,30 +46,19 @@ data class AreaChartData(val lines: List<Area>) {
         val color: Color,
     )
 
-    init {
-        check(lines.first().values.size.let { size -> lines.all { it.values.size == size } }) {
-            "All lines have to contains same amount of entries"
-        }
+    enum class Style {
+        OVERLAPPING,
+        STACKED,
+        PROPORTIONAL,
     }
-
-    internal val minValue = lines.minOf { it.values.minOf { it } }
-    internal val maxValue = lines.maxOf { it.values.maxOf { it } }
-
-    internal val size: Int get() = lines.first().values.size
-}
-
-enum class AreaChartMode {
-    OVERLAPPING,
-    STACKED,
-    PROPORTIONAL,
 }
 
 @Composable
 fun AreaChart(
     modifier: Modifier = Modifier,
-    data: AreaChartData,
+    data: AreaChart.Data,
     title: (@Composable () -> Unit)? = null,
-    mode: AreaChartMode = AreaChartMode.OVERLAPPING,
+    style: AreaChart.Style = AreaChart.Style.OVERLAPPING,
     xAxis: AreaChartXAxis.Drawer = AreaChartXAxis.Auto(),
     yAxis: AreaChartYAxis.Drawer = AreaChartYAxis.Auto(),
     legendPosition: LegendPosition = LegendPosition.Bottom,
@@ -64,10 +67,10 @@ fun AreaChart(
     val scale = remember(data) {
         AxisScale.create(
             min = 0f,
-            max = when (mode) {
-                AreaChartMode.OVERLAPPING -> data.maxValue
-                AreaChartMode.STACKED -> FloatArray(data.lines.first().values.size) { index -> data.lines.map { it.values[index] }.sum() }.max()
-                AreaChartMode.PROPORTIONAL -> 1f
+            max = when (style) {
+                AreaChart.Style.OVERLAPPING -> data.maxValue
+                AreaChart.Style.STACKED -> FloatArray(data.areas.first().values.size) { index -> data.areas.map { it.values[index] }.sum() }.max()
+                AreaChart.Style.PROPORTIONAL -> 1f
             },
         )
     }
@@ -107,19 +110,19 @@ fun AreaChart(
             xAxis.draw(this, contentArea, xAxisArea, mapper, data)
             yAxis.draw(this, contentArea, yAxisArea, mapper, scale)
 
-            when (mode) {
+            when (style) {
 
-                AreaChartMode.OVERLAPPING -> {
-                    data.lines.forEachIndexed { index, line ->
+                AreaChart.Style.OVERLAPPING -> {
+                    data.areas.forEachIndexed { index, line ->
                         drawArea(line.color, line.values, mapper)
                     }
                 }
 
-                AreaChartMode.STACKED -> {
-                    val size = data.lines.first().values.size
-                    val buffor = FloatArray(size) { index -> data.lines.map { it.values[index] }.sum() }.toMutableList()
-                    for (i in (data.lines.size - 1) downTo 0) {
-                        val line = data.lines[i]
+                AreaChart.Style.STACKED -> {
+                    val size = data.areas.first().values.size
+                    val buffor = FloatArray(size) { index -> data.areas.map { it.values[index] }.sum() }.toMutableList()
+                    for (i in (data.areas.size - 1) downTo 0) {
+                        val line = data.areas[i]
                         drawArea(line.color, buffor, mapper)
                         if (i > 0) {
                             for (j in buffor.indices) {
@@ -129,12 +132,12 @@ fun AreaChart(
                     }
                 }
 
-                AreaChartMode.PROPORTIONAL -> {
-                    val size = data.lines.first().values.size
-                    val total = FloatArray(size) { index -> data.lines.map { it.values[index] }.sum() }.toMutableList()
+                AreaChart.Style.PROPORTIONAL -> {
+                    val size = data.areas.first().values.size
+                    val total = FloatArray(size) { index -> data.areas.map { it.values[index] }.sum() }.toMutableList()
                     val buffor = total.toMutableList()
-                    for (i in (data.lines.size - 1) downTo 0) {
-                        val line = data.lines[i]
+                    for (i in (data.areas.size - 1) downTo 0) {
+                        val line = data.areas[i]
                         drawProportionalArea(line.color, total, buffor, mapper)
                         if (i > 0) {
                             for (j in buffor.indices) {
@@ -223,12 +226,12 @@ private fun DrawScope.drawProportionalArea(
 
 @Composable
 private fun AreaLegend(
-    data: AreaChartData,
+    data: AreaChart.Data,
 ) {
     Box(modifier = Modifier.border(width = 1.dp, color = ChartsTheme.legendColor)) {
         LegendFlow(
             modifier = Modifier.padding(16.dp),
-            data = data.lines.map { item ->
+            data = data.areas.map { item ->
                 LegendEntry(
                     item.label,
                     item.color,

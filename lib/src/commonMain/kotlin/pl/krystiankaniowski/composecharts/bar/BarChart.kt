@@ -21,40 +21,43 @@ import pl.krystiankaniowski.composecharts.legend.LegendEntry
 import pl.krystiankaniowski.composecharts.legend.LegendFlow
 import pl.krystiankaniowski.composecharts.legend.LegendPosition
 
-data class BarChartData(
-    val labels: List<String>,
-    val dataSets: List<DataSet>,
-) {
+object BarChart {
 
-    data class DataSet(
+    data class Data(
+        val labels: List<String>,
+        val bars: List<Bar>,
+    ) {
+
+        init {
+            check(bars.first().values.size.let { size -> bars.all { it.values.size == size } }) {
+                "All bars have to contains same amount of entries"
+            }
+        }
+
+        internal val minValue = bars.minOf { it.values.minOf { it } }
+        internal val maxValue = bars.maxOf { it.values.maxOf { it } }
+
+        internal val size: Int get() = bars.first().values.size
+    }
+
+    data class Bar(
         val label: String,
         val color: Color,
         val values: List<Float>,
     )
 
-    init {
-        check(dataSets.first().values.size.let { size -> dataSets.all { it.values.size == size } }) {
-            "All bars have to contains same amount of entries"
-        }
+    enum class Style {
+        GROUPED,
+        STACKED,
+        PROPORTIONAL,
     }
-
-    internal val minValue = dataSets.minOf { it.values.minOf { it } }
-    internal val maxValue = dataSets.maxOf { it.values.maxOf { it } }
-
-    internal val size: Int get() = dataSets.first().values.size
-}
-
-enum class BarChartStyle {
-    GROUPED,
-    STACKED,
-    PROPORTIONAL,
 }
 
 @Composable
 fun BarChart(
     modifier: Modifier = Modifier,
-    data: BarChartData,
-    style: BarChartStyle = BarChartStyle.GROUPED,
+    data: BarChart.Data,
+    style: BarChart.Style = BarChart.Style.GROUPED,
     title: (@Composable () -> Unit)? = null,
     yAxis: BarChartYAxis.Drawer = BarChartYAxis.Auto(),
     xAxis: BarChartXAxis.Drawer = BarChartXAxis.Auto(),
@@ -65,9 +68,9 @@ fun BarChart(
         AxisScale.create(
             min = 0f,
             max = when (style) {
-                BarChartStyle.GROUPED -> data.maxValue
-                BarChartStyle.STACKED -> FloatArray(data.size) { index -> data.dataSets.map { it.values[index] }.sum() }.max()
-                BarChartStyle.PROPORTIONAL -> 1f
+                BarChart.Style.GROUPED -> data.maxValue
+                BarChart.Style.STACKED -> FloatArray(data.size) { index -> data.bars.map { it.values[index] }.sum() }.max()
+                BarChart.Style.PROPORTIONAL -> 1f
             },
         )
     }
@@ -112,9 +115,9 @@ fun BarChart(
 
             when (style) {
 
-                BarChartStyle.GROUPED -> {
-                    val barHeight = 2 * w * mapper.yScale / data.dataSets.size
-                    data.dataSets.forEachIndexed { series, value ->
+                BarChart.Style.GROUPED -> {
+                    val barHeight = 2 * w * mapper.yScale / data.bars.size
+                    data.bars.forEachIndexed { series, value ->
                         value.values.forEachIndexed { pos, v ->
                             drawRect(
                                 color = value.color,
@@ -131,11 +134,11 @@ fun BarChart(
                     }
                 }
 
-                BarChartStyle.STACKED -> {
+                BarChart.Style.STACKED -> {
 
-                    val series = data.dataSets.size
+                    val series = data.bars.size
                     val values = data.size
-                    val maxValues = FloatArray(values) { index -> data.dataSets.map { it.values[index] }.sum() }
+                    val maxValues = FloatArray(values) { index -> data.bars.map { it.values[index] }.sum() }
 
                     val barHeight = 2 * w * mapper.yScale
 
@@ -143,7 +146,7 @@ fun BarChart(
                         var counter = maxValues[i]
                         for (j in (series - 1) downTo 0) {
                             drawRect(
-                                color = data.dataSets[j].color,
+                                color = data.bars[j].color,
                                 topLeft = Offset(
                                     x = mapper.x(0),
                                     y = mapper.y(i + w),
@@ -153,16 +156,16 @@ fun BarChart(
                                     height = barHeight,
                                 ),
                             )
-                            counter -= data.dataSets[j].values[i]
+                            counter -= data.bars[j].values[i]
                         }
                     }
                 }
 
-                BarChartStyle.PROPORTIONAL -> {
+                BarChart.Style.PROPORTIONAL -> {
 
-                    val series = data.dataSets.size
+                    val series = data.bars.size
                     val values = data.size
-                    val maxValues = FloatArray(values) { index -> data.dataSets.map { it.values[index] }.sum() }
+                    val maxValues = FloatArray(values) { index -> data.bars.map { it.values[index] }.sum() }
 
                     val barHeight = 2 * w * mapper.yScale
 
@@ -170,7 +173,7 @@ fun BarChart(
                         var counter = maxValues[i]
                         for (j in (series - 1) downTo 0) {
                             drawRect(
-                                color = data.dataSets[j].color,
+                                color = data.bars[j].color,
                                 topLeft = Offset(
                                     x = mapper.x(0),
                                     y = mapper.y(i + w),
@@ -180,7 +183,7 @@ fun BarChart(
                                     height = barHeight,
                                 ),
                             )
-                            counter -= data.dataSets[j].values[i]
+                            counter -= data.bars[j].values[i]
                         }
                     }
                 }
@@ -191,12 +194,12 @@ fun BarChart(
 
 @Composable
 private fun BarLegend(
-    data: BarChartData,
+    data: BarChart.Data,
 ) {
     Box(modifier = Modifier.border(width = 1.dp, color = ChartsTheme.legendColor)) {
         LegendFlow(
             modifier = Modifier.padding(16.dp),
-            data = data.dataSets.map { item ->
+            data = data.bars.map { item ->
                 LegendEntry(
                     item.label,
                     item.color,

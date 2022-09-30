@@ -22,7 +22,7 @@ object ColumnChartXAxis {
             chartScope: Rect,
             xAxisScope: Rect,
             xMapper: XMapper,
-            data: ColumnChartData,
+            data: ColumnChart.Data,
         )
     }
 
@@ -34,7 +34,7 @@ object ColumnChartXAxis {
             chartScope: Rect,
             xAxisScope: Rect,
             xMapper: XMapper,
-            data: ColumnChartData,
+            data: ColumnChart.Data,
         ) = Unit
     }
 
@@ -51,7 +51,7 @@ object ColumnChartXAxis {
             chartScope: Rect,
             xAxisScope: Rect,
             xMapper: XMapper,
-            data: ColumnChartData,
+            data: ColumnChart.Data,
         ) {
             drawScope.drawLine(
                 color = color,

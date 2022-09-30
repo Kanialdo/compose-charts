@@ -21,7 +21,7 @@ object LineChartXAxis {
             chartScope: Rect,
             xAxisScope: Rect,
             xMapper: XMapper,
-            data: LineChartData,
+            data: LineChart.Data,
         )
     }
 
@@ -33,7 +33,7 @@ object LineChartXAxis {
             chartScope: Rect,
             xAxisScope: Rect,
             xMapper: XMapper,
-            data: LineChartData,
+            data: LineChart.Data,
         ) = Unit
     }
 
@@ -51,7 +51,7 @@ object LineChartXAxis {
             chartScope: Rect,
             xAxisScope: Rect,
             xMapper: XMapper,
-            data: LineChartData,
+            data: LineChart.Data,
         ) {
             drawScope.drawLine(
                 color = color,

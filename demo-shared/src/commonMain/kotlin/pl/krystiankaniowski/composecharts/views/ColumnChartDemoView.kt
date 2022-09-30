@@ -1,13 +1,19 @@
 package pl.krystiankaniowski.composecharts.views
 
 import androidx.compose.material.Text
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import pl.krystiankaniowski.composecharts.ChartScreen
 import pl.krystiankaniowski.composecharts.autoColor
 import pl.krystiankaniowski.composecharts.column.ColumnChart
-import pl.krystiankaniowski.composecharts.column.ColumnChartData
-import pl.krystiankaniowski.composecharts.column.ColumnChartStyle
-import pl.krystiankaniowski.composecharts.components.*
+import pl.krystiankaniowski.composecharts.components.OptionAddData
+import pl.krystiankaniowski.composecharts.components.OptionAddDataSet
+import pl.krystiankaniowski.composecharts.components.OptionRandomize
+import pl.krystiankaniowski.composecharts.components.OptionRemoveData
+import pl.krystiankaniowski.composecharts.components.OptionRemoveDataSet
 import pl.krystiankaniowski.composecharts.utils.generateList
 import pl.krystiankaniowski.composecharts.utils.randomize
 import kotlin.random.Random
@@ -16,7 +22,7 @@ import kotlin.random.Random
 fun ColumnGroupedChartDemo() {
     ColumnRawChartDemo(
         title = "Column Grouped Chart",
-        style = ColumnChartStyle.GROUPED,
+        style = ColumnChart.Style.GROUPED,
     )
 }
 
@@ -24,7 +30,7 @@ fun ColumnGroupedChartDemo() {
 fun ColumnStackedChartDemo() {
     ColumnRawChartDemo(
         title = "Column Stacked Chart",
-        style = ColumnChartStyle.STACKED,
+        style = ColumnChart.Style.STACKED,
     )
 }
 
@@ -32,19 +38,19 @@ fun ColumnStackedChartDemo() {
 fun ColumnProportionalChartDemo() {
     ColumnRawChartDemo(
         title = "Column Proportional Chart",
-        style = ColumnChartStyle.PROPORTIONAL,
+        style = ColumnChart.Style.PROPORTIONAL,
     )
 }
 
 @Suppress("MagicNumber", "LongMethod")
 @Composable
-private fun ColumnRawChartDemo(title: String, style: ColumnChartStyle) {
+private fun ColumnRawChartDemo(title: String, style: ColumnChart.Style) {
 
     var data by remember {
         val random = Random(System.currentTimeMillis())
         val size = 5
         mutableStateOf(
-            ColumnChartData(
+            ColumnChart.Data(
                 labels = buildList {
                     for (i in 0 until size) {
                         add("C$i")
@@ -98,8 +104,8 @@ private fun ColumnRawChartDemo(title: String, style: ColumnChartStyle) {
     )
 }
 
-private fun createEntry(random: Random, id: Int, size: Int): ColumnChartData.Column {
-    return ColumnChartData.Column(
+private fun createEntry(random: Random, id: Int, size: Int): ColumnChart.Column {
+    return ColumnChart.Column(
         label = "Series ${id + 1}",
         color = autoColor(id),
         values = generateList(random, size),

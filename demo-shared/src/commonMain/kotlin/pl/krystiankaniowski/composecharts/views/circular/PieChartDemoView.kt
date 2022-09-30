@@ -1,11 +1,14 @@
 package pl.krystiankaniowski.composecharts.views.circular
 
 import androidx.compose.material.Text
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import pl.krystiankaniowski.composecharts.ChartScreen
 import pl.krystiankaniowski.composecharts.autoColor
 import pl.krystiankaniowski.composecharts.circular.PieChart
-import pl.krystiankaniowski.composecharts.circular.PieChartData
 import pl.krystiankaniowski.composecharts.components.OptionAddData
 import pl.krystiankaniowski.composecharts.components.OptionRandomize
 import pl.krystiankaniowski.composecharts.components.OptionRemoveData
@@ -16,7 +19,7 @@ fun PieChartDemo() {
 
     var data by remember {
         mutableStateOf(
-            PieChartData(
+            PieChart.Data(
                 slices = listOf(
                     createSlice(0, 0.1f),
                     createSlice(1, 0.2f),
@@ -48,4 +51,4 @@ fun PieChartDemo() {
     )
 }
 
-private fun createSlice(id: Int, value: Float) = PieChartData.Slice(label = "Data ${id + 1}", color = autoColor(id), value = value)
+private fun createSlice(id: Int, value: Float) = PieChart.Slice(label = "Data ${id + 1}", color = autoColor(id), value = value)

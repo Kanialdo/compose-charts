@@ -3,13 +3,16 @@ package pl.krystiankaniowski.composecharts.views.circular
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.material.Slider
 import androidx.compose.material.Text
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import pl.krystiankaniowski.composecharts.ChartScreen
 import pl.krystiankaniowski.composecharts.autoColor
 import pl.krystiankaniowski.composecharts.circular.DoughnutChart
-import pl.krystiankaniowski.composecharts.circular.DoughnutChartData
 import pl.krystiankaniowski.composecharts.components.OptionAddData
 import pl.krystiankaniowski.composecharts.components.OptionRandomize
 import pl.krystiankaniowski.composecharts.components.OptionRemoveData
@@ -22,7 +25,7 @@ fun DoughnutChartDemo() {
 
     var data by remember {
         mutableStateOf(
-            DoughnutChartData(
+            DoughnutChart.Data(
                 slices = listOf(
                     createSlice(0, 0.1f),
                     createSlice(1, 0.2f),
@@ -56,4 +59,4 @@ fun DoughnutChartDemo() {
     )
 }
 
-private fun createSlice(id: Int, value: Float) = DoughnutChartData.Slice(label = "Data ${id + 1}", color = autoColor(id), value = value)
+private fun createSlice(id: Int, value: Float) = DoughnutChart.Slice(label = "Data ${id + 1}", color = autoColor(id), value = value)

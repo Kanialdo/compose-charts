@@ -19,10 +19,28 @@ import pl.krystiankaniowski.composecharts.legend.LegendEntry
 import pl.krystiankaniowski.composecharts.legend.LegendFlow
 import pl.krystiankaniowski.composecharts.legend.LegendPosition
 
+object PieChart {
+
+    data class Data(val slices: List<Slice>) {
+
+        constructor(vararg slices: Slice) : this(slices.toList())
+
+        internal val sum = slices.sumOf { it.value.toDouble() }.toFloat()
+
+        internal val size: Int get() = slices.size
+    }
+
+    data class Slice(
+        val label: String,
+        val color: Color,
+        val value: Float,
+    )
+}
+
 @Composable
 fun PieChart(
     modifier: Modifier = Modifier,
-    data: PieChartData,
+    data: PieChart.Data,
     title: (@Composable () -> Unit)? = null,
     legendPosition: LegendPosition = LegendPosition.Bottom,
 ) {
@@ -59,24 +77,9 @@ fun PieChart(
     }
 }
 
-data class PieChartData(val slices: List<Slice>) {
-
-    constructor(vararg slices: Slice) : this(slices.toList())
-
-    data class Slice(
-        val label: String,
-        val color: Color,
-        val value: Float,
-    )
-
-    internal val sum = slices.sumOf { it.value.toDouble() }.toFloat()
-
-    internal val size: Int get() = slices.size
-}
-
 @Composable
 private fun PieLegend(
-    data: PieChartData,
+    data: PieChart.Data,
 ) {
     Box(modifier = Modifier.border(width = 1.dp, color = ChartsTheme.legendColor)) {
         LegendFlow(

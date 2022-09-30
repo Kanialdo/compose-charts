@@ -8,9 +8,9 @@ import pl.krystiankaniowski.composecharts.autoColor
 import kotlin.random.Random
 
 @Suppress("MagicNumber")
-private val data = PointChartData(
+private val data = PointChart.Data(
     series = listOf(
-        PointChartData.Series(
+        PointChart.Series(
             label = "Series A",
             values = listOf(
                 Offset(0f, 5f),
@@ -19,9 +19,9 @@ private val data = PointChartData(
                 Offset(0f, 2f),
                 Offset(0f, 1f),
             ),
-            color = PointChartData.ChartColor.Solid(autoColor(0)),
+            color = PointChart.ChartColor.Solid(autoColor(0)),
         ),
-        PointChartData.Series(
+        PointChart.Series(
             label = "Series B",
             values = listOf(
                 Offset(5f, 4f),
@@ -30,9 +30,9 @@ private val data = PointChartData(
                 Offset(2f, 1f),
                 Offset(1f, 0f),
             ),
-            color = PointChartData.ChartColor.Solid(autoColor(1)),
+            color = PointChart.ChartColor.Solid(autoColor(1)),
         ),
-        PointChartData.Series(
+        PointChart.Series(
             label = "Series C",
             values = listOf(
                 Offset(5f, 1.5f),
@@ -41,7 +41,7 @@ private val data = PointChartData(
                 Offset(2f, 1.5f),
                 Offset(1f, 1.5f),
             ),
-            color = PointChartData.ChartColor.Solid(autoColor(2)),
+            color = PointChart.ChartColor.Solid(autoColor(2)),
         ),
     ),
 )
@@ -95,12 +95,12 @@ fun PointChartComplexPreview() {
     val random = Random(0)
     val points = List(50) { index -> Offset(index / 10f, random.nextFloat() * 5) }
     PointChart(
-        data = PointChartData(
+        data = PointChart.Data(
             series = listOf(
-                PointChartData.Series(
+                PointChart.Series(
                     label = "Data",
                     values = points,
-                    color = PointChartData.ChartColor.Solid(autoColor(1)),
+                    color = PointChart.ChartColor.Solid(autoColor(1)),
                 ),
             ),
         ),
@@ -114,12 +114,12 @@ fun PointChartCustomBoundsPreview() {
     val random = Random(0)
     val points = List(50) { index -> Offset(index / 10f, random.nextFloat() * 5) }
     PointChart(
-        data = PointChartData(
+        data = PointChart.Data(
             series = listOf(
-                PointChartData.Series(
+                PointChart.Series(
                     label = "Data",
                     values = points,
-                    color = PointChartData.ChartColor.Solid(autoColor(0)),
+                    color = PointChart.ChartColor.Solid(autoColor(0)),
                 ),
             ),
             minX = 0f,

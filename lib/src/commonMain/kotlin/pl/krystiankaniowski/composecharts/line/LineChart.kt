@@ -22,51 +22,54 @@ import pl.krystiankaniowski.composecharts.legend.LegendEntry
 import pl.krystiankaniowski.composecharts.legend.LegendFlow
 import pl.krystiankaniowski.composecharts.legend.LegendPosition
 
-data class LineChartData(val lines: List<Line>) {
+object LineChart {
 
-    constructor(vararg lines: Line) : this(lines.toList())
+    data class Data(val lines: List<Line>) {
+
+        constructor(vararg lines: Line) : this(lines.toList())
+
+        init {
+            check(lines.first().values.size.let { size -> lines.all { it.values.size == size } }) {
+                "All lines have to contains same amount of entries"
+            }
+        }
+
+        internal val minValue = lines.minOf { it.values.minOf { it } }
+        internal val maxValue = lines.maxOf { it.values.maxOf { it } }
+
+        internal val size: Int get() = lines.first().values.size
+    }
 
     data class Line(
         val label: String,
         val values: List<Float>,
         val color: Color,
-        val lineStyle: LineChartStyle.LineStyle? = null,
-        val pointStyle: LineChartStyle.PointStyle? = null,
+        val lineStyle: Style.LineStyle? = null,
+        val pointStyle: Style.PointStyle? = null,
     )
 
-    init {
-        check(lines.first().values.size.let { size -> lines.all { it.values.size == size } }) {
-            "All lines have to contains same amount of entries"
+    data class Style(
+        val lineStyle: LineStyle = LineStyle(),
+        val pointStyle: PointStyle = PointStyle.Filled(),
+    ) {
+
+        data class LineStyle(
+            val width: Float = 5f,
+        )
+
+        sealed class PointStyle {
+            object None : PointStyle()
+            data class Filled(val size: Float = 5f) : PointStyle()
         }
-    }
-
-    internal val minValue = lines.minOf { it.values.minOf { it } }
-    internal val maxValue = lines.maxOf { it.values.maxOf { it } }
-
-    internal val size: Int get() = lines.first().values.size
-}
-
-data class LineChartStyle(
-    val lineStyle: LineStyle = LineStyle(),
-    val pointStyle: PointStyle = PointStyle.Filled(),
-) {
-
-    data class LineStyle(
-        val width: Float = 5f,
-    )
-
-    sealed class PointStyle {
-        object None : PointStyle()
-        data class Filled(val size: Float = 5f) : PointStyle()
     }
 }
 
 @Composable
 fun LineChart(
     modifier: Modifier = Modifier,
-    data: LineChartData,
+    data: LineChart.Data,
     title: (@Composable () -> Unit)? = null,
-    style: LineChartStyle = LineChartStyle(),
+    style: LineChart.Style = LineChart.Style(),
     xAxis: LineChartXAxis.Drawer = LineChartXAxis.Auto(),
     yAxis: LineChartYAxis.Drawer = LineChartYAxis.Auto(),
     legendPosition: LegendPosition = LegendPosition.Bottom,
@@ -123,8 +126,8 @@ fun LineChart(
 }
 
 private fun DrawScope.drawLine(
-    line: LineChartData.Line,
-    style: LineChartStyle,
+    line: LineChart.Line,
+    style: LineChart.Style,
     mapper: PointMapper,
 ) {
     val path = Path()
@@ -149,13 +152,13 @@ private fun DrawScope.drawLine(
 }
 
 private fun DrawScope.drawPoints(
-    line: LineChartData.Line,
-    style: LineChartStyle,
+    line: LineChart.Line,
+    style: LineChart.Style,
     mapper: PointMapper,
 ) {
     when (val pointStyle = line.pointStyle ?: style.pointStyle) {
-        LineChartStyle.PointStyle.None -> {}
-        is LineChartStyle.PointStyle.Filled -> {
+        LineChart.Style.PointStyle.None -> {}
+        is LineChart.Style.PointStyle.Filled -> {
             line.values.forEachIndexed { dataIndex, point ->
                 drawCircle(
                     color = line.color,
@@ -169,7 +172,7 @@ private fun DrawScope.drawPoints(
 
 @Composable
 private fun LineLegend(
-    data: LineChartData,
+    data: LineChart.Data,
 ) {
     Box(modifier = Modifier.border(width = 1.dp, color = ChartsTheme.legendColor)) {
         LegendFlow(

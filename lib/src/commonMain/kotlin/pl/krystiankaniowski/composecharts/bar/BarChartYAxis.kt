@@ -22,7 +22,7 @@ object BarChartYAxis {
             chartScope: Rect,
             yAxisScope: Rect,
             yMapper: YMapper,
-            data: BarChartData,
+            data: BarChart.Data,
         )
     }
 
@@ -34,7 +34,7 @@ object BarChartYAxis {
             chartScope: Rect,
             yAxisScope: Rect,
             yMapper: YMapper,
-            data: BarChartData,
+            data: BarChart.Data,
         ) = Unit
     }
 
@@ -51,7 +51,7 @@ object BarChartYAxis {
             chartScope: Rect,
             yAxisScope: Rect,
             yMapper: YMapper,
-            data: BarChartData,
+            data: BarChart.Data,
         ) {
             drawScope.drawLine(
                 color = color,

@@ -7,11 +7,11 @@ import pl.krystiankaniowski.composecharts.autoColor
 import kotlin.random.Random
 
 @Suppress("MagicNumber")
-private val data = AreaChartData(
-    lines = listOf(
-        AreaChartData.Area(label = "Series A", color = autoColor(0), values = listOf(5f, 4f, 3f, 2f, 1f)),
-        AreaChartData.Area(label = "Series B", color = autoColor(1), values = listOf(1f, 1f, 1f, 1f, 1f)),
-        AreaChartData.Area(label = "Series C", color = autoColor(2), values = listOf(0f, 1f, 2f, 1f, 0f)),
+private val data = AreaChart.Data(
+    areas = listOf(
+        AreaChart.Area(label = "Series A", color = autoColor(0), values = listOf(5f, 4f, 3f, 2f, 1f)),
+        AreaChart.Area(label = "Series B", color = autoColor(1), values = listOf(1f, 1f, 1f, 1f, 1f)),
+        AreaChart.Area(label = "Series C", color = autoColor(2), values = listOf(0f, 1f, 2f, 1f, 0f)),
     ),
 )
 
@@ -28,9 +28,9 @@ fun AreaChartPreview() {
 @Composable
 fun AreaChartNotRegularPreview() {
     AreaChart(
-        data = AreaChartData(
-            lines = listOf(
-                AreaChartData.Area(
+        data = AreaChart.Data(
+            areas = listOf(
+                AreaChart.Area(
                     label = "Series A",
                     color = autoColor(0),
                     values = listOf(1.2f, 8.35f, 16.6f, 54.987f, 62.99f),
@@ -45,14 +45,14 @@ fun AreaChartNotRegularPreview() {
 @Composable
 fun AreaChartCustomLabelsPreview() {
     AreaChart(
-        data = AreaChartData(
-            lines = listOf(
-                AreaChartData.Area(
+        data = AreaChart.Data(
+            areas = listOf(
+                AreaChart.Area(
                     label = "Series A",
                     color = autoColor(0),
                     values = listOf(1f, 2f, 3f, 4f, 5f),
                 ),
-                AreaChartData.Area(
+                AreaChart.Area(
                     label = "Series B",
                     color = autoColor(1),
                     values = listOf(2f, 3f, 5f, 4f, 1f),
@@ -70,9 +70,9 @@ fun AreaChartComplexPreview() {
     val random = Random(0)
     val points = List(50) { random.nextFloat() * 5 }
     AreaChart(
-        data = AreaChartData(
-            lines = listOf(
-                AreaChartData.Area(
+        data = AreaChart.Data(
+            areas = listOf(
+                AreaChart.Area(
                     label = "Series A",
                     color = autoColor(0),
                     values = points,
@@ -90,21 +90,21 @@ fun AreaStackedChartComplexPreview() {
     val points1 = List(50) { random.nextFloat() * 5 }
     val points2 = List(50) { random.nextFloat() * 5 }
     AreaChart(
-        data = AreaChartData(
-            lines = listOf(
-                AreaChartData.Area(
+        data = AreaChart.Data(
+            areas = listOf(
+                AreaChart.Area(
                     label = "Series A",
                     color = autoColor(0),
                     values = points1,
                 ),
-                AreaChartData.Area(
+                AreaChart.Area(
                     label = "Series B",
                     color = autoColor(1),
                     values = points2,
                 ),
             ),
         ),
-        mode = AreaChartMode.STACKED,
+        style = AreaChart.Style.STACKED,
         title = { Text("Area stacked chart") },
     )
 }
@@ -117,20 +117,20 @@ fun AreaProportionalChartComplexPreview() {
     val points2 = List(50) { random.nextFloat() * 5 + 1 }
     val points3 = List(50) { random.nextFloat() * 5 + 1 }
     AreaChart(
-        data = AreaChartData(
-            lines = listOf(
-                AreaChartData.Area(
+        data = AreaChart.Data(
+            areas = listOf(
+                AreaChart.Area(
                     label = "Series A", color = autoColor(0), values = points1,
                 ),
-                AreaChartData.Area(
+                AreaChart.Area(
                     label = "Series B", color = autoColor(1), values = points2,
                 ),
-                AreaChartData.Area(
+                AreaChart.Area(
                     label = "Series C", color = autoColor(2), values = points3,
                 ),
             ),
         ),
-        mode = AreaChartMode.PROPORTIONAL,
+        style = AreaChart.Style.PROPORTIONAL,
         title = { Text("Area proportional chart") },
     )
 }

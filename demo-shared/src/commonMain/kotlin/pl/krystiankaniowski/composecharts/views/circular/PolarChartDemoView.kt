@@ -1,11 +1,14 @@
 package pl.krystiankaniowski.composecharts.views.circular
 
 import androidx.compose.material.Text
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import pl.krystiankaniowski.composecharts.ChartScreen
 import pl.krystiankaniowski.composecharts.autoColor
 import pl.krystiankaniowski.composecharts.circular.PolarChart
-import pl.krystiankaniowski.composecharts.circular.PolarChartData
 import pl.krystiankaniowski.composecharts.components.OptionAddData
 import pl.krystiankaniowski.composecharts.components.OptionRandomize
 import pl.krystiankaniowski.composecharts.components.OptionRemoveData
@@ -16,7 +19,7 @@ fun PolarChartDemo() {
 
     var data by remember {
         mutableStateOf(
-            PolarChartData(
+            PolarChart.Data(
                 entries = listOf(
                     createEntry(0, 0.1f),
                     createEntry(1, 0.2f),
@@ -48,4 +51,4 @@ fun PolarChartDemo() {
     )
 }
 
-private fun createEntry(id: Int, value: Float) = PolarChartData.Entry(label = "Data ${id + 1}", color = autoColor(id), value = value)
+private fun createEntry(id: Int, value: Float) = PolarChart.Entry(label = "Data ${id + 1}", color = autoColor(id), value = value)
