@@ -17,6 +17,7 @@ import pl.krystiankaniowski.composecharts.ChartsTheme
 import pl.krystiankaniowski.composecharts.internal.AxisScale
 import pl.krystiankaniowski.composecharts.internal.ChartChoreographer
 import pl.krystiankaniowski.composecharts.internal.PointMapper
+import pl.krystiankaniowski.composecharts.internal.YAxis
 import pl.krystiankaniowski.composecharts.legend.LegendEntry
 import pl.krystiankaniowski.composecharts.legend.LegendFlow
 import pl.krystiankaniowski.composecharts.legend.LegendPosition
@@ -77,6 +78,18 @@ fun ColumnChart(
         )
     }
 
+    val yAxis2 = YAxis.Default(textSize = 20f)
+    val yAxisValues = scale.getHelperLines().map {
+        YAxis.Value(
+            label =
+            when (style) {
+                ColumnChart.Style.GROUPED, ColumnChart.Style.STACKED -> scale.formatValue(it)
+                ColumnChart.Style.PROPORTIONAL -> "${(it * 100).toInt()}%"
+            },
+            value = it,
+        )
+    }
+
     ChartChoreographer(
         modifier = modifier,
         title = title,
@@ -90,7 +103,7 @@ fun ColumnChart(
 
             val contentArea = Rect(
                 top = 0f, bottom = size.height - xAxis.requiredHeight(),
-                left = yAxis.requiredWidth(), right = size.width,
+                left = yAxis2.requiredWidth(this, yAxisValues), right = size.width,
             )
             val xAxisArea = Rect(
                 top = contentArea.bottom, bottom = size.height,
@@ -113,7 +126,7 @@ fun ColumnChart(
             )
 
             xAxis.draw(this, contentArea, xAxisArea, mapper, data)
-            yAxis.draw(this, contentArea, yAxisArea, mapper, scale)
+            yAxis2.draw(drawScope = this, chartScope = contentArea, yAxisScope = yAxisArea, yMapper = mapper, values = yAxisValues)
 
             when (style) {
 
