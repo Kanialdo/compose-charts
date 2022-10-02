@@ -24,53 +24,43 @@ object YAxis {
         override fun draw(drawScope: DrawScope, chartScope: Rect, yAxisScope: Rect, yMapper: YMapper, values: List<Value>) = Unit
     }
 
-    class Default(val textSize: Float = 20f) : Drawer {
+    class Default(
+        val textSize: Float = 20f,
+        val color: Color = ChartsTheme.axisColor,
+    ) : Drawer {
 
         override fun requiredWidth(drawScope: DrawScope, values: List<Value>) = values.maxOf { it.label }.let {
             drawScope.measureText(textSize, it)
         }
 
-        override fun draw(drawScope: DrawScope, chartScope: Rect, yAxisScope: Rect, yMapper: YMapper, values: List<Value>) = YAxis(
-            drawScope = drawScope, chartScope = chartScope, yAxisScope = yAxisScope, yMapper = yMapper, values = values, textSize = textSize,
-        )
+        override fun draw(drawScope: DrawScope, chartScope: Rect, yAxisScope: Rect, yMapper: YMapper, values: List<Value>) {
+            for (value in values) {
+
+                val y = yMapper.y(value.value)
+
+                drawScope.drawLine(
+                    color = color,
+                    start = Offset(x = chartScope.left, y = y),
+                    end = Offset(x = chartScope.right, y = y),
+                    pathEffect = PathEffect.dashPathEffect(floatArrayOf(10f, 20f)),
+                )
+
+                drawScope.drawText(
+                    text = value.label,
+                    x = yAxisScope.width - 10f,
+                    y = y,
+                    anchorX = TextAnchorX.Right,
+                    anchorY = TextAnchorY.Center,
+                    color = color,
+                    size = textSize,
+                )
+            }
+
+            drawScope.drawLine(
+                color = color,
+                start = Offset(yAxisScope.right, yAxisScope.top),
+                end = Offset(yAxisScope.right, yAxisScope.bottom),
+            )
+        }
     }
-}
-
-private fun YAxis(
-    drawScope: DrawScope,
-    chartScope: Rect,
-    yAxisScope: Rect,
-    yMapper: YMapper,
-    values: List<YAxis.Value>,
-    textSize: Float,
-    color: Color = ChartsTheme.axisColor,
-) {
-
-    for (value in values) {
-
-        val y = yMapper.y(value.value)
-
-        drawScope.drawLine(
-            color = color,
-            start = Offset(x = chartScope.left, y = y),
-            end = Offset(x = chartScope.right, y = y),
-            pathEffect = PathEffect.dashPathEffect(floatArrayOf(10f, 20f)),
-        )
-
-        drawScope.drawText(
-            text = value.label,
-            x = yAxisScope.width - 10f,
-            y = y,
-            anchorX = TextAnchorX.Right,
-            anchorY = TextAnchorY.Center,
-            color = color,
-            size = textSize,
-        )
-    }
-
-    drawScope.drawLine(
-        color = color,
-        start = Offset(yAxisScope.right, yAxisScope.top),
-        end = Offset(yAxisScope.right, yAxisScope.bottom),
-    )
 }

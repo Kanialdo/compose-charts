@@ -63,7 +63,7 @@ fun ColumnChart(
     style: ColumnChart.Style = ColumnChart.Style.GROUPED,
     title: (@Composable () -> Unit)? = null,
     xAxis: ColumnChartXAxis.Drawer = ColumnChartXAxis.Auto(),
-    yAxis: ColumnChartYAxis.Drawer = ColumnChartYAxis.Auto(),
+    yAxis: YAxis.Drawer = YAxis.Default(),
     legendPosition: LegendPosition = LegendPosition.Bottom,
 ) {
 
@@ -78,16 +78,17 @@ fun ColumnChart(
         )
     }
 
-    val yAxis2 = YAxis.Default(textSize = 20f)
-    val yAxisValues = scale.getHelperLines().map {
-        YAxis.Value(
-            label =
-            when (style) {
-                ColumnChart.Style.GROUPED, ColumnChart.Style.STACKED -> scale.formatValue(it)
-                ColumnChart.Style.PROPORTIONAL -> "${(it * 100).toInt()}%"
-            },
-            value = it,
-        )
+    val yAxisValues = remember(scale, style) {
+        scale.getHelperLines().map {
+            YAxis.Value(
+                label =
+                when (style) {
+                    ColumnChart.Style.GROUPED, ColumnChart.Style.STACKED -> scale.formatValue(it)
+                    ColumnChart.Style.PROPORTIONAL -> "${(it * 100).toInt()}%"
+                },
+                value = it,
+            )
+        }
     }
 
     ChartChoreographer(
@@ -103,7 +104,7 @@ fun ColumnChart(
 
             val contentArea = Rect(
                 top = 0f, bottom = size.height - xAxis.requiredHeight(),
-                left = yAxis2.requiredWidth(this, yAxisValues), right = size.width,
+                left = yAxis.requiredWidth(this, yAxisValues), right = size.width,
             )
             val xAxisArea = Rect(
                 top = contentArea.bottom, bottom = size.height,
@@ -126,7 +127,7 @@ fun ColumnChart(
             )
 
             xAxis.draw(this, contentArea, xAxisArea, mapper, data)
-            yAxis2.draw(drawScope = this, chartScope = contentArea, yAxisScope = yAxisArea, yMapper = mapper, values = yAxisValues)
+            yAxis.draw(drawScope = this, chartScope = contentArea, yAxisScope = yAxisArea, yMapper = mapper, values = yAxisValues)
 
             when (style) {
 

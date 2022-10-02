@@ -18,6 +18,7 @@ import pl.krystiankaniowski.composecharts.ChartsTheme
 import pl.krystiankaniowski.composecharts.internal.AxisScale
 import pl.krystiankaniowski.composecharts.internal.ChartChoreographer
 import pl.krystiankaniowski.composecharts.internal.PointMapper
+import pl.krystiankaniowski.composecharts.internal.YAxis
 import pl.krystiankaniowski.composecharts.legend.LegendEntry
 import pl.krystiankaniowski.composecharts.legend.LegendFlow
 import pl.krystiankaniowski.composecharts.legend.LegendPosition
@@ -60,7 +61,7 @@ fun AreaChart(
     title: (@Composable () -> Unit)? = null,
     style: AreaChart.Style = AreaChart.Style.OVERLAPPING,
     xAxis: AreaChartXAxis.Drawer = AreaChartXAxis.Auto(),
-    yAxis: AreaChartYAxis.Drawer = AreaChartYAxis.Auto(),
+    yAxis: YAxis.Drawer = YAxis.Default(),
     legendPosition: LegendPosition = LegendPosition.Bottom,
 ) {
 
@@ -75,6 +76,19 @@ fun AreaChart(
         )
     }
 
+    val yAxisValues = remember(scale, style) {
+        scale.getHelperLines().map {
+            YAxis.Value(
+                label =
+                when (style) {
+                    AreaChart.Style.OVERLAPPING, AreaChart.Style.STACKED -> scale.formatValue(it)
+                    AreaChart.Style.PROPORTIONAL -> "${(it * 100).toInt()}%"
+                },
+                value = it,
+            )
+        }
+    }
+
     ChartChoreographer(
         modifier = modifier,
         title = title,
@@ -85,7 +99,7 @@ fun AreaChart(
 
             val contentArea = Rect(
                 top = 0f, bottom = size.height - xAxis.requiredHeight(),
-                left = yAxis.requiredWidth(), right = size.width,
+                left = yAxis.requiredWidth(this, yAxisValues), right = size.width,
             )
             val xAxisArea = Rect(
                 top = contentArea.bottom, bottom = size.height,
@@ -108,12 +122,12 @@ fun AreaChart(
             )
 
             xAxis.draw(this, contentArea, xAxisArea, mapper, data)
-            yAxis.draw(this, contentArea, yAxisArea, mapper, scale)
+            yAxis.draw(this, contentArea, yAxisArea, mapper, yAxisValues)
 
             when (style) {
 
                 AreaChart.Style.OVERLAPPING -> {
-                    data.areas.forEachIndexed { index, line ->
+                    data.areas.forEach { line ->
                         drawArea(line.color, line.values, mapper)
                     }
                 }
