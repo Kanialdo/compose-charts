@@ -4,7 +4,6 @@ import androidx.compose.desktop.ui.tooling.preview.Preview
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import pl.krystiankaniowski.composecharts.area.AreaChart
-import pl.krystiankaniowski.composecharts.area.AreaChartXAxis
 import pl.krystiankaniowski.composecharts.autoColor
 
 @Suppress("MagicNumber")
@@ -61,6 +60,6 @@ fun AreaChartCustomLabelsPreview() {
             ),
         ),
         title = { Text("Line chart") },
-        xAxis = AreaChartXAxis.Auto(label = { listOf("A", "B", "C", "D", "E")[it] }),
+//        xAxis = AreaChartXAxis.Auto(label = { listOf("A", "B", "C", "D", "E")[it] }),
     )
 }

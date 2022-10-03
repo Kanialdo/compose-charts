@@ -60,7 +60,7 @@ fun AreaChartCustomLabelsPreview() {
             ),
         ),
         title = { Text("Area chart") },
-        xAxis = AreaChartXAxis.Auto(label = { listOf("A", "B", "C", "D", "E")[it] }),
+//        xAxis = AreaChartXAxis.Auto(label = { listOf("A", "B", "C", "D", "E")[it] }),
     )
 }
 
