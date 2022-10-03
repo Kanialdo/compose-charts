@@ -14,9 +14,11 @@ import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import pl.krystiankaniowski.composecharts.ChartsTheme
+import pl.krystiankaniowski.composecharts.column.ColumnChart
 import pl.krystiankaniowski.composecharts.internal.AxisScale
 import pl.krystiankaniowski.composecharts.internal.ChartChoreographer
 import pl.krystiankaniowski.composecharts.internal.PointMapper
+import pl.krystiankaniowski.composecharts.internal.YAxis
 import pl.krystiankaniowski.composecharts.legend.LegendEntry
 import pl.krystiankaniowski.composecharts.legend.LegendFlow
 import pl.krystiankaniowski.composecharts.legend.LegendPosition
@@ -59,7 +61,7 @@ fun BarChart(
     data: BarChart.Data,
     style: BarChart.Style = BarChart.Style.GROUPED,
     title: (@Composable () -> Unit)? = null,
-    yAxis: BarChartYAxis.Drawer = BarChartYAxis.Auto(),
+    yAxis: YAxis.Drawer = YAxis.Default(),
     xAxis: BarChartXAxis.Drawer = BarChartXAxis.Auto(),
     legendPosition: LegendPosition = LegendPosition.Bottom,
 ) {
@@ -75,6 +77,15 @@ fun BarChart(
         )
     }
 
+    val yAxisValues = remember(data.labels) {
+        data.labels.mapIndexed { index, label ->
+            YAxis.Value(
+                label = label,
+                value = (data.labels.size - index - 1).toFloat(),
+            )
+        }
+    }
+
     ChartChoreographer(
         modifier = modifier,
         title = title,
@@ -88,7 +99,7 @@ fun BarChart(
 
             val contentArea = Rect(
                 top = 0f, bottom = size.height - xAxis.requiredHeight(),
-                left = yAxis.requiredWidth(), right = size.width,
+                left = yAxis.requiredWidth(this, yAxisValues), right = size.width,
             )
             val yAxisArea = Rect(
                 top = contentArea.top, bottom = contentArea.bottom,
@@ -110,7 +121,7 @@ fun BarChart(
                 yDstMax = contentArea.bottom,
             )
 
-            yAxis.draw(this, contentArea, yAxisArea, mapper, data)
+            yAxis.draw(this, contentArea, yAxisArea, mapper, yAxisValues)
             xAxis.draw(this, contentArea, xAxisArea, mapper, scale)
 
             when (style) {
