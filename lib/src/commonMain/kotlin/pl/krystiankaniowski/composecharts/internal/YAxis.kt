@@ -2,9 +2,13 @@ package pl.krystiankaniowski.composecharts.internal
 
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Rect
+import androidx.compose.ui.graphics.BlendMode
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.PathEffect
 import androidx.compose.ui.graphics.drawscope.DrawScope
+import androidx.compose.ui.graphics.drawscope.DrawStyle
+import androidx.compose.ui.graphics.drawscope.Fill
 import pl.krystiankaniowski.composecharts.ChartsTheme
 
 object YAxis {
@@ -12,6 +16,16 @@ object YAxis {
     data class Value(
         val label: String,
         val value: Float,
+        val helperLine: YAxisLine? = null,
+    )
+
+    data class YAxisLine(
+        val width: Float = 1f,
+        val color: Color = Color.Gray,
+        val alpha: Float = 1.0f,
+        val style: DrawStyle = Fill,
+        val colorFilter: ColorFilter? = null,
+        val blendMode: BlendMode = DrawScope.DefaultBlendMode,
     )
 
     interface Drawer {
