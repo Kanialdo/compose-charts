@@ -54,6 +54,7 @@ object AreaChart {
     }
 }
 
+@Suppress("ComplexMethod")
 @Composable
 fun AreaChart(
     modifier: Modifier = Modifier,

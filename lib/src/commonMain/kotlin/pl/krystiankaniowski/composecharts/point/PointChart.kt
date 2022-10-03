@@ -25,6 +25,7 @@ import pl.krystiankaniowski.composecharts.internal.AxisScale
 import pl.krystiankaniowski.composecharts.internal.ChartChoreographer
 import pl.krystiankaniowski.composecharts.internal.OneAxisMapper
 import pl.krystiankaniowski.composecharts.internal.PointMapper
+import pl.krystiankaniowski.composecharts.internal.YAxis
 import pl.krystiankaniowski.composecharts.legend.LegendEntry
 import pl.krystiankaniowski.composecharts.legend.LegendFlow
 import pl.krystiankaniowski.composecharts.legend.LegendPosition
@@ -67,7 +68,7 @@ fun PointChart(
     data: PointChart.Data,
     title: (@Composable () -> Unit)? = null,
     xAxis: PointChartXAxis.Drawer = PointChartXAxis.Auto(),
-    yAxis: PointChartYAxis.Drawer = PointChartYAxis.Auto(),
+    yAxis: YAxis.Drawer = YAxis.Default(),
     legendPosition: LegendPosition = LegendPosition.Bottom,
 ) {
 
@@ -85,6 +86,12 @@ fun PointChart(
         )
     }
 
+    val yAxisValues = remember(scaleY) {
+        scaleY.getHelperLines().map {
+            YAxis.Value(label = scaleY.formatValue(it), value = it)
+        }
+    }
+
     ChartChoreographer(
         modifier = modifier,
         title = title,
@@ -95,7 +102,7 @@ fun PointChart(
 
             val contentArea = Rect(
                 top = 0f, bottom = size.height - xAxis.requiredHeight(),
-                left = yAxis.requiredWidth(), right = size.width,
+                left = yAxis.requiredWidth(this, yAxisValues), right = size.width,
             )
             val xAxisArea = Rect(
                 top = contentArea.bottom, bottom = size.height,
@@ -118,7 +125,7 @@ fun PointChart(
             )
 
             xAxis.draw(this, contentArea, xAxisArea, mapper, scaleX)
-            yAxis.draw(this, contentArea, yAxisArea, mapper, scaleY)
+            yAxis.draw(this, contentArea, yAxisArea, mapper, yAxisValues)
 
             data.series.forEach { series ->
                 val points = series.values.map { Offset(mapper.x(it.x), mapper.y(it.y)) }

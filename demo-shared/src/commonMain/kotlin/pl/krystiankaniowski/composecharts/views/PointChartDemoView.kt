@@ -6,9 +6,9 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.PathEffect
 import pl.krystiankaniowski.composecharts.autoColor
+import pl.krystiankaniowski.composecharts.internal.YAxis
 import pl.krystiankaniowski.composecharts.point.PointChart
 import pl.krystiankaniowski.composecharts.point.PointChartXAxis
-import pl.krystiankaniowski.composecharts.point.PointChartYAxis
 
 @Suppress("MagicNumber")
 @Composable
@@ -112,11 +112,11 @@ fun PointChartCustomDemo() {
                 PointChartXAxis.Label("X3", 3f),
             ),
         ),
-        yAxis = PointChartYAxis.Fixed(
-            labels = listOf(
-                1f to "Y1",
-                2f to "Y2",
-                3f to "Y3",
+        yAxis = YAxis.Fixed(
+            values = listOf(
+                YAxis.Value(label = "Y1", value = 1f),
+                YAxis.Value(label = "Y2", value = 2f),
+                YAxis.Value(label = "Y3", value = 3f),
             ),
         ),
     )
