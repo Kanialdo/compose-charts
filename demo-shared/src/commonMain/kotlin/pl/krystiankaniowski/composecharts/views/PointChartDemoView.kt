@@ -6,7 +6,7 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.PathEffect
 import pl.krystiankaniowski.composecharts.autoColor
-import pl.krystiankaniowski.composecharts.internal.YAxis
+import pl.krystiankaniowski.composecharts.axis.YAxis
 import pl.krystiankaniowski.composecharts.point.PointChart
 import pl.krystiankaniowski.composecharts.point.PointChartXAxis
 

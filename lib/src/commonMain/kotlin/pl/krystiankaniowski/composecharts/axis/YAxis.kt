@@ -1,4 +1,4 @@
-package pl.krystiankaniowski.composecharts.internal
+package pl.krystiankaniowski.composecharts.axis
 
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Rect
@@ -10,6 +10,11 @@ import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.graphics.drawscope.Stroke
 import pl.krystiankaniowski.composecharts.ChartsTheme
+import pl.krystiankaniowski.composecharts.internal.TextAnchorX
+import pl.krystiankaniowski.composecharts.internal.TextAnchorY
+import pl.krystiankaniowski.composecharts.internal.YMapper
+import pl.krystiankaniowski.composecharts.internal.drawText
+import pl.krystiankaniowski.composecharts.internal.measureText
 
 object YAxis {
 
