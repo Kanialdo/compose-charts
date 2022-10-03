@@ -6,9 +6,9 @@ import androidx.compose.ui.graphics.BlendMode
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.PathEffect
+import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.drawscope.DrawScope
-import androidx.compose.ui.graphics.drawscope.DrawStyle
-import androidx.compose.ui.graphics.drawscope.Fill
+import androidx.compose.ui.graphics.drawscope.Stroke
 import pl.krystiankaniowski.composecharts.ChartsTheme
 
 object YAxis {
@@ -16,14 +16,15 @@ object YAxis {
     data class Value(
         val label: String,
         val value: Float,
-        val helperLine: YAxisLine? = null,
+        val helperLine: YAxisLine? = YAxisLine(),
     )
 
     data class YAxisLine(
-        val width: Float = 1f,
+        val strokeWidth: Float = Stroke.HairlineWidth,
+        val cap: StrokeCap = Stroke.DefaultCap,
         val color: Color = Color.Gray,
         val alpha: Float = 1.0f,
-        val style: DrawStyle = Fill,
+        val pathEffect: PathEffect? = PathEffect.dashPathEffect(floatArrayOf(10f, 20f)),
         val colorFilter: ColorFilter? = null,
         val blendMode: BlendMode = DrawScope.DefaultBlendMode,
     )
@@ -39,8 +40,8 @@ object YAxis {
     }
 
     class Default(
-        val textSize: Float = 20f,
-        val color: Color = ChartsTheme.axisColor,
+        private val textSize: Float = 20f,
+        private val color: Color = ChartsTheme.axisColor,
     ) : Drawer {
 
         override fun requiredWidth(drawScope: DrawScope, values: List<Value>) = values.maxOf { it.label }.let {
@@ -48,33 +49,83 @@ object YAxis {
         }
 
         override fun draw(drawScope: DrawScope, chartScope: Rect, yAxisScope: Rect, yMapper: YMapper, values: List<Value>) {
-            for (value in values) {
-
-                val y = yMapper.y(value.value)
-
-                drawScope.drawLine(
-                    color = color,
-                    start = Offset(x = chartScope.left, y = y),
-                    end = Offset(x = chartScope.right, y = y),
-                    pathEffect = PathEffect.dashPathEffect(floatArrayOf(10f, 20f)),
-                )
-
-                drawScope.drawText(
-                    text = value.label,
-                    x = yAxisScope.width - 10f,
-                    y = y,
-                    anchorX = TextAnchorX.Right,
-                    anchorY = TextAnchorY.Center,
-                    color = color,
-                    size = textSize,
-                )
-            }
-
-            drawScope.drawLine(
+            internalDraw(
                 color = color,
-                start = Offset(yAxisScope.right, yAxisScope.top),
-                end = Offset(yAxisScope.right, yAxisScope.bottom),
+                textSize = textSize,
+                values = values,
+                yMapper = yMapper,
+                drawScope = drawScope,
+                chartScope = chartScope,
+                yAxisScope = yAxisScope,
             )
         }
     }
+
+    class Fixed(
+        private val values: List<Value>,
+        private val textSize: Float = 20f,
+        private val color: Color = ChartsTheme.axisColor,
+    ) : Drawer {
+
+        override fun requiredWidth(drawScope: DrawScope, values: List<Value>) = this.values.maxOf { it.label }.let {
+            drawScope.measureText(textSize, it)
+        }
+
+        override fun draw(drawScope: DrawScope, chartScope: Rect, yAxisScope: Rect, yMapper: YMapper, values: List<Value>) {
+            internalDraw(
+                color = color,
+                textSize = textSize,
+                values = this.values,
+                yMapper = yMapper,
+                drawScope = drawScope,
+                chartScope = chartScope,
+                yAxisScope = yAxisScope,
+            )
+        }
+    }
+}
+
+private fun internalDraw(
+    color: Color,
+    textSize: Float,
+    values: List<YAxis.Value>,
+    yMapper: YMapper,
+    drawScope: DrawScope,
+    chartScope: Rect,
+    yAxisScope: Rect,
+) {
+    for (value in values) {
+
+        val y = yMapper.y(value.value)
+
+        value.helperLine?.let { style ->
+            drawScope.drawLine(
+                color = style.color,
+                start = Offset(x = chartScope.left, y = y),
+                end = Offset(x = chartScope.right, y = y),
+                pathEffect = style.pathEffect,
+                strokeWidth = style.strokeWidth,
+                cap = style.cap,
+                alpha = style.alpha,
+                colorFilter = style.colorFilter,
+                blendMode = style.blendMode,
+            )
+        }
+
+        drawScope.drawText(
+            text = value.label,
+            x = yAxisScope.width - 10f,
+            y = y,
+            anchorX = TextAnchorX.Right,
+            anchorY = TextAnchorY.Center,
+            color = color,
+            size = textSize,
+        )
+    }
+
+    drawScope.drawLine(
+        color = color,
+        start = Offset(yAxisScope.right, yAxisScope.top),
+        end = Offset(yAxisScope.right, yAxisScope.bottom),
+    )
 }

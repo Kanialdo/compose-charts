@@ -14,7 +14,6 @@ import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import pl.krystiankaniowski.composecharts.ChartsTheme
-import pl.krystiankaniowski.composecharts.column.ColumnChart
 import pl.krystiankaniowski.composecharts.internal.AxisScale
 import pl.krystiankaniowski.composecharts.internal.ChartChoreographer
 import pl.krystiankaniowski.composecharts.internal.PointMapper
@@ -81,7 +80,8 @@ fun BarChart(
         data.labels.mapIndexed { index, label ->
             YAxis.Value(
                 label = label,
-                value = (data.labels.size - index - 1).toFloat(),
+                value = index.toFloat(),
+                helperLine = null,
             )
         }
     }
