@@ -15,6 +15,7 @@ import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.unit.dp
 import pl.krystiankaniowski.composecharts.ChartsTheme
+import pl.krystiankaniowski.composecharts.axis.YAxis
 import pl.krystiankaniowski.composecharts.internal.AxisScale
 import pl.krystiankaniowski.composecharts.internal.ChartChoreographer
 import pl.krystiankaniowski.composecharts.internal.PointMapper
@@ -71,7 +72,7 @@ fun LineChart(
     title: (@Composable () -> Unit)? = null,
     style: LineChart.Style = LineChart.Style(),
     xAxis: LineChartXAxis.Drawer = LineChartXAxis.Auto(),
-    yAxis: LineChartYAxis.Drawer = LineChartYAxis.Auto(),
+    yAxis: YAxis.Drawer = YAxis.Default(),
     legendPosition: LegendPosition = LegendPosition.Bottom,
 ) {
 
@@ -80,6 +81,12 @@ fun LineChart(
             min = data.minValue,
             max = data.maxValue,
         )
+    }
+
+    val yAxisValues = remember(scale, style) {
+        scale.getHelperLines().map {
+            YAxis.Value(label = scale.formatValue(it), value = it)
+        }
     }
 
     ChartChoreographer(
@@ -92,7 +99,7 @@ fun LineChart(
 
             val contentArea = Rect(
                 top = 0f, bottom = size.height - xAxis.requiredHeight(),
-                left = yAxis.requiredWidth(), right = size.width,
+                left = yAxis.requiredWidth(this, yAxisValues), right = size.width,
             )
             val xAxisArea = Rect(
                 top = contentArea.bottom, bottom = size.height,
@@ -115,9 +122,9 @@ fun LineChart(
             )
 
             xAxis.draw(this, contentArea, xAxisArea, mapper, data)
-            yAxis.draw(this, contentArea, yAxisArea, mapper, scale)
+            yAxis.draw(this, contentArea, yAxisArea, mapper, yAxisValues)
 
-            data.lines.forEachIndexed { index, line ->
+            data.lines.forEach { line ->
                 drawLine(line, style, mapper)
                 drawPoints(line, style, mapper)
             }

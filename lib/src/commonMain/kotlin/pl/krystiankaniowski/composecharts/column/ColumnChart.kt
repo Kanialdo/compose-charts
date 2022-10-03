@@ -14,6 +14,7 @@ import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import pl.krystiankaniowski.composecharts.ChartsTheme
+import pl.krystiankaniowski.composecharts.axis.YAxis
 import pl.krystiankaniowski.composecharts.internal.AxisScale
 import pl.krystiankaniowski.composecharts.internal.ChartChoreographer
 import pl.krystiankaniowski.composecharts.internal.PointMapper
@@ -62,7 +63,7 @@ fun ColumnChart(
     style: ColumnChart.Style = ColumnChart.Style.GROUPED,
     title: (@Composable () -> Unit)? = null,
     xAxis: ColumnChartXAxis.Drawer = ColumnChartXAxis.Auto(),
-    yAxis: ColumnChartYAxis.Drawer = ColumnChartYAxis.Auto(),
+    yAxis: YAxis.Drawer = YAxis.Default(),
     legendPosition: LegendPosition = LegendPosition.Bottom,
 ) {
 
@@ -75,6 +76,19 @@ fun ColumnChart(
                 ColumnChart.Style.PROPORTIONAL -> 1f
             },
         )
+    }
+
+    val yAxisValues = remember(scale, style) {
+        scale.getHelperLines().map {
+            YAxis.Value(
+                label =
+                when (style) {
+                    ColumnChart.Style.GROUPED, ColumnChart.Style.STACKED -> scale.formatValue(it)
+                    ColumnChart.Style.PROPORTIONAL -> "${(it * 100).toInt()}%"
+                },
+                value = it,
+            )
+        }
     }
 
     ChartChoreographer(
@@ -90,7 +104,7 @@ fun ColumnChart(
 
             val contentArea = Rect(
                 top = 0f, bottom = size.height - xAxis.requiredHeight(),
-                left = yAxis.requiredWidth(), right = size.width,
+                left = yAxis.requiredWidth(this, yAxisValues), right = size.width,
             )
             val xAxisArea = Rect(
                 top = contentArea.bottom, bottom = size.height,
@@ -113,7 +127,7 @@ fun ColumnChart(
             )
 
             xAxis.draw(this, contentArea, xAxisArea, mapper, data)
-            yAxis.draw(this, contentArea, yAxisArea, mapper, scale)
+            yAxis.draw(drawScope = this, chartScope = contentArea, yAxisScope = yAxisArea, yMapper = mapper, values = yAxisValues)
 
             when (style) {
 
