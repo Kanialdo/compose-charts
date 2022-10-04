@@ -14,6 +14,7 @@ import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import pl.krystiankaniowski.composecharts.ChartsTheme
+import pl.krystiankaniowski.composecharts.axis.XAxis
 import pl.krystiankaniowski.composecharts.axis.YAxis
 import pl.krystiankaniowski.composecharts.internal.AxisScale
 import pl.krystiankaniowski.composecharts.internal.ChartChoreographer
@@ -61,7 +62,7 @@ fun BarChart(
     style: BarChart.Style = BarChart.Style.GROUPED,
     title: (@Composable () -> Unit)? = null,
     yAxis: YAxis.Drawer = YAxis.Default(),
-    xAxis: BarChartXAxis.Drawer = BarChartXAxis.Auto(),
+    xAxis: XAxis.Drawer = XAxis.Default(),
     legendPosition: LegendPosition = LegendPosition.Bottom,
 ) {
 
@@ -74,6 +75,18 @@ fun BarChart(
                 BarChart.Style.PROPORTIONAL -> 1f
             },
         )
+    }
+
+    val xAxisValues = remember(scale, style) {
+        scale.getHelperLines().map {
+            XAxis.Value(
+                label = when (style) {
+                    BarChart.Style.GROUPED, BarChart.Style.STACKED -> scale.formatValue(it)
+                    BarChart.Style.PROPORTIONAL -> "${(it * 100).toInt()}%"
+                },
+                value = it,
+            )
+        }
     }
 
     val yAxisValues = remember(data.labels) {
@@ -98,7 +111,7 @@ fun BarChart(
             val offset = 1f
 
             val contentArea = Rect(
-                top = 0f, bottom = size.height - xAxis.requiredHeight(),
+                top = 0f, bottom = size.height - xAxis.requiredHeight(this, xAxisValues),
                 left = yAxis.requiredWidth(this, yAxisValues), right = size.width,
             )
             val yAxisArea = Rect(
@@ -122,7 +135,7 @@ fun BarChart(
             )
 
             yAxis.draw(this, contentArea, yAxisArea, mapper, yAxisValues)
-            xAxis.draw(this, contentArea, xAxisArea, mapper, scale)
+            xAxis.draw(this, contentArea, xAxisArea, mapper, xAxisValues)
 
             when (style) {
 

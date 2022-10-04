@@ -14,6 +14,7 @@ import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import pl.krystiankaniowski.composecharts.ChartsTheme
+import pl.krystiankaniowski.composecharts.axis.XAxis
 import pl.krystiankaniowski.composecharts.axis.YAxis
 import pl.krystiankaniowski.composecharts.internal.AxisScale
 import pl.krystiankaniowski.composecharts.internal.ChartChoreographer
@@ -62,7 +63,7 @@ fun ColumnChart(
     data: ColumnChart.Data,
     style: ColumnChart.Style = ColumnChart.Style.GROUPED,
     title: (@Composable () -> Unit)? = null,
-    xAxis: ColumnChartXAxis.Drawer = ColumnChartXAxis.Auto(),
+    xAxis: XAxis.Drawer = XAxis.Default(),
     yAxis: YAxis.Drawer = YAxis.Default(),
     legendPosition: LegendPosition = LegendPosition.Bottom,
 ) {
@@ -76,6 +77,16 @@ fun ColumnChart(
                 ColumnChart.Style.PROPORTIONAL -> 1f
             },
         )
+    }
+
+    val xAxisValues = remember(data) {
+        data.labels.mapIndexed { index, label ->
+            XAxis.Value(
+                label = label,
+                value = index.toFloat(),
+                helperLine = null,
+            )
+        }
     }
 
     val yAxisValues = remember(scale, style) {
@@ -103,7 +114,7 @@ fun ColumnChart(
             val offset = 1f
 
             val contentArea = Rect(
-                top = 0f, bottom = size.height - xAxis.requiredHeight(),
+                top = 0f, bottom = size.height - xAxis.requiredHeight(this, xAxisValues),
                 left = yAxis.requiredWidth(this, yAxisValues), right = size.width,
             )
             val xAxisArea = Rect(
@@ -126,7 +137,7 @@ fun ColumnChart(
                 yDstMax = contentArea.bottom,
             )
 
-            xAxis.draw(this, contentArea, xAxisArea, mapper, data)
+            xAxis.draw(this, contentArea, xAxisArea, mapper, xAxisValues)
             yAxis.draw(drawScope = this, chartScope = contentArea, yAxisScope = yAxisArea, yMapper = mapper, values = yAxisValues)
 
             when (style) {

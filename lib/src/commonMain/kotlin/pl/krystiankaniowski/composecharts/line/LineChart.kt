@@ -15,6 +15,7 @@ import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.unit.dp
 import pl.krystiankaniowski.composecharts.ChartsTheme
+import pl.krystiankaniowski.composecharts.axis.XAxis
 import pl.krystiankaniowski.composecharts.axis.YAxis
 import pl.krystiankaniowski.composecharts.internal.AxisScale
 import pl.krystiankaniowski.composecharts.internal.ChartChoreographer
@@ -71,7 +72,7 @@ fun LineChart(
     data: LineChart.Data,
     title: (@Composable () -> Unit)? = null,
     style: LineChart.Style = LineChart.Style(),
-    xAxis: LineChartXAxis.Drawer = LineChartXAxis.Auto(),
+    xAxis: XAxis.Drawer = XAxis.Default(),
     yAxis: YAxis.Drawer = YAxis.Default(),
     legendPosition: LegendPosition = LegendPosition.Bottom,
 ) {
@@ -81,6 +82,14 @@ fun LineChart(
             min = data.minValue,
             max = data.maxValue,
         )
+    }
+
+    val xAxisValues = remember(data) {
+        buildList(data.size) {
+            for (i in 0 until data.size) {
+                add(XAxis.Value(label = i.toString(), value = i.toFloat()))
+            }
+        }
     }
 
     val yAxisValues = remember(scale, style) {
@@ -98,7 +107,7 @@ fun LineChart(
         Canvas(Modifier.fillMaxSize()) {
 
             val contentArea = Rect(
-                top = 0f, bottom = size.height - xAxis.requiredHeight(),
+                top = 0f, bottom = size.height - xAxis.requiredHeight(this, xAxisValues),
                 left = yAxis.requiredWidth(this, yAxisValues), right = size.width,
             )
             val xAxisArea = Rect(
@@ -111,8 +120,8 @@ fun LineChart(
             )
 
             val mapper = PointMapper(
-                xSrcMin = 0f,
-                xSrcMax = data.size.toFloat(),
+                xSrcMin = -0.5f,
+                xSrcMax = data.size - 0.5f,
                 xDstMin = contentArea.left,
                 xDstMax = contentArea.right,
                 ySrcMin = scale.min,
@@ -121,7 +130,7 @@ fun LineChart(
                 yDstMax = contentArea.bottom,
             )
 
-            xAxis.draw(this, contentArea, xAxisArea, mapper, data)
+            xAxis.draw(this, contentArea, xAxisArea, mapper, xAxisValues)
             yAxis.draw(this, contentArea, yAxisArea, mapper, yAxisValues)
 
             data.lines.forEach { line ->
@@ -141,12 +150,12 @@ private fun DrawScope.drawLine(
     line.values.forEachIndexed { dataIndex, point ->
         if (dataIndex == 0) {
             path.moveTo(
-                x = mapper.x(dataIndex + 0.5f),
+                x = mapper.x(dataIndex),
                 y = mapper.y(point),
             )
         } else {
             path.lineTo(
-                x = mapper.x(dataIndex + 0.5f),
+                x = mapper.x(dataIndex),
                 y = mapper.y(point),
             )
         }
@@ -169,7 +178,7 @@ private fun DrawScope.drawPoints(
             line.values.forEachIndexed { dataIndex, point ->
                 drawCircle(
                     color = line.color,
-                    center = mapper.offset(dataIndex + 0.5f, point),
+                    center = mapper.offset(dataIndex.toFloat(), point),
                     radius = pointStyle.size,
                 )
             }

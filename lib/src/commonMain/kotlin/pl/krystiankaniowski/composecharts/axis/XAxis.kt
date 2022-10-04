@@ -20,7 +20,7 @@ object XAxis {
     data class Value(
         val label: String,
         val value: Float,
-        val helperLine: XAxisLine? = XAxisLine(),
+        val helperLine: XAxisLine? = null,
     )
 
     data class XAxisLine(
@@ -85,7 +85,6 @@ object XAxis {
     }
 }
 
-
 private fun internalDraw(
     color: Color,
     textSize: Float,
@@ -101,22 +100,37 @@ private fun internalDraw(
         end = Offset(xAxisScope.right, xAxisScope.top),
     )
     values.forEachIndexed { index, value ->
-        val x = xMapper.x(index)
+        val x = xMapper.x(value.value)
         drawScope.drawLine(
             color = color,
             start = Offset(x, xAxisScope.top),
             end = Offset(x, xAxisScope.top + 4f),
         )
         if (values.size <= 10 || (index % (values.size / 10) == 0)) {
-            drawScope.drawText(
-                text = value.label,
-                x = x,
-                y = xAxisScope.top + 8f,
-                anchorX = TextAnchorX.Center,
-                anchorY = TextAnchorY.Bottom,
-                color = color,
-                size = textSize,
-            )
+
+            value.helperLine?.let { style ->
+                drawScope.drawLine(
+                    color = style.color,
+                    start = Offset(x = x, y = chartScope.top),
+                    end = Offset(x = x, y = chartScope.bottom),
+                    pathEffect = style.pathEffect,
+                    strokeWidth = style.strokeWidth,
+                    cap = style.cap,
+                    alpha = style.alpha,
+                    colorFilter = style.colorFilter,
+                    blendMode = style.blendMode,
+                )
+            }
         }
+
+        drawScope.drawText(
+            text = value.label,
+            x = x,
+            y = xAxisScope.top + 8f,
+            anchorX = TextAnchorX.Center,
+            anchorY = TextAnchorY.Bottom,
+            color = color,
+            size = textSize,
+        )
     }
 }

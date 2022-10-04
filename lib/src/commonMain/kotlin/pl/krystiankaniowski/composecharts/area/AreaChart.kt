@@ -195,7 +195,7 @@ private fun DrawScope.drawArea(
         }
     }
     path.lineTo(
-        x = mapper.x(values.size- 1f),
+        x = mapper.x(values.size - 1f),
         y = mapper.y(0f),
     )
     path.lineTo(
