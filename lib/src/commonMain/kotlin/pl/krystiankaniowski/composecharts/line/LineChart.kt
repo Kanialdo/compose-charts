@@ -26,9 +26,10 @@ import pl.krystiankaniowski.composecharts.legend.LegendPosition
 
 object LineChart {
 
-    data class Data(val lines: List<Line>) {
-
-        constructor(vararg lines: Line) : this(lines.toList())
+    data class Data(
+        val lines: List<Line>,
+        val xLabelFormatter: (Int) -> String = { it.toString() },
+    ) {
 
         init {
             check(lines.first().values.size.let { size -> lines.all { it.values.size == size } }) {
@@ -87,7 +88,7 @@ fun LineChart(
     val xAxisValues = remember(data) {
         buildList(data.size) {
             for (i in 0 until data.size) {
-                add(XAxis.Value(label = i.toString(), value = i.toFloat()))
+                add(XAxis.Value(label = data.xLabelFormatter(i), value = i.toFloat()))
             }
         }
     }

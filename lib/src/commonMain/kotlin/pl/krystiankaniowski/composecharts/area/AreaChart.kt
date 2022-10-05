@@ -26,9 +26,10 @@ import pl.krystiankaniowski.composecharts.legend.LegendPosition
 
 object AreaChart {
 
-    data class Data(val areas: List<Area>) {
-
-        constructor(vararg lines: Area) : this(lines.toList())
+    data class Data(
+        val areas: List<Area>,
+        val xLabelFormatter: (Int) -> String = { it.toString() },
+    ) {
 
         init {
             check(areas.first().values.size.let { size -> areas.all { it.values.size == size } }) {
@@ -81,7 +82,7 @@ fun AreaChart(
     val xAxisValues = remember(data) {
         buildList(data.size) {
             for (i in 0 until data.size) {
-                add(XAxis.Value(label = i.toString(), value = i.toFloat()))
+                add(XAxis.Value(label = data.xLabelFormatter(i), value = i.toFloat()))
             }
         }
     }
