@@ -15,6 +15,7 @@ import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.graphics.drawscope.Fill
 import androidx.compose.ui.unit.dp
 import pl.krystiankaniowski.composecharts.ChartsTheme
+import pl.krystiankaniowski.composecharts.axis.XAxis
 import pl.krystiankaniowski.composecharts.axis.YAxis
 import pl.krystiankaniowski.composecharts.internal.AxisScale
 import pl.krystiankaniowski.composecharts.internal.ChartChoreographer
@@ -25,9 +26,10 @@ import pl.krystiankaniowski.composecharts.legend.LegendPosition
 
 object AreaChart {
 
-    data class Data(val areas: List<Area>) {
-
-        constructor(vararg lines: Area) : this(lines.toList())
+    data class Data(
+        val areas: List<Area>,
+        val xLabelFormatter: (Int) -> String = { it.toString() },
+    ) {
 
         init {
             check(areas.first().values.size.let { size -> areas.all { it.values.size == size } }) {
@@ -61,7 +63,7 @@ fun AreaChart(
     data: AreaChart.Data,
     title: (@Composable () -> Unit)? = null,
     style: AreaChart.Style = AreaChart.Style.OVERLAPPING,
-    xAxis: AreaChartXAxis.Drawer = AreaChartXAxis.Auto(),
+    xAxis: XAxis.Drawer = XAxis.Default(),
     yAxis: YAxis.Drawer = YAxis.Default(),
     legendPosition: LegendPosition = LegendPosition.Bottom,
 ) {
@@ -75,6 +77,14 @@ fun AreaChart(
                 AreaChart.Style.PROPORTIONAL -> 1f
             },
         )
+    }
+
+    val xAxisValues = remember(data) {
+        buildList(data.size) {
+            for (i in 0 until data.size) {
+                add(XAxis.Value(label = data.xLabelFormatter(i), value = i.toFloat()))
+            }
+        }
     }
 
     val yAxisValues = remember(scale, style) {
@@ -99,7 +109,7 @@ fun AreaChart(
         Canvas(Modifier.fillMaxSize()) {
 
             val contentArea = Rect(
-                top = 0f, bottom = size.height - xAxis.requiredHeight(),
+                top = 0f, bottom = size.height - xAxis.requiredHeight(this, xAxisValues),
                 left = yAxis.requiredWidth(this, yAxisValues), right = size.width,
             )
             val xAxisArea = Rect(
@@ -113,7 +123,7 @@ fun AreaChart(
 
             val mapper = PointMapper(
                 xSrcMin = 0f,
-                xSrcMax = data.size.toFloat(),
+                xSrcMax = data.size.toFloat() - 1,
                 xDstMin = contentArea.left,
                 xDstMax = contentArea.right,
                 ySrcMin = scale.min,
@@ -122,7 +132,7 @@ fun AreaChart(
                 yDstMax = contentArea.bottom,
             )
 
-            xAxis.draw(this, contentArea, xAxisArea, mapper, data)
+            xAxis.draw(this, contentArea, xAxisArea, mapper, xAxisValues)
             yAxis.draw(this, contentArea, yAxisArea, mapper, yAxisValues)
 
             when (style) {
@@ -175,22 +185,22 @@ private fun DrawScope.drawArea(
     values.forEachIndexed { dataIndex, point ->
         if (dataIndex == 0) {
             path.moveTo(
-                x = mapper.x(dataIndex + 0.5f),
+                x = mapper.x(dataIndex),
                 y = mapper.y(point),
             )
         } else {
             path.lineTo(
-                x = mapper.x(dataIndex + 0.5f),
+                x = mapper.x(dataIndex),
                 y = mapper.y(point),
             )
         }
     }
     path.lineTo(
-        x = mapper.x(values.size - 0.5f),
+        x = mapper.x(values.size - 1f),
         y = mapper.y(0f),
     )
     path.lineTo(
-        x = mapper.x(0.5f),
+        x = mapper.x(0f),
         y = mapper.y(0f),
     )
     path.close()
@@ -212,22 +222,22 @@ private fun DrawScope.drawProportionalArea(
     values.forEachIndexed { dataIndex, point ->
         if (dataIndex == 0) {
             path.moveTo(
-                x = mapper.x(dataIndex + 0.5f),
+                x = mapper.x(dataIndex),
                 y = mapper.y(point / total[dataIndex]),
             )
         } else {
             path.lineTo(
-                x = mapper.x(dataIndex + 0.5f),
+                x = mapper.x(dataIndex),
                 y = mapper.y(point / total[dataIndex]),
             )
         }
     }
     path.lineTo(
-        x = mapper.x(values.size - 0.5f),
+        x = mapper.x(values.size - 1f),
         y = mapper.y(0f),
     )
     path.lineTo(
-        x = mapper.x(0.5f),
+        x = mapper.x(0f),
         y = mapper.y(0f),
     )
     path.close()
