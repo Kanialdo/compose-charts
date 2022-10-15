@@ -47,6 +47,8 @@ allprojects {
             "src/androidTest/kotlin",
             "src/desktopMain/kotlin",
             "src/desktopTest/kotlin",
+            "build.gradle.kts",
+            "settings.gradle.kts",
         )
 
         dependencies {
