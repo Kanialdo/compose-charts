@@ -10,6 +10,7 @@ kotlin {
     android()
     jvm("desktop")
 
+    @Suppress("UnusedPrivateMember")
     sourceSets {
         val commonMain by getting {
             dependencies {

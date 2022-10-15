@@ -1,5 +1,3 @@
-import org.jetbrains.compose.compose
-
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.multiplatform)
@@ -10,6 +8,7 @@ kotlin {
     android()
     jvm("desktop")
 
+    @Suppress("UnusedPrivateMember")
     sourceSets {
         val commonMain by getting {
             dependencies {
