@@ -119,15 +119,9 @@ fun AreaProportionalChartComplexPreview() {
     AreaChart(
         data = AreaChart.Data(
             areas = listOf(
-                AreaChart.Area(
-                    label = "Series A", color = autoColor(0), values = points1,
-                ),
-                AreaChart.Area(
-                    label = "Series B", color = autoColor(1), values = points2,
-                ),
-                AreaChart.Area(
-                    label = "Series C", color = autoColor(2), values = points3,
-                ),
+                AreaChart.Area(label = "Series A", color = autoColor(0), values = points1),
+                AreaChart.Area(label = "Series B", color = autoColor(1), values = points2),
+                AreaChart.Area(label = "Series C", color = autoColor(2), values = points3),
             ),
         ),
         style = AreaChart.Style.PROPORTIONAL,

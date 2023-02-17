@@ -108,16 +108,22 @@ fun LineChart(
         Canvas(Modifier.fillMaxSize()) {
 
             val contentArea = Rect(
-                top = 0f, bottom = size.height - xAxis.requiredHeight(this, xAxisValues),
-                left = yAxis.requiredWidth(this, yAxisValues), right = size.width,
+                top = 0f,
+                bottom = size.height - xAxis.requiredHeight(this, xAxisValues),
+                left = yAxis.requiredWidth(this, yAxisValues),
+                right = size.width,
             )
             val xAxisArea = Rect(
-                top = contentArea.bottom, bottom = size.height,
-                left = contentArea.left, right = contentArea.right,
+                top = contentArea.bottom,
+                bottom = size.height,
+                left = contentArea.left,
+                right = contentArea.right,
             )
             val yAxisArea = Rect(
-                top = contentArea.top, bottom = contentArea.bottom,
-                left = 0f, right = contentArea.left,
+                top = contentArea.top,
+                bottom = contentArea.bottom,
+                left = 0f,
+                right = contentArea.left,
             )
 
             val mapper = PointMapper(

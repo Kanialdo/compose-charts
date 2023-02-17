@@ -93,8 +93,10 @@ fun RadarChart(
             val size = androidx.compose.ui.unit.min(this.maxHeight, this.maxWidth)
 
             val chartArea = Rect(
-                top = 0f, bottom = size.value * density.value,
-                left = 0f, right = size.value * density.value,
+                top = 0f,
+                bottom = size.value * density.value,
+                left = 0f,
+                right = size.value * density.value,
             )
             val r = chartArea.width / 2
 

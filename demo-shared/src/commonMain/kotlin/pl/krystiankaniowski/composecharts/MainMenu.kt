@@ -1,4 +1,5 @@
 @file:Suppress("MatchingDeclarationName")
+
 package pl.krystiankaniowski.composecharts
 
 import androidx.compose.foundation.background
