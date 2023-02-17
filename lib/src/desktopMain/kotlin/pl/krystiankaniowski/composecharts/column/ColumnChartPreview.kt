@@ -7,9 +7,7 @@ import pl.krystiankaniowski.composecharts.autoColor
 
 @Suppress("MagicNumber")
 private val data = ColumnChart.Data(
-    labels = listOf(
-        "C1", "C2", "C3", "C4", "C5",
-    ),
+    labels = listOf("C1", "C2", "C3", "C4", "C5"),
     columns = listOf(
         ColumnChart.Column(label = "Series A", color = autoColor(0), values = listOf(5f, 4f, 3f, 2f, 1f)),
         ColumnChart.Column(label = "Series B", color = autoColor(1), values = listOf(1f, 1f, 1f, 1f, 1f)),

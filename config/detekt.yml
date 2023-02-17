@@ -17,10 +17,22 @@ formatting:
     maxLineLength: 180
   NoWildcardImports:
     active: false
-  TrailingComma:
+  ArgumentListWrapping:
     active: true
-    allowTrailingComma: true
-    allowTrailingCommaOnCallSite: true
+    maxLineLength: 180
+  ParameterListWrapping:
+    active: true
+    maxLineLength: 180
+  NoEmptyFirstLineInMethodBlock:
+    active: false
+  TrailingCommaOnCallSite:
+    active: true
+    autoCorrect: true
+    useTrailingCommaOnCallSite: true
+  TrailingCommaOnDeclarationSite:
+    active: true
+    autoCorrect: true
+    useTrailingCommaOnDeclarationSite: true
 
 style:
   MagicNumber:
