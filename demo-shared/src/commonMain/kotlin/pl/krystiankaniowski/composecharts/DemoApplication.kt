@@ -159,7 +159,8 @@ private class DemoDrawerShape : Shape {
 enum class ScreenSize {
     Compact,
     Medium,
-    Expanded;
+    Expanded,
+    ;
 
     companion object {
         fun resolveScreenSize(width: Dp) = when {
