@@ -80,7 +80,9 @@ fun SunburstChart(
 }
 
 private fun SunburstChart.Data.deep(): Int = slices.maxOf { it.deep(1) }
-private fun SunburstChart.Slice.deep(current: Int): Int = subSlices.maxOfOrNull { it.deep(current = current + 1) } ?: current
+private fun SunburstChart.Slice.deep(current: Int): Int = subSlices.maxOfOrNull {
+    it.deep(current = current + 1)
+} ?: current
 
 private fun DrawScope.drawComponent(
     slice: SunburstChart.Slice,

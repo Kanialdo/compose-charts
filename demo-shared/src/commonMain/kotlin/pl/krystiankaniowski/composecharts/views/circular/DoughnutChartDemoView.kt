@@ -3,11 +3,7 @@ package pl.krystiankaniowski.composecharts.views.circular
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.material.Slider
 import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import pl.krystiankaniowski.composecharts.ChartScreen
@@ -44,7 +40,12 @@ fun DoughnutChartDemo() {
             )
         },
         settings = {
-            Slider(modifier = Modifier.widthIn(max = 120.dp), value = cutOut, valueRange = 0.1f..0.9f, onValueChange = { cutOut = it })
+            Slider(
+                modifier = Modifier.widthIn(max = 120.dp),
+                value = cutOut,
+                valueRange = 0.1f..0.9f,
+                onValueChange = { cutOut = it },
+            )
             OptionRandomize { random ->
                 data = data.copy(slices = data.slices.map { it.copy(value = random.nextFloat()) })
             }
