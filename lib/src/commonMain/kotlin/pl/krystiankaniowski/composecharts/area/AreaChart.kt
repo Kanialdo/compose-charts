@@ -73,7 +73,9 @@ fun AreaChart(
             min = 0f,
             max = when (style) {
                 AreaChart.Style.OVERLAPPING -> data.maxValue
-                AreaChart.Style.STACKED -> FloatArray(data.areas.first().values.size) { index -> data.areas.map { it.values[index] }.sum() }.max()
+                AreaChart.Style.STACKED -> FloatArray(data.areas.first().values.size) { index ->
+                    data.areas.map { it.values[index] }.sum()
+                }.max()
                 AreaChart.Style.PROPORTIONAL -> 1f
             },
         )
