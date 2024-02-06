@@ -1,5 +1,5 @@
-import org.jetbrains.compose.compose
 import org.jetbrains.compose.desktop.application.dsl.TargetFormat
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
     alias(libs.plugins.kotlin.jvm)
@@ -10,6 +10,12 @@ dependencies {
     implementation(compose.desktop.currentOs)
     implementation(projects.demoShared)
     implementation(projects.lib)
+}
+
+tasks.withType<KotlinCompile> {
+    kotlinOptions {
+        jvmTarget = "17"
+    }
 }
 
 compose.desktop {
