@@ -26,11 +26,11 @@ kotlin {
 }
 
 android {
-    compileSdk = 31
+    compileSdk = 34
 
     defaultConfig {
         minSdk = 21
-        targetSdk = 31
+        targetSdk = 34
     }
     sourceSets {
         named("main") {
