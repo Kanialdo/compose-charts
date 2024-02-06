@@ -56,10 +56,6 @@ allprojects {
             detektPlugins(rootProject.libs.detekt.plugins.formatting)
         }
     }
-
-    tasks.withType<io.gitlab.arturbosch.detekt.Detekt> {
-        exclude("**/com/google/accompanist/flowlayout/**")
-    }
 }
 
 // ----- DEPENDENCY UPDATES
