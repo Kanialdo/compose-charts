@@ -8,8 +8,14 @@ internal class PointMapperTest {
     fun validateSimpleMapping() {
 
         val mapper = PointMapper(
-            xSrcMin = 0f, xSrcMax = 10f, xDstMin = 0f, xDstMax = 100f,
-            ySrcMin = 0f, ySrcMax = 10f, yDstMin = 0f, yDstMax = 100f,
+            xSrcMin = 0f,
+            xSrcMax = 10f,
+            xDstMin = 0f,
+            xDstMax = 100f,
+            ySrcMin = 0f,
+            ySrcMax = 10f,
+            yDstMin = 0f,
+            yDstMax = 100f,
         )
 
         assertEquals(0f, mapper.x(0f))
@@ -25,8 +31,14 @@ internal class PointMapperTest {
     fun validateRangeMapping() {
 
         val mapper = PointMapper(
-            xSrcMin = 20f, xSrcMax = 24f, xDstMin = 50f, xDstMax = 100f,
-            ySrcMin = 20f, ySrcMax = 24f, yDstMin = 50f, yDstMax = 100f,
+            xSrcMin = 20f,
+            xSrcMax = 24f,
+            xDstMin = 50f,
+            xDstMax = 100f,
+            ySrcMin = 20f,
+            ySrcMax = 24f,
+            yDstMin = 50f,
+            yDstMax = 100f,
         )
 
         assertEquals(50f, mapper.x(20f))
@@ -41,8 +53,14 @@ internal class PointMapperTest {
     @Test
     fun validateYInvertedFlag() {
         val mapperWithYInverted = PointMapper(
-            xSrcMin = 0f, xSrcMax = 10f, xDstMin = 0f, xDstMax = 100f,
-            ySrcMin = 0f, ySrcMax = 10f, yDstMin = 0f, yDstMax = 100f,
+            xSrcMin = 0f,
+            xSrcMax = 10f,
+            xDstMin = 0f,
+            xDstMax = 100f,
+            ySrcMin = 0f,
+            ySrcMax = 10f,
+            yDstMin = 0f,
+            yDstMax = 100f,
             yInverted = true,
         )
 
@@ -55,8 +73,14 @@ internal class PointMapperTest {
     @Test
     fun validateSameBehaviourForDifferentTypes() {
         val mapper = PointMapper(
-            xSrcMin = 0f, xSrcMax = 10f, xDstMin = 0f, xDstMax = 100f,
-            ySrcMin = 0f, ySrcMax = 10f, yDstMin = 0f, yDstMax = 100f,
+            xSrcMin = 0f,
+            xSrcMax = 10f,
+            xDstMin = 0f,
+            xDstMax = 100f,
+            ySrcMin = 0f,
+            ySrcMax = 10f,
+            yDstMin = 0f,
+            yDstMax = 100f,
         )
 
         assertEquals(mapper.x(0), mapper.x(0f))
