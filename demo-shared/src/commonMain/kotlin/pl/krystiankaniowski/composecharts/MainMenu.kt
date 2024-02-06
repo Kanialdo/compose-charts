@@ -4,58 +4,19 @@ package pl.krystiankaniowski.composecharts
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.ColumnScope
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.heightIn
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
-import androidx.compose.material.ExperimentalMaterialApi
-import androidx.compose.material.Icon
-import androidx.compose.material.ListItem
-import androidx.compose.material.MaterialTheme
+import androidx.compose.foundation.layout.*
+import androidx.compose.material.*
 import androidx.compose.material.MaterialTheme.typography
-import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.AreaChart
-import androidx.compose.material.icons.filled.ArrowDropDown
-import androidx.compose.material.icons.filled.ArrowDropUp
-import androidx.compose.material.icons.filled.BarChart
-import androidx.compose.material.icons.filled.BubbleChart
-import androidx.compose.material.icons.filled.Feed
-import androidx.compose.material.icons.filled.PieChart
-import androidx.compose.material.icons.filled.ShowChart
-import androidx.compose.material.icons.filled.Sort
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import androidx.compose.material.icons.filled.*
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
-import pl.krystiankaniowski.composecharts.views.AreaOverlappingChartDemo
-import pl.krystiankaniowski.composecharts.views.AreaProportionalChartDemo
-import pl.krystiankaniowski.composecharts.views.AreaStackedChartDemo
-import pl.krystiankaniowski.composecharts.views.BarGroupedChartDemo
-import pl.krystiankaniowski.composecharts.views.BarProportionalChartDemo
-import pl.krystiankaniowski.composecharts.views.BarStackedChartDemo
-import pl.krystiankaniowski.composecharts.views.ColumnGroupedChartDemo
-import pl.krystiankaniowski.composecharts.views.ColumnProportionalChartDemo
-import pl.krystiankaniowski.composecharts.views.ColumnStackedChartDemo
-import pl.krystiankaniowski.composecharts.views.LegendDemoView
-import pl.krystiankaniowski.composecharts.views.LegendFlowDemoView
-import pl.krystiankaniowski.composecharts.views.PointChartCustomDemo
-import pl.krystiankaniowski.composecharts.views.PointChartDemo
-import pl.krystiankaniowski.composecharts.views.circular.DoughnutChartDemo
-import pl.krystiankaniowski.composecharts.views.circular.PieChartDemo
-import pl.krystiankaniowski.composecharts.views.circular.PolarChartDemo
-import pl.krystiankaniowski.composecharts.views.circular.RadarChartDemo
-import pl.krystiankaniowski.composecharts.views.circular.SunburstChartDemo
+import pl.krystiankaniowski.composecharts.views.*
+import pl.krystiankaniowski.composecharts.views.circular.*
 import pl.krystiankaniowski.composecharts.views.line.LineChartCustomDemo
 import pl.krystiankaniowski.composecharts.views.line.LineChartDemo
 
@@ -185,6 +146,11 @@ fun ColumnScope.Section(section: MenuEntry.Section, currentMenuItem: MenuEntry.M
 fun MenuItem(menuItem: MenuEntry.MenuItem, currentMenuItem: MenuEntry.MenuItem?, onMenuItemClick: (MenuEntry.MenuItem) -> Unit) {
     ListItem(
         modifier = Modifier.clickable { onMenuItemClick(menuItem) },
-        text = { Text(text = menuItem.title, color = if (currentMenuItem == menuItem) MaterialTheme.colors.primary else MaterialTheme.colors.onSurface) },
+        text = {
+            Text(
+                text = menuItem.title,
+                color = if (currentMenuItem == menuItem) MaterialTheme.colors.primary else MaterialTheme.colors.onSurface,
+            )
+        },
     )
 }

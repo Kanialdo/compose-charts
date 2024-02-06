@@ -3,12 +3,12 @@
 androidPlugin = "8.1.0"
 composeCompiler = "1.4.0"
 composeJb = "1.4.3"
-detekt = "1.22.0"
+detekt = "1.23.5"
 kotlin = "1.8.20"
 
 [libraries]
 
-androidx-activityCompose = { module = "androidx.activity:activity-compose", version = "1.7.2" }
+androidx-activityCompose = { module = "androidx.activity:activity-compose", version = "1.8.2" }
 androidx-appcompat = { module = "androidx.appcompat:appcompat", version = "1.6.1" }
 detekt-plugins-formatting = { module = "io.gitlab.arturbosch.detekt:detekt-formatting", version.ref = "detekt" }
 

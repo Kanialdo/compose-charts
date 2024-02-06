@@ -157,7 +157,13 @@ fun PointChart(
                         pointMode = mode,
                         brush = when (series.color) {
                             is PointChart.ChartColor.YGradient -> {
-                                val gradientMapper = OneAxisMapper(srcMin = data.minY, srcMax = data.maxY, dstMin = 0f, dstMax = 1f, inverted = true)
+                                val gradientMapper = OneAxisMapper(
+                                    srcMin = data.minY,
+                                    srcMax = data.maxY,
+                                    dstMin = 0f,
+                                    dstMax = 1f,
+                                    inverted = true,
+                                )
                                 val stops = series.color.stops.reversed().map { gradientMapper.map(it.first) to it.second }.toTypedArray()
                                 Brush.verticalGradient(
                                     startY = mapper.yDstMin,

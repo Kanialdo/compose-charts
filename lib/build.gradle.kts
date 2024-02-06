@@ -32,13 +32,12 @@ kotlin {
 }
 
 android {
-    compileSdk = 33
+    compileSdk = 34
 
     namespace = "pl.krystiankaniowski.composecharts"
 
     defaultConfig {
         minSdk = 21
-        targetSdk = 33
     }
     sourceSets {
         named("main") {
