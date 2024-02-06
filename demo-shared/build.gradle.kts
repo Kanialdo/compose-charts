@@ -28,6 +28,8 @@ kotlin {
 android {
     compileSdk = 31
 
+    namespace = "pl.krystiankaniowski.composecharts.shared"
+
     defaultConfig {
         minSdk = 21
         targetSdk = 31

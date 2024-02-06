@@ -7,6 +7,8 @@ plugins {
 android {
     compileSdk = 33
 
+    namespace = "pl.krystiankaniowski.composecharts.demo"
+
     defaultConfig {
         applicationId = "pl.krystiankaniowski.composecharts.demo"
         minSdk = 21
