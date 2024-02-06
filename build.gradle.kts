@@ -1,3 +1,4 @@
+
 import com.github.benmanes.gradle.versions.updates.DependencyUpdatesTask
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
@@ -23,7 +24,7 @@ allprojects {
     }
 
     tasks.withType<KotlinCompile> {
-        kotlinOptions.jvmTarget = "1.8"
+        kotlinOptions.jvmTarget = JavaVersion.VERSION_17.majorVersion
     }
 }
 
@@ -57,7 +58,6 @@ allprojects {
     }
 
     tasks.withType<io.gitlab.arturbosch.detekt.Detekt> {
-        jvmTarget = "1.8"
         exclude("**/com/google/accompanist/flowlayout/**")
     }
 }
