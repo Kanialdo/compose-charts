@@ -8,7 +8,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.google.accompanist.flowlayout.FlowRow
 
 enum class LegendPosition {
     Top,
@@ -33,12 +32,17 @@ fun Legend(
     }
 }
 
+@OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun LegendFlow(
     modifier: Modifier = Modifier,
     data: List<LegendEntry>,
 ) {
-    FlowRow(modifier = modifier, mainAxisSpacing = 16.dp, crossAxisSpacing = 8.dp) {
+    FlowRow(
+        modifier = modifier,
+        verticalArrangement = Arrangement.spacedBy(8.dp),
+        horizontalArrangement = Arrangement.spacedBy(16.dp),
+    ) {
         data.forEach {
             LegendEntry(it)
         }
