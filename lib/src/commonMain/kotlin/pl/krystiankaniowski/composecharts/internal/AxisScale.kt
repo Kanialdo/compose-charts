@@ -30,10 +30,12 @@ class AxisScale private constructor(
 
     /** Formats value in nice way basing on tickSpacing */
     fun formatValue(value: Float): String {
-        return value.toBigDecimal()
-            .setScale(_decimalPower + 1, 6)
-            .toString()
-            .trimEnd('0').trimEnd { it == '.' || it == ',' }
+        return value.toString()
+        // TODO: restore nice formatting
+        // return value.toBigDecimal()
+        //     .setScale(_decimalPower + 1, 6)
+        //     .toString()
+        //     .trimEnd('0').trimEnd { it == '.' || it == ',' }
     }
 
     companion object {

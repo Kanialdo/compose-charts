@@ -13,5 +13,6 @@ rootProject.name = "compose-charts"
 
 include(":lib")
 include(":demo-shared")
-include(":demo-desktop")
 include(":demo-android")
+include(":demo-desktop")
+include(":demo-web")

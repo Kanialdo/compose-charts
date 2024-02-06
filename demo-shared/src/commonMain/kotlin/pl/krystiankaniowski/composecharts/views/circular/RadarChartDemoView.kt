@@ -1,19 +1,12 @@
 package pl.krystiankaniowski.composecharts.views.circular
 
 import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import androidx.compose.runtime.*
+import kotlinx.datetime.Clock
 import pl.krystiankaniowski.composecharts.ChartScreen
 import pl.krystiankaniowski.composecharts.autoColor
 import pl.krystiankaniowski.composecharts.circular.RadarChart
-import pl.krystiankaniowski.composecharts.components.OptionAddData
-import pl.krystiankaniowski.composecharts.components.OptionAddDataSet
-import pl.krystiankaniowski.composecharts.components.OptionRandomize
-import pl.krystiankaniowski.composecharts.components.OptionRemoveData
-import pl.krystiankaniowski.composecharts.components.OptionRemoveDataSet
+import pl.krystiankaniowski.composecharts.components.*
 import kotlin.random.Random
 
 @Suppress("MagicNumber", "LongMethod")
@@ -21,7 +14,7 @@ import kotlin.random.Random
 fun RadarChartDemo() {
 
     var data by remember {
-        val random = Random(System.currentTimeMillis())
+        val random = Random(Clock.System.now().toEpochMilliseconds())
         val size = 5
         mutableStateOf(
             RadarChart.Data(

@@ -5,8 +5,12 @@ plugins {
 }
 
 kotlin {
-    android()
+    androidTarget()
     jvm("desktop")
+    js {
+        browser()
+        binaries.executable()
+    }
 
     @Suppress("UnusedPrivateMember")
     sourceSets {
@@ -18,7 +22,6 @@ kotlin {
                 api(compose.material)
                 api(compose.materialIconsExtended)
                 api(compose.ui)
-                api(compose.preview)
             }
         }
         val commonTest by getting {
@@ -27,6 +30,18 @@ kotlin {
             }
         }
         val androidMain by getting {
+            dependencies {
+                api(compose.preview)
+            }
+        }
+        val desktopMain by getting {
+            dependencies {
+                api(compose.preview)
+            }
+        }
+        val jsMain by getting {
+            dependencies {
+            }
         }
     }
 }
