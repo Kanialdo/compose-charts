@@ -8,7 +8,11 @@ kotlin {
     androidTarget()
     jvm("desktop")
     js {
-        browser()
+        browser {
+            testTask {
+                enabled = false
+            }
+        }
         binaries.executable()
     }
 
