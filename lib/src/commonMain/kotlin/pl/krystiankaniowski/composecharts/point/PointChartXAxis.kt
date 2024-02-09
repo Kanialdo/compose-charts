@@ -116,7 +116,7 @@ object PointChartXAxis {
                 val x = xMapper.x(threshold)
                 drawTag(drawScope, xAxisScope, x)
                 if (thresholds.size <= 10 || (index % (thresholds.size / 10) == 0)) {
-                    drawLabel(drawScope,textMeasurer, xAxisScope, x, formatter(threshold))
+                    drawLabel(drawScope, textMeasurer, xAxisScope, x, formatter(threshold))
                 }
             }
         }

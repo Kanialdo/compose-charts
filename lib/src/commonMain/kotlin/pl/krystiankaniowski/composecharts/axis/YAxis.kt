@@ -42,7 +42,9 @@ object YAxis {
         private val color: Color = ChartsTheme.axisColor,
     ) : Drawer {
 
-        override fun requiredWidth(drawScope: DrawScope, textMeasurer: TextMeasurer, values: List<Value>): Float = values.maxBy { it.label.length }.let {
+        override fun requiredWidth(drawScope: DrawScope, textMeasurer: TextMeasurer, values: List<Value>): Float = values.maxBy {
+            it.label.length
+        }.let {
             drawScope.measureText(textMeasurer, textSize, it.label)
         }
 
@@ -66,7 +68,9 @@ object YAxis {
         private val color: Color = ChartsTheme.axisColor,
     ) : Drawer {
 
-        override fun requiredWidth(drawScope: DrawScope, textMeasurer: TextMeasurer, values: List<Value>): Float = this.values.maxBy { it.label.length }.let {
+        override fun requiredWidth(drawScope: DrawScope, textMeasurer: TextMeasurer, values: List<Value>): Float = this.values.maxBy {
+            it.label.length
+        }.let {
             drawScope.measureText(textMeasurer, textSize, it.label)
         }
 
