@@ -1,6 +1,6 @@
 # Compose charts
 
-Kotlin module for drawing charts in android and desktop applications. Based on [compose-jb](https://github.com/JetBrains/compose-jb/). 
+Kotlin module for drawing charts in android, desktop and js applications. Based on [compose-multiplatform](https://github.com/JetBrains/compose-jb/). 
 
 Compose-charts is developed on the occasion of other projects. For now library supports bar, line, point and circular charts.
 
@@ -16,6 +16,7 @@ Current api and package design is not yet finalized. Main goal is to provide bun
 * **demo-shared** shared demo code.
 * **demo-android** android demo target.
 * **demo-desktop** desktop demo target.
+* **demo-web** js demo target.
 
 🖥️ Call `gradle demo-desktop:run` to launch desktop Demo catalog
 
