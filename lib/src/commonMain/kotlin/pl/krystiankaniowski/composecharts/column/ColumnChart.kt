@@ -12,6 +12,7 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.rememberTextMeasurer
 import androidx.compose.ui.unit.dp
 import pl.krystiankaniowski.composecharts.ChartsTheme
 import pl.krystiankaniowski.composecharts.axis.XAxis
@@ -108,6 +109,9 @@ fun ColumnChart(
         legend = { BarLegend(data) },
         legendPosition = legendPosition,
     ) {
+
+        val textMeasurer = rememberTextMeasurer()
+
         Canvas(Modifier.fillMaxSize()) {
 
             val w = 0.25f
@@ -116,7 +120,7 @@ fun ColumnChart(
             val contentArea = Rect(
                 top = 0f,
                 bottom = size.height - xAxis.requiredHeight(this, xAxisValues),
-                left = yAxis.requiredWidth(this, yAxisValues),
+                left = yAxis.requiredWidth(this, textMeasurer, yAxisValues),
                 right = size.width,
             )
             val xAxisArea = Rect(
@@ -143,8 +147,8 @@ fun ColumnChart(
                 yDstMax = contentArea.bottom,
             )
 
-            xAxis.draw(this, contentArea, xAxisArea, mapper, xAxisValues)
-            yAxis.draw(drawScope = this, chartScope = contentArea, yAxisScope = yAxisArea, yMapper = mapper, values = yAxisValues)
+            xAxis.draw(this, textMeasurer, contentArea, xAxisArea, mapper, xAxisValues)
+            yAxis.draw(drawScope = this, textMeasurer = textMeasurer, chartScope = contentArea, yAxisScope = yAxisArea, yMapper = mapper, values = yAxisValues)
 
             when (style) {
 

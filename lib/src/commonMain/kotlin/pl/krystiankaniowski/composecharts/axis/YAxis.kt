@@ -2,19 +2,12 @@ package pl.krystiankaniowski.composecharts.axis
 
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Rect
-import androidx.compose.ui.graphics.BlendMode
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.ColorFilter
-import androidx.compose.ui.graphics.PathEffect
-import androidx.compose.ui.graphics.StrokeCap
+import androidx.compose.ui.graphics.*
 import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.graphics.drawscope.Stroke
+import androidx.compose.ui.text.TextMeasurer
 import pl.krystiankaniowski.composecharts.ChartsTheme
-import pl.krystiankaniowski.composecharts.internal.TextAnchorX
-import pl.krystiankaniowski.composecharts.internal.TextAnchorY
-import pl.krystiankaniowski.composecharts.internal.YMapper
-import pl.krystiankaniowski.composecharts.internal.drawText
-import pl.krystiankaniowski.composecharts.internal.measureText
+import pl.krystiankaniowski.composecharts.internal.*
 
 object YAxis {
 
@@ -35,13 +28,13 @@ object YAxis {
     )
 
     interface Drawer {
-        fun requiredWidth(drawScope: DrawScope, values: List<Value>): Float
-        fun draw(drawScope: DrawScope, chartScope: Rect, yAxisScope: Rect, yMapper: YMapper, values: List<Value>)
+        fun requiredWidth(drawScope: DrawScope, textMeasurer: TextMeasurer, values: List<Value>): Float
+        fun draw(drawScope: DrawScope, textMeasurer: TextMeasurer, chartScope: Rect, yAxisScope: Rect, yMapper: YMapper, values: List<Value>)
     }
 
     class None : Drawer {
-        override fun requiredWidth(drawScope: DrawScope, values: List<Value>) = 0f
-        override fun draw(drawScope: DrawScope, chartScope: Rect, yAxisScope: Rect, yMapper: YMapper, values: List<Value>) = Unit
+        override fun requiredWidth(drawScope: DrawScope, textMeasurer: TextMeasurer, values: List<Value>): Float = 0f
+        override fun draw(drawScope: DrawScope, textMeasurer: TextMeasurer, chartScope: Rect, yAxisScope: Rect, yMapper: YMapper, values: List<Value>) = Unit
     }
 
     class Default(
@@ -49,12 +42,13 @@ object YAxis {
         private val color: Color = ChartsTheme.axisColor,
     ) : Drawer {
 
-        override fun requiredWidth(drawScope: DrawScope, values: List<Value>) = values.maxBy { it.label.length }.let {
-            drawScope.measureText(textSize, it.label)
+        override fun requiredWidth(drawScope: DrawScope, textMeasurer: TextMeasurer, values: List<Value>): Float = values.maxBy { it.label.length }.let {
+            drawScope.measureText(textMeasurer, textSize, it.label)
         }
 
-        override fun draw(drawScope: DrawScope, chartScope: Rect, yAxisScope: Rect, yMapper: YMapper, values: List<Value>) {
+        override fun draw(drawScope: DrawScope, textMeasurer: TextMeasurer, chartScope: Rect, yAxisScope: Rect, yMapper: YMapper, values: List<Value>) {
             internalDraw(
+                textMeasurer = textMeasurer,
                 color = color,
                 textSize = textSize,
                 values = values,
@@ -72,12 +66,13 @@ object YAxis {
         private val color: Color = ChartsTheme.axisColor,
     ) : Drawer {
 
-        override fun requiredWidth(drawScope: DrawScope, values: List<Value>) = this.values.maxBy { it.label.length }.let {
-            drawScope.measureText(textSize, it.label)
+        override fun requiredWidth(drawScope: DrawScope, textMeasurer: TextMeasurer, values: List<Value>): Float = this.values.maxBy { it.label.length }.let {
+            drawScope.measureText(textMeasurer, textSize, it.label)
         }
 
-        override fun draw(drawScope: DrawScope, chartScope: Rect, yAxisScope: Rect, yMapper: YMapper, values: List<Value>) {
+        override fun draw(drawScope: DrawScope, textMeasurer: TextMeasurer, chartScope: Rect, yAxisScope: Rect, yMapper: YMapper, values: List<Value>) {
             internalDraw(
+                textMeasurer = textMeasurer,
                 color = color,
                 textSize = textSize,
                 values = this.values,
@@ -91,6 +86,7 @@ object YAxis {
 }
 
 private fun internalDraw(
+    textMeasurer: TextMeasurer,
     color: Color,
     textSize: Float,
     values: List<YAxis.Value>,
@@ -118,6 +114,7 @@ private fun internalDraw(
         }
 
         drawScope.drawText(
+            textMeasurer = textMeasurer,
             text = value.label,
             x = yAxisScope.width - 10f,
             y = y,

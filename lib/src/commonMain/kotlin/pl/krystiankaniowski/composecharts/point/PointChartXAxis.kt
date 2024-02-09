@@ -6,6 +6,7 @@ import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.drawscope.DrawScope
+import androidx.compose.ui.text.TextMeasurer
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.sp
 import pl.krystiankaniowski.composecharts.ChartsTheme
@@ -20,6 +21,7 @@ object PointChartXAxis {
         fun requiredHeight(): Float
         fun draw(
             drawScope: DrawScope,
+            textMeasurer: TextMeasurer,
             chartScope: Rect,
             xAxisScope: Rect,
             xMapper: XMapper,
@@ -32,6 +34,7 @@ object PointChartXAxis {
         override fun requiredHeight() = 0f
         override fun draw(
             drawScope: DrawScope,
+            textMeasurer: TextMeasurer,
             chartScope: Rect,
             xAxisScope: Rect,
             xMapper: XMapper,
@@ -73,8 +76,9 @@ object PointChartXAxis {
             )
         }
 
-        fun drawLabel(drawScope: DrawScope, xAxisScope: Rect, x: Float, label: String) {
+        fun drawLabel(drawScope: DrawScope, textMeasurer: TextMeasurer, xAxisScope: Rect, x: Float, label: String) {
             drawScope.drawText(
+                textMeasurer = textMeasurer,
                 text = label,
                 x = x,
                 y = xAxisScope.top + textSize.value + 6f,
@@ -94,6 +98,7 @@ object PointChartXAxis {
 
         override fun draw(
             drawScope: DrawScope,
+            textMeasurer: TextMeasurer,
             chartScope: Rect,
             xAxisScope: Rect,
             xMapper: XMapper,
@@ -111,7 +116,7 @@ object PointChartXAxis {
                 val x = xMapper.x(threshold)
                 drawTag(drawScope, xAxisScope, x)
                 if (thresholds.size <= 10 || (index % (thresholds.size / 10) == 0)) {
-                    drawLabel(drawScope, xAxisScope, x, formatter(threshold))
+                    drawLabel(drawScope,textMeasurer, xAxisScope, x, formatter(threshold))
                 }
             }
         }
@@ -126,6 +131,7 @@ object PointChartXAxis {
 
         override fun draw(
             drawScope: DrawScope,
+            textMeasurer: TextMeasurer,
             chartScope: Rect,
             xAxisScope: Rect,
             xMapper: XMapper,
@@ -141,7 +147,7 @@ object PointChartXAxis {
             points.forEach { (label, value) ->
                 val x = xMapper.x(value)
                 drawTag(drawScope, xAxisScope, x)
-                drawLabel(drawScope, xAxisScope, x, label)
+                drawLabel(drawScope, textMeasurer, xAxisScope, x, label)
             }
         }
     }
@@ -155,6 +161,7 @@ object PointChartXAxis {
 
         override fun draw(
             drawScope: DrawScope,
+            textMeasurer: TextMeasurer,
             chartScope: Rect,
             xAxisScope: Rect,
             xMapper: XMapper,
@@ -175,7 +182,7 @@ object PointChartXAxis {
                 }
                 drawTag(drawScope, xAxisScope, x1)
                 drawTag(drawScope, xAxisScope, x2)
-                drawLabel(drawScope, xAxisScope, (x1 + x2) / 2, label.label)
+                drawLabel(drawScope, textMeasurer, xAxisScope, (x1 + x2) / 2, label.label)
             }
         }
     }

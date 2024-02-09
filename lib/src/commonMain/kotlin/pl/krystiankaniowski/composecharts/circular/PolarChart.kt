@@ -2,11 +2,7 @@ package pl.krystiankaniowski.composecharts.circular
 
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.border
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.BoxWithConstraints
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.*
 import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
@@ -17,15 +13,12 @@ import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.text.rememberTextMeasurer
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import pl.krystiankaniowski.composecharts.ChartsTheme
-import pl.krystiankaniowski.composecharts.internal.AxisScale
-import pl.krystiankaniowski.composecharts.internal.ChartChoreographer
-import pl.krystiankaniowski.composecharts.internal.TextAnchorX
-import pl.krystiankaniowski.composecharts.internal.TextAnchorY
-import pl.krystiankaniowski.composecharts.internal.drawText
+import pl.krystiankaniowski.composecharts.internal.*
 import pl.krystiankaniowski.composecharts.legend.LegendEntry
 import pl.krystiankaniowski.composecharts.legend.LegendFlow
 import pl.krystiankaniowski.composecharts.legend.LegendPosition
@@ -92,6 +85,8 @@ fun PolarChart(
                 right = size.value * density.value,
             )
 
+            val textMeasurer = rememberTextMeasurer()
+
             Canvas(
                 modifier = Modifier
                     .size(size)
@@ -105,6 +100,7 @@ fun PolarChart(
                         style = Stroke(width = style.lineWidth.toPx()),
                     )
                     drawText(
+                        textMeasurer = textMeasurer,
                         text = scale.formatValue(value),
                         x = chartArea.center.x,
                         y = (chartArea.center.y - ((chartArea.height / 2) / chartMaxValue) * value),

@@ -13,6 +13,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.graphics.drawscope.Fill
+import androidx.compose.ui.text.rememberTextMeasurer
 import androidx.compose.ui.unit.dp
 import pl.krystiankaniowski.composecharts.ChartsTheme
 import pl.krystiankaniowski.composecharts.axis.XAxis
@@ -108,12 +109,15 @@ fun AreaChart(
         legend = { AreaLegend(data) },
         legendPosition = legendPosition,
     ) {
+
+        val textMeasurer = rememberTextMeasurer()
+
         Canvas(Modifier.fillMaxSize()) {
 
             val contentArea = Rect(
                 top = 0f,
                 bottom = size.height - xAxis.requiredHeight(this, xAxisValues),
-                left = yAxis.requiredWidth(this, yAxisValues),
+                left = yAxis.requiredWidth(this, textMeasurer, yAxisValues),
                 right = size.width,
             )
             val xAxisArea = Rect(
@@ -140,8 +144,8 @@ fun AreaChart(
                 yDstMax = contentArea.bottom,
             )
 
-            xAxis.draw(this, contentArea, xAxisArea, mapper, xAxisValues)
-            yAxis.draw(this, contentArea, yAxisArea, mapper, yAxisValues)
+            xAxis.draw(this, textMeasurer, contentArea, xAxisArea, mapper, xAxisValues)
+            yAxis.draw(this, textMeasurer, contentArea, yAxisArea, mapper, yAxisValues)
 
             when (style) {
 

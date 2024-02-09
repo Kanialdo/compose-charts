@@ -12,6 +12,7 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.rememberTextMeasurer
 import androidx.compose.ui.unit.dp
 import pl.krystiankaniowski.composecharts.ChartsTheme
 import pl.krystiankaniowski.composecharts.axis.XAxis
@@ -105,6 +106,9 @@ fun BarChart(
         legend = { BarLegend(data) },
         legendPosition = legendPosition,
     ) {
+
+        val textMeasurer = rememberTextMeasurer()
+
         Canvas(Modifier.fillMaxSize()) {
 
             val w = 0.25f
@@ -113,7 +117,7 @@ fun BarChart(
             val contentArea = Rect(
                 top = 0f,
                 bottom = size.height - xAxis.requiredHeight(this, xAxisValues),
-                left = yAxis.requiredWidth(this, yAxisValues),
+                left = yAxis.requiredWidth(this, textMeasurer, yAxisValues),
                 right = size.width,
             )
             val yAxisArea = Rect(
@@ -140,8 +144,8 @@ fun BarChart(
                 yDstMax = contentArea.bottom,
             )
 
-            yAxis.draw(this, contentArea, yAxisArea, mapper, yAxisValues)
-            xAxis.draw(this, contentArea, xAxisArea, mapper, xAxisValues)
+            yAxis.draw(this, textMeasurer, contentArea, yAxisArea, mapper, yAxisValues)
+            xAxis.draw(this, textMeasurer, contentArea, xAxisArea, mapper, xAxisValues)
 
             when (style) {
 

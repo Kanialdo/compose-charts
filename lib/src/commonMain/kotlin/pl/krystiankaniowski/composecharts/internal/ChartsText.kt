@@ -1,12 +1,11 @@
 package pl.krystiankaniowski.composecharts.internal
 
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.drawscope.DrawScope
-import androidx.compose.ui.graphics.nativeCanvas
-import androidx.compose.ui.graphics.toArgb
-import org.jetbrains.skia.Font
-import org.jetbrains.skia.Paint
-import org.jetbrains.skia.TextLine
+import androidx.compose.ui.text.TextMeasurer
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.drawText
 
 enum class TextAnchorX {
     Left,
@@ -21,6 +20,7 @@ enum class TextAnchorY {
 }
 
 fun DrawScope.drawText(
+    textMeasurer: TextMeasurer,
     text: String,
     x: Float,
     y: Float,
@@ -29,26 +29,29 @@ fun DrawScope.drawText(
     anchorX: TextAnchorX = TextAnchorX.Left,
     anchorY: TextAnchorY = TextAnchorY.Top,
 ) {
-    val textLine = TextLine.make(text, Font(typeface = null, size = size))
-    drawContext.canvas.nativeCanvas.drawTextLine(
-        line = textLine,
-        x = when (anchorX) {
-            TextAnchorX.Left -> x
-            TextAnchorX.Center -> x - textLine.width / 2
-            TextAnchorX.Right -> x - textLine.width
-        },
-        y = when (anchorY) {
-            TextAnchorY.Top -> y
-            TextAnchorY.Center -> y + size / 2
-            TextAnchorY.Bottom -> y + size
-        },
-        paint = Paint().apply {
-            this.color = color.toArgb()
-        },
+    val layout = textMeasurer.measure(text)
+    drawText(
+        textMeasurer = textMeasurer,
+        text = text,
+        style = TextStyle(
+            fontSize = size.toSp(),
+            color = color,
+        ),
+        topLeft = Offset(
+            x = when (anchorX) {
+                TextAnchorX.Left -> x
+                TextAnchorX.Center -> x - layout.size.width / 2
+                TextAnchorX.Right -> x - layout.size.width
+            },
+            y = when (anchorY) {
+                TextAnchorY.Top -> y - layout.size.height
+                TextAnchorY.Center -> y - layout.size.height / 2
+                TextAnchorY.Bottom -> y
+            },
+        ),
     )
 }
 
-fun DrawScope.measureText(size: Float, text: String): Float {
-    val textLine = TextLine.make(text, Font(typeface = null, size = size))
-    return textLine.width
+fun DrawScope.measureText(textMeasurer: TextMeasurer, size: Float, text: String): Float {
+    return textMeasurer.measure(text, style = TextStyle(fontSize = size.toSp())).size.width.toFloat()
 }
