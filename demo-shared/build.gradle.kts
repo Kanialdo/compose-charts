@@ -7,12 +7,17 @@ plugins {
 kotlin {
     android()
     jvm("desktop")
+    js {
+        browser()
+        binaries.executable()
+    }
 
     @Suppress("UnusedPrivateMember")
     sourceSets {
         val commonMain by getting {
             dependencies {
                 api(projects.lib)
+                api(libs.kotlinx.datetime)
             }
         }
         val commonTest by getting {

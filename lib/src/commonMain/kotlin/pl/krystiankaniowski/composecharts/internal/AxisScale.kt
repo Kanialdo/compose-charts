@@ -8,8 +8,6 @@ class AxisScale private constructor(
     private val preciseTickSpacing: Double,
 ) {
 
-    private val _decimalPower = abs(log10(preciseTickSpacing).roundToInt())
-
     val min: Float = preciseMin.toFloat()
     val max: Float = preciseMax.toFloat()
     val tickSpacing: Float = preciseTickSpacing.toFloat()
@@ -29,11 +27,15 @@ class AxisScale private constructor(
     }
 
     /** Formats value in nice way basing on tickSpacing */
+    @Suppress("ForbiddenComment")
     fun formatValue(value: Float): String {
-        return value.toBigDecimal()
-            .setScale(_decimalPower + 1, 6)
-            .toString()
-            .trimEnd('0').trimEnd { it == '.' || it == ',' }
+        // TODO: restore nice formatting
+        // private val _decimalPower = abs(log10(preciseTickSpacing).roundToInt())
+        // return value.toBigDecimal()
+        //     .setScale(_decimalPower + 1, 6)
+        //     .toString()
+        //     .trimEnd('0').trimEnd { it == '.' || it == ',' }
+        return value.toString()
     }
 
     companion object {

@@ -2,13 +2,10 @@ package pl.krystiankaniowski.composecharts.axis
 
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Rect
-import androidx.compose.ui.graphics.BlendMode
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.ColorFilter
-import androidx.compose.ui.graphics.PathEffect
-import androidx.compose.ui.graphics.StrokeCap
+import androidx.compose.ui.graphics.*
 import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.graphics.drawscope.Stroke
+import androidx.compose.ui.text.TextMeasurer
 import pl.krystiankaniowski.composecharts.ChartsTheme
 import pl.krystiankaniowski.composecharts.internal.TextAnchorX
 import pl.krystiankaniowski.composecharts.internal.TextAnchorY
@@ -35,12 +32,12 @@ object XAxis {
 
     interface Drawer {
         fun requiredHeight(drawScope: DrawScope, values: List<Value>): Float
-        fun draw(drawScope: DrawScope, chartScope: Rect, xAxisScope: Rect, xMapper: XMapper, values: List<Value>)
+        fun draw(drawScope: DrawScope, textMeasurer: TextMeasurer, chartScope: Rect, xAxisScope: Rect, xMapper: XMapper, values: List<Value>)
     }
 
     class None : Drawer {
         override fun requiredHeight(drawScope: DrawScope, values: List<Value>) = 0f
-        override fun draw(drawScope: DrawScope, chartScope: Rect, xAxisScope: Rect, xMapper: XMapper, values: List<Value>) = Unit
+        override fun draw(drawScope: DrawScope, textMeasurer: TextMeasurer, chartScope: Rect, xAxisScope: Rect, xMapper: XMapper, values: List<Value>) = Unit
     }
 
     class Default(
@@ -50,8 +47,9 @@ object XAxis {
 
         override fun requiredHeight(drawScope: DrawScope, values: List<Value>) = 80f
 
-        override fun draw(drawScope: DrawScope, chartScope: Rect, xAxisScope: Rect, xMapper: XMapper, values: List<Value>) {
+        override fun draw(drawScope: DrawScope, textMeasurer: TextMeasurer, chartScope: Rect, xAxisScope: Rect, xMapper: XMapper, values: List<Value>) {
             internalDraw(
+                textMeasurer = textMeasurer,
                 color = color,
                 textSize = textSize,
                 values = values,
@@ -71,8 +69,9 @@ object XAxis {
 
         override fun requiredHeight(drawScope: DrawScope, values: List<Value>) = 80f
 
-        override fun draw(drawScope: DrawScope, chartScope: Rect, xAxisScope: Rect, xMapper: XMapper, values: List<Value>) {
+        override fun draw(drawScope: DrawScope, textMeasurer: TextMeasurer, chartScope: Rect, xAxisScope: Rect, xMapper: XMapper, values: List<Value>) {
             internalDraw(
+                textMeasurer = textMeasurer,
                 color = color,
                 textSize = textSize,
                 values = this.values,
@@ -86,6 +85,7 @@ object XAxis {
 }
 
 private fun internalDraw(
+    textMeasurer: TextMeasurer,
     color: Color,
     textSize: Float,
     values: List<XAxis.Value>,
@@ -124,6 +124,7 @@ private fun internalDraw(
         }
 
         drawScope.drawText(
+            textMeasurer = textMeasurer,
             text = value.label,
             x = x,
             y = xAxisScope.top + 8f,

@@ -19,6 +19,7 @@ import androidx.compose.ui.graphics.PointMode
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.vector.DefaultTintBlendMode
+import androidx.compose.ui.text.rememberTextMeasurer
 import androidx.compose.ui.unit.dp
 import pl.krystiankaniowski.composecharts.ChartsTheme
 import pl.krystiankaniowski.composecharts.axis.YAxis
@@ -98,12 +99,15 @@ fun PointChart(
         legend = { PointLegend(data) },
         legendPosition = legendPosition,
     ) {
+
+        val textMeasurer = rememberTextMeasurer()
+
         Canvas(Modifier.fillMaxSize()) {
 
             val contentArea = Rect(
                 top = 0f,
                 bottom = size.height - xAxis.requiredHeight(),
-                left = yAxis.requiredWidth(this, yAxisValues),
+                left = yAxis.requiredWidth(this, textMeasurer, yAxisValues),
                 right = size.width,
             )
             val xAxisArea = Rect(
@@ -130,8 +134,8 @@ fun PointChart(
                 yDstMax = contentArea.bottom,
             )
 
-            xAxis.draw(this, contentArea, xAxisArea, mapper, scaleX)
-            yAxis.draw(this, contentArea, yAxisArea, mapper, yAxisValues)
+            xAxis.draw(this, textMeasurer, contentArea, xAxisArea, mapper, scaleX)
+            yAxis.draw(this, textMeasurer, contentArea, yAxisArea, mapper, yAxisValues)
 
             data.series.forEach { series ->
                 val points = series.values.map { Offset(mapper.x(it.x), mapper.y(it.y)) }

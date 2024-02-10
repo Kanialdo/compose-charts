@@ -11,6 +11,7 @@ kotlin = "1.9.22"
 androidx-activityCompose = { module = "androidx.activity:activity-compose", version = "1.8.2" }
 androidx-appcompat = { module = "androidx.appcompat:appcompat", version = "1.6.1" }
 detekt-plugins-formatting = { module = "io.gitlab.arturbosch.detekt:detekt-formatting", version.ref = "detekt" }
+kotlinx-datetime = { group = "org.jetbrains.kotlinx", name = "kotlinx-datetime", version = "0.5.0" }
 
 [plugins]
 

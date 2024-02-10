@@ -5,11 +5,12 @@ import androidx.compose.material.Icon
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
 import androidx.compose.runtime.Composable
+import kotlinx.datetime.Clock
 import kotlin.random.Random
 
 @Composable
 fun OptionRandomize(onClick: (Random) -> Unit) {
-    val random = Random(System.currentTimeMillis())
+    val random = Random(Clock.System.now().toEpochMilliseconds())
     Button(
         onClick = { onClick(random) },
         // content = { Text("Randomize") },
@@ -19,7 +20,7 @@ fun OptionRandomize(onClick: (Random) -> Unit) {
 
 @Composable
 fun OptionAddData(onClick: (Random) -> Unit) {
-    val random = Random(System.currentTimeMillis())
+    val random = Random(Clock.System.now().toEpochMilliseconds())
     Button(
         onClick = { onClick(random) },
         // content = { Text("Add data") },
@@ -38,7 +39,7 @@ fun OptionRemoveData(onClick: () -> Unit) {
 
 @Composable
 fun OptionAddDataSet(onClick: (Random) -> Unit) {
-    val random = Random(System.currentTimeMillis())
+    val random = Random(Clock.System.now().toEpochMilliseconds())
     Button(
         onClick = { onClick(random) },
         // content = { Text("Add data set") },
