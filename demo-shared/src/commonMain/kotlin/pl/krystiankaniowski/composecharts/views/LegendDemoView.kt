@@ -4,15 +4,15 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import pl.krystiankaniowski.composecharts.autoColor
+import pl.krystiankaniowski.composecharts.data.ChartColor
 import pl.krystiankaniowski.composecharts.data.Series
 import pl.krystiankaniowski.composecharts.legend.Legend
 
 private data class LegendData(
     override val label: String,
-    override val color: Color,
+    override val color: ChartColor.Solid,
 ) : Series
 
 private val legendData = listOf(

@@ -6,13 +6,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Rect
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.graphics.drawscope.Fill
 import androidx.compose.ui.text.rememberTextMeasurer
 import pl.krystiankaniowski.composecharts.axis.XAxis
 import pl.krystiankaniowski.composecharts.axis.YAxis
+import pl.krystiankaniowski.composecharts.data.ChartColor
 import pl.krystiankaniowski.composecharts.data.Series
 import pl.krystiankaniowski.composecharts.internal.AxisScale
 import pl.krystiankaniowski.composecharts.internal.ChartChoreographer
@@ -42,7 +42,7 @@ object AreaChart {
     data class Area(
         override val label: String,
         val values: List<Float>,
-        override val color: Color,
+        override val color: ChartColor.Solid,
     ) : Series
 
     enum class Style {
@@ -184,7 +184,7 @@ fun AreaChart(
 }
 
 private fun DrawScope.drawArea(
-    color: Color,
+    color: ChartColor.Solid,
     values: List<Float>,
     mapper: PointMapper,
 ) {
@@ -213,14 +213,14 @@ private fun DrawScope.drawArea(
     path.close()
 
     drawPath(
-        color = color,
+        color = color.value,
         path = path,
         style = Fill,
     )
 }
 
 private fun DrawScope.drawProportionalArea(
-    color: Color,
+    color: ChartColor.Solid,
     total: List<Float>,
     values: List<Float>,
     mapper: PointMapper,
@@ -250,7 +250,7 @@ private fun DrawScope.drawProportionalArea(
     path.close()
 
     drawPath(
-        color = color,
+        color = color.value,
         path = path,
         style = Fill,
     )

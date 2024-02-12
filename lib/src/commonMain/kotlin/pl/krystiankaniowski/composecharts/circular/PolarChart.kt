@@ -18,6 +18,7 @@ import androidx.compose.ui.text.rememberTextMeasurer
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import pl.krystiankaniowski.composecharts.data.ChartColor
 import pl.krystiankaniowski.composecharts.data.Series
 import pl.krystiankaniowski.composecharts.internal.*
 import pl.krystiankaniowski.composecharts.legend.Legend
@@ -31,7 +32,7 @@ object PolarChart {
 
     data class Entry(
         override val label: String,
-        override val color: Color,
+        override val color: ChartColor.Solid,
         val value: Float,
     ) : Series
 
@@ -114,7 +115,7 @@ fun PolarChart(
                 data.entries.forEachIndexed { index, entry ->
                     val factor = entry.value / chartMaxValue
                     drawArc(
-                        color = entry.color.copy(alpha = 0.3f),
+                        color = entry.color.value.copy(alpha = 0.3f),
                         startAngle = 360f / data.entries.size * index - 90f,
                         sweepAngle = 360f / data.entries.size,
                         useCenter = true,
@@ -122,7 +123,7 @@ fun PolarChart(
                         size = chartArea.size * factor,
                     )
                     drawArc(
-                        color = entry.color,
+                        color = entry.color.value,
                         startAngle = 360f / data.entries.size * index - 90f,
                         sweepAngle = 360f / data.entries.size,
                         useCenter = true,

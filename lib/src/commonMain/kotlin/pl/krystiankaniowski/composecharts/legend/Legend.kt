@@ -10,6 +10,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import pl.krystiankaniowski.composecharts.ChartsTheme
+import pl.krystiankaniowski.composecharts.data.ChartColor
 import pl.krystiankaniowski.composecharts.data.Series
 
 enum class LegendPosition {
@@ -27,10 +28,12 @@ fun Legend(
         LegendFlow(
             modifier = Modifier.padding(16.dp),
             data = data.map {
-                LegendEntry(
-                    text = it.label,
-                    color = it.color,
-                )
+                when (val color = it.color) {
+                    is ChartColor.Solid -> LegendEntry(
+                        text = it.label,
+                        color = color.value,
+                    )
+                }
             },
         )
     }

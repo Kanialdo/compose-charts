@@ -8,10 +8,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.geometry.Size
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.rememberTextMeasurer
 import pl.krystiankaniowski.composecharts.axis.XAxis
 import pl.krystiankaniowski.composecharts.axis.YAxis
+import pl.krystiankaniowski.composecharts.data.ChartColor
 import pl.krystiankaniowski.composecharts.data.Series
 import pl.krystiankaniowski.composecharts.internal.AxisScale
 import pl.krystiankaniowski.composecharts.internal.ChartChoreographer
@@ -40,7 +40,7 @@ object BarChart {
 
     data class Bar(
         override val label: String,
-        override val color: Color,
+        override val color: ChartColor.Solid,
         val values: List<Float>,
     ) : Series
 
@@ -149,7 +149,7 @@ fun BarChart(
                     data.bars.forEachIndexed { series, value ->
                         value.values.forEachIndexed { pos, v ->
                             drawRect(
-                                color = value.color,
+                                color = value.color.value,
                                 topLeft = Offset(
                                     x = mapper.x(0),
                                     y = mapper.y(pos + w) + series * barHeight,
@@ -175,7 +175,7 @@ fun BarChart(
                         var counter = maxValues[i]
                         for (j in (series - 1) downTo 0) {
                             drawRect(
-                                color = data.bars[j].color,
+                                color = data.bars[j].color.value,
                                 topLeft = Offset(
                                     x = mapper.x(0),
                                     y = mapper.y(i + w),
@@ -202,7 +202,7 @@ fun BarChart(
                         var counter = maxValues[i]
                         for (j in (series - 1) downTo 0) {
                             drawRect(
-                                color = data.bars[j].color,
+                                color = data.bars[j].color.value,
                                 topLeft = Offset(
                                     x = mapper.x(0),
                                     y = mapper.y(i + w),

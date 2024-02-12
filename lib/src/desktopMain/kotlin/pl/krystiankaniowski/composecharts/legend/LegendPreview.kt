@@ -5,9 +5,9 @@ import androidx.compose.runtime.Composable
 import pl.krystiankaniowski.composecharts.autoColor
 
 private val legendData = listOf(
-    LegendEntry(text = "Series A", color = autoColor(0)),
-    LegendEntry(text = "Series B", color = autoColor(1)),
-    LegendEntry(text = "Series C", color = autoColor(2)),
+    LegendEntry(text = "Series A", color = autoColor(0).value),
+    LegendEntry(text = "Series B", color = autoColor(1).value),
+    LegendEntry(text = "Series C", color = autoColor(2).value),
 )
 
 @Preview

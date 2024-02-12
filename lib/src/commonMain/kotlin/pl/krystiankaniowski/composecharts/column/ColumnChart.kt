@@ -8,10 +8,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.geometry.Size
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.rememberTextMeasurer
 import pl.krystiankaniowski.composecharts.axis.XAxis
 import pl.krystiankaniowski.composecharts.axis.YAxis
+import pl.krystiankaniowski.composecharts.data.ChartColor
 import pl.krystiankaniowski.composecharts.data.Series
 import pl.krystiankaniowski.composecharts.internal.AxisScale
 import pl.krystiankaniowski.composecharts.internal.ChartChoreographer
@@ -43,7 +43,7 @@ object ColumnChart {
     data class Column(
         override val label: String,
         val values: List<Float>,
-        override val color: Color,
+        override val color: ChartColor.Solid,
     ) : Series
 
     enum class Style {
@@ -153,7 +153,7 @@ fun ColumnChart(
                     data.columns.forEachIndexed { series, value ->
                         value.values.forEachIndexed { pos, v ->
                             drawRect(
-                                color = value.color,
+                                color = value.color.value,
                                 topLeft = Offset(
                                     x = mapper.x(pos - w) + series * barWidth,
                                     y = mapper.y(v),
@@ -179,7 +179,7 @@ fun ColumnChart(
                         var counter = maxValues[i]
                         for (j in (series - 1) downTo 0) {
                             drawRect(
-                                color = data.columns[j].color,
+                                color = data.columns[j].color.value,
                                 topLeft = Offset(
                                     x = mapper.x(i - w),
                                     y = mapper.y(counter),
@@ -206,7 +206,7 @@ fun ColumnChart(
                         var counter = maxValues[i]
                         for (j in (series - 1) downTo 0) {
                             drawRect(
-                                color = data.columns[j].color,
+                                color = data.columns[j].color.value,
                                 topLeft = Offset(
                                     x = mapper.x(i - w),
                                     y = mapper.y(counter / maxValues[i]),

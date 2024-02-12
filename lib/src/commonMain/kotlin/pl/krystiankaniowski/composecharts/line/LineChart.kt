@@ -6,13 +6,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Rect
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.text.rememberTextMeasurer
 import pl.krystiankaniowski.composecharts.axis.XAxis
 import pl.krystiankaniowski.composecharts.axis.YAxis
+import pl.krystiankaniowski.composecharts.data.ChartColor
 import pl.krystiankaniowski.composecharts.data.Series
 import pl.krystiankaniowski.composecharts.internal.AxisScale
 import pl.krystiankaniowski.composecharts.internal.ChartChoreographer
@@ -42,7 +42,7 @@ object LineChart {
     data class Line(
         override val label: String,
         val values: List<Float>,
-        override val color: Color,
+        override val color: ChartColor.Solid,
         val lineStyle: Style.LineStyle? = null,
         val pointStyle: Style.PointStyle? = null,
     ) : Series
@@ -167,7 +167,7 @@ private fun DrawScope.drawLine(
         }
     }
     drawPath(
-        color = line.color,
+        color = line.color.value,
         path = path,
         style = Stroke(width = line.lineStyle?.width ?: style.lineStyle.width),
     )
@@ -183,7 +183,7 @@ private fun DrawScope.drawPoints(
         is LineChart.Style.PointStyle.Filled -> {
             line.values.forEachIndexed { dataIndex, point ->
                 drawCircle(
-                    color = line.color,
+                    color = line.color.value,
                     center = mapper.offset(dataIndex.toFloat(), point),
                     radius = pointStyle.size,
                 )

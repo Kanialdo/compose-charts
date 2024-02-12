@@ -7,9 +7,9 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.drawscope.Stroke
+import pl.krystiankaniowski.composecharts.data.ChartColor
 import pl.krystiankaniowski.composecharts.data.Series
 import pl.krystiankaniowski.composecharts.internal.ChartChoreographer
 import pl.krystiankaniowski.composecharts.legend.Legend
@@ -24,7 +24,7 @@ object DoughnutChart {
 
     data class Slice(
         override val label: String,
-        override val color: Color,
+        override val color: ChartColor.Solid,
         val value: Float,
     ) : Series
 }
@@ -66,7 +66,7 @@ fun DoughnutChart(
                     sweepAngle = sliceAngle,
                     useCenter = false,
                     style = Stroke(width = lineWidth, cap = StrokeCap.Butt),
-                    color = slice.color,
+                    color = slice.color.value,
                 )
                 startAngle += sliceAngle
             }

@@ -20,6 +20,7 @@ import androidx.compose.ui.text.rememberTextMeasurer
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import pl.krystiankaniowski.composecharts.data.ChartColor
 import pl.krystiankaniowski.composecharts.data.Series
 import pl.krystiankaniowski.composecharts.internal.*
 import pl.krystiankaniowski.composecharts.legend.Legend
@@ -37,7 +38,7 @@ object RadarChart {
 
     data class Entry(
         override val label: String,
-        override val color: Color,
+        override val color: ChartColor.Solid,
         val values: List<Float>,
     ) : Series
 
@@ -176,8 +177,8 @@ fun RadarChart(
                         }
                     }
                     path.close()
-                    drawPath(path = path, color = entry.color.copy(alpha = 0.3f), style = Fill)
-                    drawPath(path = path, color = entry.color, style = Stroke(width = 1f))
+                    drawPath(path = path, color = entry.color.value.copy(alpha = 0.3f), style = Fill)
+                    drawPath(path = path, color = entry.color.value, style = Stroke(width = 1f))
                 }
             }
         }
