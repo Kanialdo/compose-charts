@@ -13,7 +13,7 @@ private val legendData = listOf(
 @Preview
 @Composable
 fun LegendPreview() {
-    Legend(
+    CustomLegend(
         data = legendData,
     )
 }

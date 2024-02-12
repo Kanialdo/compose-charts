@@ -1,10 +1,7 @@
 package pl.krystiankaniowski.composecharts.circular
 
 import androidx.compose.foundation.Canvas
-import androidx.compose.foundation.border
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
@@ -13,11 +10,9 @@ import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.drawscope.Stroke
-import androidx.compose.ui.unit.dp
-import pl.krystiankaniowski.composecharts.ChartsTheme
+import pl.krystiankaniowski.composecharts.data.Series
 import pl.krystiankaniowski.composecharts.internal.ChartChoreographer
-import pl.krystiankaniowski.composecharts.legend.LegendEntry
-import pl.krystiankaniowski.composecharts.legend.LegendFlow
+import pl.krystiankaniowski.composecharts.legend.Legend
 import pl.krystiankaniowski.composecharts.legend.LegendPosition
 
 object DoughnutChart {
@@ -28,10 +23,10 @@ object DoughnutChart {
     }
 
     data class Slice(
-        val label: String,
-        val color: Color,
+        override val label: String,
+        override val color: Color,
         val value: Float,
-    )
+    ) : Series
 }
 
 @Composable
@@ -49,7 +44,7 @@ fun DoughnutChart(
     ChartChoreographer(
         modifier = modifier,
         title = title,
-        legend = { DoughnutLegend(data) },
+        legend = { Legend(data = data.slices) },
         legendPosition = legendPosition,
     ) {
         Canvas(Modifier.fillMaxSize()) {
@@ -76,22 +71,5 @@ fun DoughnutChart(
                 startAngle += sliceAngle
             }
         }
-    }
-}
-
-@Composable
-private fun DoughnutLegend(
-    data: DoughnutChart.Data,
-) {
-    Box(modifier = Modifier.border(width = 1.dp, color = ChartsTheme.legendColor)) {
-        LegendFlow(
-            modifier = Modifier.padding(16.dp),
-            data = data.slices.map { item ->
-                LegendEntry(
-                    item.label,
-                    item.color,
-                )
-            },
-        )
     }
 }

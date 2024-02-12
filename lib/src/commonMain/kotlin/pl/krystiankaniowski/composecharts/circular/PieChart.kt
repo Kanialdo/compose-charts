@@ -1,10 +1,7 @@
 package pl.krystiankaniowski.composecharts.circular
 
 import androidx.compose.foundation.Canvas
-import androidx.compose.foundation.border
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
@@ -12,11 +9,9 @@ import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Paint
 import androidx.compose.ui.graphics.drawscope.drawIntoCanvas
-import androidx.compose.ui.unit.dp
-import pl.krystiankaniowski.composecharts.ChartsTheme
+import pl.krystiankaniowski.composecharts.data.Series
 import pl.krystiankaniowski.composecharts.internal.ChartChoreographer
-import pl.krystiankaniowski.composecharts.legend.LegendEntry
-import pl.krystiankaniowski.composecharts.legend.LegendFlow
+import pl.krystiankaniowski.composecharts.legend.Legend
 import pl.krystiankaniowski.composecharts.legend.LegendPosition
 
 object PieChart {
@@ -31,10 +26,10 @@ object PieChart {
     }
 
     data class Slice(
-        val label: String,
-        val color: Color,
+        override val label: String,
+        override val color: Color,
         val value: Float,
-    )
+    ) : Series
 }
 
 @Composable
@@ -47,7 +42,7 @@ fun PieChart(
     ChartChoreographer(
         modifier = modifier,
         title = title,
-        legend = { PieLegend(data) },
+        legend = { Legend(data = data.slices) },
         legendPosition = legendPosition,
     ) {
         Canvas(Modifier.fillMaxSize()) {
@@ -74,22 +69,5 @@ fun PieChart(
                 }
             }
         }
-    }
-}
-
-@Composable
-private fun PieLegend(
-    data: PieChart.Data,
-) {
-    Box(modifier = Modifier.border(width = 1.dp, color = ChartsTheme.legendColor)) {
-        LegendFlow(
-            modifier = Modifier.padding(16.dp),
-            data = data.slices.map { item ->
-                LegendEntry(
-                    item.label,
-                    item.color,
-                )
-            },
-        )
     }
 }

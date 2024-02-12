@@ -1,10 +1,7 @@
 package pl.krystiankaniowski.composecharts.column
 
 import androidx.compose.foundation.Canvas
-import androidx.compose.foundation.border
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
@@ -13,15 +10,13 @@ import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.rememberTextMeasurer
-import androidx.compose.ui.unit.dp
-import pl.krystiankaniowski.composecharts.ChartsTheme
 import pl.krystiankaniowski.composecharts.axis.XAxis
 import pl.krystiankaniowski.composecharts.axis.YAxis
+import pl.krystiankaniowski.composecharts.data.Series
 import pl.krystiankaniowski.composecharts.internal.AxisScale
 import pl.krystiankaniowski.composecharts.internal.ChartChoreographer
 import pl.krystiankaniowski.composecharts.internal.PointMapper
-import pl.krystiankaniowski.composecharts.legend.LegendEntry
-import pl.krystiankaniowski.composecharts.legend.LegendFlow
+import pl.krystiankaniowski.composecharts.legend.Legend
 import pl.krystiankaniowski.composecharts.legend.LegendPosition
 
 object ColumnChart {
@@ -46,10 +41,10 @@ object ColumnChart {
     }
 
     data class Column(
-        val label: String,
+        override val label: String,
         val values: List<Float>,
-        val color: Color,
-    )
+        override val color: Color,
+    ) : Series
 
     enum class Style {
         GROUPED,
@@ -106,7 +101,7 @@ fun ColumnChart(
     ChartChoreographer(
         modifier = modifier,
         title = title,
-        legend = { BarLegend(data) },
+        legend = { Legend(data = data.columns) },
         legendPosition = legendPosition,
     ) {
 
@@ -227,22 +222,5 @@ fun ColumnChart(
                 }
             }
         }
-    }
-}
-
-@Composable
-private fun BarLegend(
-    data: ColumnChart.Data,
-) {
-    Box(modifier = Modifier.border(width = 1.dp, color = ChartsTheme.legendColor)) {
-        LegendFlow(
-            modifier = Modifier.padding(16.dp),
-            data = data.columns.map { item ->
-                LegendEntry(
-                    item.label,
-                    item.color,
-                )
-            },
-        )
     }
 }

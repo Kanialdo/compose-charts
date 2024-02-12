@@ -1,8 +1,9 @@
 package pl.krystiankaniowski.composecharts.circular
 
 import androidx.compose.foundation.Canvas
-import androidx.compose.foundation.border
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.BoxWithConstraints
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.size
 import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
@@ -17,10 +18,9 @@ import androidx.compose.ui.text.rememberTextMeasurer
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import pl.krystiankaniowski.composecharts.ChartsTheme
+import pl.krystiankaniowski.composecharts.data.Series
 import pl.krystiankaniowski.composecharts.internal.*
-import pl.krystiankaniowski.composecharts.legend.LegendEntry
-import pl.krystiankaniowski.composecharts.legend.LegendFlow
+import pl.krystiankaniowski.composecharts.legend.Legend
 import pl.krystiankaniowski.composecharts.legend.LegendPosition
 
 object PolarChart {
@@ -30,10 +30,10 @@ object PolarChart {
     )
 
     data class Entry(
-        val label: String,
-        val color: Color,
+        override val label: String,
+        override val color: Color,
         val value: Float,
-    )
+    ) : Series
 
     data class PolarChartStyle(
         val lineColor: Color = Color.Gray,
@@ -70,7 +70,7 @@ fun PolarChart(
     ChartChoreographer(
         modifier = modifier,
         title = title,
-        legend = { RadarLegend(data) },
+        legend = { Legend(data = data.entries) },
         legendPosition = legendPosition,
     ) {
         BoxWithConstraints(Modifier.fillMaxSize()) {
@@ -133,20 +133,5 @@ fun PolarChart(
                 }
             }
         }
-    }
-}
-
-@Composable
-private fun RadarLegend(data: PolarChart.Data) {
-    Box(modifier = Modifier.border(width = 1.dp, color = ChartsTheme.legendColor)) {
-        LegendFlow(
-            modifier = Modifier.padding(16.dp),
-            data = data.entries.map { entry ->
-                LegendEntry(
-                    entry.label,
-                    entry.color,
-                )
-            },
-        )
     }
 }

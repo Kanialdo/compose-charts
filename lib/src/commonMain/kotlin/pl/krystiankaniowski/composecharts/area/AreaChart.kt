@@ -1,10 +1,7 @@
 package pl.krystiankaniowski.composecharts.area
 
 import androidx.compose.foundation.Canvas
-import androidx.compose.foundation.border
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
@@ -14,15 +11,13 @@ import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.graphics.drawscope.Fill
 import androidx.compose.ui.text.rememberTextMeasurer
-import androidx.compose.ui.unit.dp
-import pl.krystiankaniowski.composecharts.ChartsTheme
 import pl.krystiankaniowski.composecharts.axis.XAxis
 import pl.krystiankaniowski.composecharts.axis.YAxis
+import pl.krystiankaniowski.composecharts.data.Series
 import pl.krystiankaniowski.composecharts.internal.AxisScale
 import pl.krystiankaniowski.composecharts.internal.ChartChoreographer
 import pl.krystiankaniowski.composecharts.internal.PointMapper
-import pl.krystiankaniowski.composecharts.legend.LegendEntry
-import pl.krystiankaniowski.composecharts.legend.LegendFlow
+import pl.krystiankaniowski.composecharts.legend.Legend
 import pl.krystiankaniowski.composecharts.legend.LegendPosition
 
 object AreaChart {
@@ -45,10 +40,10 @@ object AreaChart {
     }
 
     data class Area(
-        val label: String,
+        override val label: String,
         val values: List<Float>,
-        val color: Color,
-    )
+        override val color: Color,
+    ) : Series
 
     enum class Style {
         OVERLAPPING,
@@ -106,7 +101,7 @@ fun AreaChart(
     ChartChoreographer(
         modifier = modifier,
         title = title,
-        legend = { AreaLegend(data) },
+        legend = { Legend(data = data.areas) },
         legendPosition = legendPosition,
     ) {
 
@@ -259,21 +254,4 @@ private fun DrawScope.drawProportionalArea(
         path = path,
         style = Fill,
     )
-}
-
-@Composable
-private fun AreaLegend(
-    data: AreaChart.Data,
-) {
-    Box(modifier = Modifier.border(width = 1.dp, color = ChartsTheme.legendColor)) {
-        LegendFlow(
-            modifier = Modifier.padding(16.dp),
-            data = data.areas.map { item ->
-                LegendEntry(
-                    item.label,
-                    item.color,
-                )
-            },
-        )
-    }
 }
