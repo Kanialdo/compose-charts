@@ -4,6 +4,7 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 import pl.krystiankaniowski.composecharts.autoColor
+import pl.krystiankaniowski.composecharts.data.ChartColor
 import pl.krystiankaniowski.composecharts.line.LineChart
 
 @Suppress("MagicNumber")
@@ -15,7 +16,7 @@ fun LineChartCustomDemo() {
                 LineChart.Line(
                     label = "Custom color",
                     values = listOf(5f, 4f, 3f, 2f, 1f),
-                    color = Color.Black,
+                    color = ChartColor.Solid(Color.Black),
                 ),
                 LineChart.Line(
                     label = "Custom line style",
