@@ -20,6 +20,7 @@ enum class TextAnchorY {
     Bottom,
 }
 
+@Deprecated("Use DrawScope.drawText with TextUnit instead")
 fun DrawScope.drawText(
     textMeasurer: TextMeasurer,
     text: String,
@@ -52,7 +53,6 @@ fun DrawScope.drawText(
         ),
     )
 }
-
 
 fun DrawScope.drawText(
     textMeasurer: TextMeasurer,

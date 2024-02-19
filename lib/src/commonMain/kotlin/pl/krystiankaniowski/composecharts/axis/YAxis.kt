@@ -9,6 +9,7 @@ import androidx.compose.ui.text.TextMeasurer
 import pl.krystiankaniowski.composecharts.ChartsTheme
 import pl.krystiankaniowski.composecharts.internal.*
 
+@Deprecated("Use Axis instead")
 object YAxis {
 
     data class Value(

@@ -8,18 +8,16 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import pl.krystiankaniowski.composecharts.internal.*
 
-class XAxisDrawer(val axis: Axis, minValue: Float, maxValue: Float) {
+class XAxisDrawer(val axis: Axis, dataMinValue: Float, dataMaxValue: Float) {
 
-    val _minValue = when (axis.values) {
-        is Axis.Values.Auto -> minValue
+    private val minValue = when (axis.values) {
+        is Axis.Values.Auto -> dataMinValue
         is Axis.Values.Fixed -> axis.values.values.min()
-        is Axis.Values.Regions -> axis.values.values.minOf { it.first }
     }
 
-    val _maxValue = when (axis.values) {
-        is Axis.Values.Auto -> maxValue
+    private val maxValue = when (axis.values) {
+        is Axis.Values.Auto -> dataMaxValue
         is Axis.Values.Fixed -> axis.values.values.max()
-        is Axis.Values.Regions -> axis.values.values.maxOf { it.second }
     }
 
     fun measureHeight(textMeasurer: TextMeasurer): Float {
@@ -30,7 +28,7 @@ class XAxisDrawer(val axis: Axis, minValue: Float, maxValue: Float) {
     }
 
     fun calculateValues(): List<AxisLabel> {
-        return listOf(_minValue, _maxValue).map { AxisLabel(axis.mapper(it), it) }
+        return listOf(minValue, maxValue).map { AxisLabel(axis.mapper(it), it) }
     }
 
     fun draw(drawScope: DrawScope, chartMeasurer: ChartMeasurer, values: List<AxisLabel>) {

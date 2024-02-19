@@ -5,8 +5,8 @@ import androidx.compose.runtime.*
 import kotlinx.datetime.Clock
 import pl.krystiankaniowski.composecharts.ChartScreen
 import pl.krystiankaniowski.composecharts.autoColor
-import pl.krystiankaniowski.composecharts.line.LineChart2
 import pl.krystiankaniowski.composecharts.components.*
+import pl.krystiankaniowski.composecharts.line.LineChart2
 import pl.krystiankaniowski.composecharts.utils.generateList
 import pl.krystiankaniowski.composecharts.utils.randomize
 import kotlin.random.Random

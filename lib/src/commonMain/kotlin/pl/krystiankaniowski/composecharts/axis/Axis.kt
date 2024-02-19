@@ -32,7 +32,6 @@ data class Axis(
     sealed interface Values {
         data object Auto : Values
         data class Fixed(val values: List<Float>) : Values
-        data class Regions(val values: List<Pair<Float, Float>>) : Values
     }
 }
 

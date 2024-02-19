@@ -12,6 +12,7 @@ import pl.krystiankaniowski.composecharts.internal.TextAnchorY
 import pl.krystiankaniowski.composecharts.internal.XMapper
 import pl.krystiankaniowski.composecharts.internal.drawText
 
+@Deprecated("Use Axis instead")
 object XAxis {
 
     data class Value(

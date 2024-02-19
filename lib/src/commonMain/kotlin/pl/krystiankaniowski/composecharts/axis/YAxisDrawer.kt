@@ -8,18 +8,16 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import pl.krystiankaniowski.composecharts.internal.*
 
-class YAxisDrawer(val axis: Axis, minValue: Float, maxValue: Float) {
+class YAxisDrawer(val axis: Axis, dataMinValue: Float, dataMxValue: Float) {
 
-    val _minValue = when (axis.values) {
-        is Axis.Values.Auto -> minValue
+    private val minValue = when (axis.values) {
+        is Axis.Values.Auto -> dataMinValue
         is Axis.Values.Fixed -> axis.values.values.min()
-        is Axis.Values.Regions -> axis.values.values.minOf { it.first }
     }
 
-    val _maxValue = when (axis.values) {
-        is Axis.Values.Auto -> maxValue
+    private val maxValue = when (axis.values) {
+        is Axis.Values.Auto -> dataMxValue
         is Axis.Values.Fixed -> axis.values.values.max()
-        is Axis.Values.Regions -> axis.values.values.maxOf { it.second }
     }
 
     fun measureWidth(textMeasurer: TextMeasurer): Float {
@@ -29,12 +27,14 @@ class YAxisDrawer(val axis: Axis, minValue: Float, maxValue: Float) {
         return strokeWidth + padding + labelsWidth
     }
 
-    fun calculateValues(): List<AxisLabel> {
-        return AxisScale.create(
-            min = _minValue,
-            max = _maxValue,
-        ).getHelperLines().map {
-            AxisLabel(label = axis.mapper(it), value = it)
+    fun calculateValues(): List<AxisLabel> = when (axis.values) {
+        is Axis.Values.Auto -> {
+            AxisScale.create(min = minValue, max = maxValue)
+                .getHelperLines()
+                .map { AxisLabel(label = axis.mapper(it), value = it) }
+        }
+        is Axis.Values.Fixed -> {
+            axis.values.values.map { AxisLabel(label = axis.mapper(it), value = it) }
         }
     }
 
@@ -90,6 +90,5 @@ class YAxisDrawer(val axis: Axis, minValue: Float, maxValue: Float) {
             start = Offset(yAxisScope.right, yAxisScope.top),
             end = Offset(yAxisScope.right, yAxisScope.bottom),
         )
-
     }
 }
