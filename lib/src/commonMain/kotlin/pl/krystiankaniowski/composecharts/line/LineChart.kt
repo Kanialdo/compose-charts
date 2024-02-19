@@ -5,17 +5,18 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.text.rememberTextMeasurer
-import pl.krystiankaniowski.composecharts.axis.XAxis
-import pl.krystiankaniowski.composecharts.axis.YAxis
+import pl.krystiankaniowski.composecharts.axis.Axis
+import pl.krystiankaniowski.composecharts.axis.AxisLabel
+import pl.krystiankaniowski.composecharts.axis.XAxisDrawer
+import pl.krystiankaniowski.composecharts.axis.YAxisDrawer
 import pl.krystiankaniowski.composecharts.data.ChartColor
 import pl.krystiankaniowski.composecharts.data.Series
-import pl.krystiankaniowski.composecharts.internal.AxisScale
 import pl.krystiankaniowski.composecharts.internal.ChartChoreographer
+import pl.krystiankaniowski.composecharts.internal.ChartMeasurer
 import pl.krystiankaniowski.composecharts.internal.PointMapper
 import pl.krystiankaniowski.composecharts.legend.Legend
 import pl.krystiankaniowski.composecharts.legend.LegendPosition
@@ -24,7 +25,6 @@ object LineChart {
 
     data class Data(
         val lines: List<Line>,
-        val xLabelFormatter: (Int) -> String = { it.toString() },
     ) {
 
         init {
@@ -57,7 +57,7 @@ object LineChart {
         )
 
         sealed class PointStyle {
-            object None : PointStyle()
+            data object None : PointStyle()
             data class Filled(val size: Float = 5f) : PointStyle()
         }
     }
@@ -69,31 +69,17 @@ fun LineChart(
     data: LineChart.Data,
     title: (@Composable () -> Unit)? = null,
     style: LineChart.Style = LineChart.Style(),
-    xAxis: XAxis.Drawer = XAxis.Default(),
-    yAxis: YAxis.Drawer = YAxis.Default(),
+    xAxis: Axis = Axis(),
+    yAxis: Axis = Axis(),
     legendPosition: LegendPosition = LegendPosition.Bottom,
 ) {
 
-    val scale = remember(data) {
-        AxisScale.create(
-            min = data.minValue,
-            max = data.maxValue,
-        )
-    }
-
+    val xAxisDrawer = remember(xAxis, data) { XAxisDrawer(xAxis, 0f, data.size - 1f) }
     val xAxisValues = remember(data) {
-        buildList(data.size) {
-            for (i in 0 until data.size) {
-                add(XAxis.Value(label = data.xLabelFormatter(i), value = i.toFloat()))
-            }
-        }
+        (0 until data.size).map { i -> AxisLabel(label = xAxis.mapper(i.toFloat()), value = i.toFloat()) }
     }
-
-    val yAxisValues = remember(scale, style) {
-        scale.getHelperLines().map {
-            YAxis.Value(label = scale.formatValue(it), value = it)
-        }
-    }
+    val yAxisDrawer = remember(yAxis, data) { YAxisDrawer(yAxis, data.minValue, data.maxValue) }
+    val yAxisValues = remember(yAxisDrawer) { yAxisDrawer.calculateValues() }
 
     ChartChoreographer(
         modifier = modifier,
@@ -103,45 +89,26 @@ fun LineChart(
     ) {
 
         val textMeasurer = rememberTextMeasurer()
+        val xOffset = 0.5f
 
         Canvas(Modifier.fillMaxSize()) {
 
-            val contentArea = Rect(
-                top = 0f,
-                bottom = size.height - xAxis.requiredHeight(this, xAxisValues),
-                left = yAxis.requiredWidth(this, textMeasurer, yAxisValues),
-                right = size.width,
-            )
-            val xAxisArea = Rect(
-                top = contentArea.bottom,
-                bottom = size.height,
-                left = contentArea.left,
-                right = contentArea.right,
-            )
-            val yAxisArea = Rect(
-                top = contentArea.top,
-                bottom = contentArea.bottom,
-                left = 0f,
-                right = contentArea.left,
+            val measurer = ChartMeasurer(
+                drawScope = this,
+                textMeasurer = textMeasurer,
+                xAxisDrawer = xAxisDrawer,
+                yAxisDrawer = yAxisDrawer,
+                minX = -xOffset,
+                maxX = data.size - 1 + xOffset,
+                minY = 0f,
+                maxY = yAxisValues.last().value,
             )
 
-            val mapper = PointMapper(
-                xSrcMin = -0.5f,
-                xSrcMax = data.size - 0.5f,
-                xDstMin = contentArea.left,
-                xDstMax = contentArea.right,
-                ySrcMin = scale.min,
-                ySrcMax = scale.max,
-                yDstMin = contentArea.top,
-                yDstMax = contentArea.bottom,
-            )
-
-            xAxis.draw(this, textMeasurer, contentArea, xAxisArea, mapper, xAxisValues)
-            yAxis.draw(this, textMeasurer, contentArea, yAxisArea, mapper, yAxisValues)
-
+            xAxisDrawer.draw(this, measurer, xAxisValues)
+            yAxisDrawer.draw(this, measurer, yAxisValues)
             data.lines.forEach { line ->
-                drawLine(line, style, mapper)
-                drawPoints(line, style, mapper)
+                drawLine(line, style, measurer.mapper)
+                drawPoints(line, style, measurer.mapper)
             }
         }
     }

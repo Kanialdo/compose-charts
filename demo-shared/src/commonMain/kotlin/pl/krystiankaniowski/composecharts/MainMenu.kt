@@ -17,7 +17,6 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
 import pl.krystiankaniowski.composecharts.views.*
 import pl.krystiankaniowski.composecharts.views.circular.*
-import pl.krystiankaniowski.composecharts.views.line.LineChart2Demo
 import pl.krystiankaniowski.composecharts.views.line.LineChartCustomDemo
 import pl.krystiankaniowski.composecharts.views.line.LineChartDemo
 
@@ -50,7 +49,6 @@ val menuItems = listOf<MenuEntry>(
         title = "Line",
         items = listOf(
             MenuEntry.MenuItem(title = "Line", screen = { LineChartDemo() }),
-            MenuEntry.MenuItem(title = "Line 2", screen = { LineChart2Demo() }),
             MenuEntry.MenuItem(title = "Line custom", screen = { LineChartCustomDemo() }),
         ),
     ),
