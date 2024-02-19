@@ -85,7 +85,6 @@ val menuItems = listOf<MenuEntry>(
         title = "Legend",
         items = listOf(
             MenuEntry.MenuItem(title = "Legend", screen = { LegendDemoView() }),
-            MenuEntry.MenuItem(title = "Legend Flow", screen = { LegendFlowDemoView() }),
         ),
     ),
 )

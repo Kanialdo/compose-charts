@@ -1,6 +1,7 @@
 package pl.krystiankaniowski.composecharts
 
 import androidx.compose.ui.graphics.Color
+import pl.krystiankaniowski.composecharts.data.ChartColor
 
 object Colors
 
@@ -35,4 +36,4 @@ object AutoColors {
     fun getColor(position: Int) = Color(colors[position % colors.size])
 }
 
-fun autoColor(pos: Int) = AutoColors.getColor(pos)
+fun autoColor(pos: Int) = ChartColor.Solid(AutoColors.getColor(pos))

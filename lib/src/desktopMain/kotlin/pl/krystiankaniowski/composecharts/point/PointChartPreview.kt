@@ -19,7 +19,7 @@ private val data = PointChart.Data(
                 Offset(0f, 2f),
                 Offset(0f, 1f),
             ),
-            color = PointChart.ChartColor.Solid(autoColor(0)),
+            color = PointChart.ChartColor.Solid(autoColor(0).value),
         ),
         PointChart.Series(
             label = "Series B",
@@ -30,7 +30,7 @@ private val data = PointChart.Data(
                 Offset(2f, 1f),
                 Offset(1f, 0f),
             ),
-            color = PointChart.ChartColor.Solid(autoColor(1)),
+            color = PointChart.ChartColor.Solid(autoColor(1).value),
         ),
         PointChart.Series(
             label = "Series C",
@@ -41,7 +41,7 @@ private val data = PointChart.Data(
                 Offset(2f, 1.5f),
                 Offset(1f, 1.5f),
             ),
-            color = PointChart.ChartColor.Solid(autoColor(2)),
+            color = PointChart.ChartColor.Solid(autoColor(2).value),
         ),
     ),
 )
@@ -100,7 +100,7 @@ fun PointChartComplexPreview() {
                 PointChart.Series(
                     label = "Data",
                     values = points,
-                    color = PointChart.ChartColor.Solid(autoColor(1)),
+                    color = PointChart.ChartColor.Solid(autoColor(1).value),
                 ),
             ),
         ),
@@ -119,7 +119,7 @@ fun PointChartCustomBoundsPreview() {
                 PointChart.Series(
                     label = "Data",
                     values = points,
-                    color = PointChart.ChartColor.Solid(autoColor(0)),
+                    color = PointChart.ChartColor.Solid(autoColor(0).value),
                 ),
             ),
             minX = 0f,

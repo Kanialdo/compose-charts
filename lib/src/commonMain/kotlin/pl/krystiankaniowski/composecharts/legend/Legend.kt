@@ -1,6 +1,7 @@
 package pl.krystiankaniowski.composecharts.legend
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -8,6 +9,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import pl.krystiankaniowski.composecharts.ChartsTheme
+import pl.krystiankaniowski.composecharts.data.ChartColor
+import pl.krystiankaniowski.composecharts.data.Series
 
 enum class LegendPosition {
     Top,
@@ -15,13 +19,35 @@ enum class LegendPosition {
     None,
 }
 
+@Composable
+fun Legend(
+    modifier: Modifier = Modifier,
+    data: List<Series>,
+) {
+    Box(modifier = modifier.border(width = 1.dp, color = ChartsTheme.legendColor)) {
+        LegendFlow(
+            modifier = Modifier.padding(16.dp),
+            data = data.map {
+                when (val color = it.color) {
+                    is ChartColor.Solid -> LegendEntry(
+                        text = it.label,
+                        color = color.value,
+                    )
+                }
+            },
+        )
+    }
+}
+
+@Deprecated("Use Series instead")
 data class LegendEntry(
     val text: String,
     val color: Color,
 )
 
+@Deprecated("Use Legend Series based instead")
 @Composable
-fun Legend(
+fun CustomLegend(
     modifier: Modifier = Modifier,
     data: List<LegendEntry>,
 ) {

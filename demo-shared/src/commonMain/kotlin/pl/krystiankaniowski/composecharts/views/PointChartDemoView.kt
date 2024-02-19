@@ -25,7 +25,7 @@ fun PointChartDemo() {
                         Offset(0f, 2f),
                         Offset(0f, 1f),
                     ),
-                    color = PointChart.ChartColor.Solid(autoColor(0)),
+                    color = PointChart.ChartColor.Solid(autoColor(0).value),
                 ),
                 PointChart.Series(
                     label = "Series B",
@@ -36,7 +36,7 @@ fun PointChartDemo() {
                         Offset(2f, 2f),
                         Offset(1f, 1f),
                     ),
-                    color = PointChart.ChartColor.Solid(autoColor(1)),
+                    color = PointChart.ChartColor.Solid(autoColor(1).value),
                 ),
                 PointChart.Series(
                     label = "Series C",
@@ -47,7 +47,7 @@ fun PointChartDemo() {
                         Offset(2f, 0f),
                         Offset(1f, 0f),
                     ),
-                    color = PointChart.ChartColor.Solid(autoColor(2)),
+                    color = PointChart.ChartColor.Solid(autoColor(2).value),
                 ),
             ),
         ),
@@ -70,7 +70,7 @@ fun PointChartCustomDemo() {
                         Offset(0f, 2f),
                         Offset(0f, 1f),
                     ),
-                    color = PointChart.ChartColor.Solid(autoColor(1)),
+                    color = PointChart.ChartColor.Solid(autoColor(1).value),
                     pathEffect = PathEffect.dashPathEffect(floatArrayOf(5f, 10f)),
                 ),
                 PointChart.Series(
