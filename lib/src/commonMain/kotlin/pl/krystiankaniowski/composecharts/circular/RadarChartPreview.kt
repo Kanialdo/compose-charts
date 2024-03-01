@@ -1,8 +1,8 @@
 package pl.krystiankaniowski.composecharts.circular
 
-import androidx.compose.desktop.ui.tooling.preview.Preview
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
+import org.jetbrains.compose.ui.tooling.preview.Preview
 import pl.krystiankaniowski.composecharts.data.ChartColor
 
 @Preview
