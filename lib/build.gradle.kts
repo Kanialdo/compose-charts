@@ -20,12 +20,9 @@ kotlin {
     sourceSets {
         val commonMain by getting {
             dependencies {
-                api(compose.animation)
-                api(compose.runtime)
-                api(compose.foundation)
-                api(compose.material)
-                api(compose.materialIconsExtended)
-                api(compose.ui)
+                implementation(compose.runtime)
+                implementation(compose.foundation)
+                implementation(compose.material)
             }
         }
         val commonTest by getting {
