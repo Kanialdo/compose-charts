@@ -48,6 +48,8 @@ allprojects {
             "src/androidTest/kotlin",
             "src/desktopMain/kotlin",
             "src/desktopTest/kotlin",
+            "src/jsMain/kotlin",
+            "src/jsTest/kotlin",
             "build.gradle.kts",
             "settings.gradle.kts",
         )

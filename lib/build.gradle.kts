@@ -26,6 +26,7 @@ kotlin {
                 api(compose.material)
                 api(compose.materialIconsExtended)
                 api(compose.ui)
+                api(compose.components.uiToolingPreview)
             }
         }
         val commonTest by getting {
@@ -33,20 +34,9 @@ kotlin {
                 implementation(kotlin("test"))
             }
         }
-        val androidMain by getting {
-            dependencies {
-                api(compose.preview)
-            }
-        }
-        val desktopMain by getting {
-            dependencies {
-                api(compose.preview)
-            }
-        }
-        val jsMain by getting {
-            dependencies {
-            }
-        }
+        val androidMain by getting
+        val desktopMain by getting
+        val jsMain by getting
     }
 }
 
