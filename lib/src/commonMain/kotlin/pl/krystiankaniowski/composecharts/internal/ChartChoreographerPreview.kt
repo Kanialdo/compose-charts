@@ -1,6 +1,5 @@
 package pl.krystiankaniowski.composecharts.internal
 
-import androidx.compose.desktop.ui.tooling.preview.Preview
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -11,6 +10,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import org.jetbrains.compose.ui.tooling.preview.Preview
 import pl.krystiankaniowski.composecharts.legend.LegendPosition
 
 @Preview

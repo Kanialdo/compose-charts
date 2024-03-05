@@ -1,9 +1,9 @@
 package pl.krystiankaniowski.composecharts.point
 
-import androidx.compose.desktop.ui.tooling.preview.Preview
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.geometry.Offset
+import org.jetbrains.compose.ui.tooling.preview.Preview
 import pl.krystiankaniowski.composecharts.autoColor
 import kotlin.random.Random
 
