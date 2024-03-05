@@ -18,6 +18,11 @@ kotlin {
             dependencies {
                 api(projects.lib)
                 api(libs.kotlinx.datetime)
+                api(compose.animation)
+                api(compose.runtime)
+                api(compose.foundation)
+                api(compose.material)
+                api(compose.ui)
             }
         }
         val commonTest by getting {

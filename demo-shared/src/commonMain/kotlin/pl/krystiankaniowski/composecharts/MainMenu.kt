@@ -8,13 +8,14 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.material.MaterialTheme.typography
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.*
+import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
+import pl.krystiankaniowski.composecharts.icons.*
 import pl.krystiankaniowski.composecharts.views.*
 import pl.krystiankaniowski.composecharts.views.circular.*
 import pl.krystiankaniowski.composecharts.views.line.LineChartCustomDemo
@@ -27,7 +28,7 @@ sealed interface MenuEntry {
 
 val menuItems = listOf<MenuEntry>(
     MenuEntry.Section(
-        icon = Icons.Default.BarChart,
+        icon = Icons.ColumnChart,
         title = "Column",
         items = listOf(
             MenuEntry.MenuItem(title = "Column grouped", screen = { ColumnGroupedChartDemo() }),
@@ -36,7 +37,7 @@ val menuItems = listOf<MenuEntry>(
         ),
     ),
     MenuEntry.Section(
-        icon = Icons.Default.Sort,
+        icon = Icons.BarChart,
         title = "Bar",
         items = listOf(
             MenuEntry.MenuItem(title = "Bar grouped", screen = { BarGroupedChartDemo() }),
@@ -45,7 +46,7 @@ val menuItems = listOf<MenuEntry>(
         ),
     ),
     MenuEntry.Section(
-        icon = Icons.Default.ShowChart,
+        icon = Icons.LineChart,
         title = "Line",
         items = listOf(
             MenuEntry.MenuItem(title = "Line", screen = { LineChartDemo() }),
@@ -53,7 +54,7 @@ val menuItems = listOf<MenuEntry>(
         ),
     ),
     MenuEntry.Section(
-        icon = Icons.Default.BubbleChart,
+        icon = Icons.PointChart,
         title = "Point",
         items = listOf(
             MenuEntry.MenuItem(title = "Point chart", screen = { PointChartDemo() }),
@@ -61,7 +62,7 @@ val menuItems = listOf<MenuEntry>(
         ),
     ),
     MenuEntry.Section(
-        icon = Icons.Default.AreaChart,
+        icon = Icons.AreaChart,
         title = "Area",
         items = listOf(
             MenuEntry.MenuItem(title = "Area overlapping", screen = { AreaOverlappingChartDemo() }),
@@ -70,7 +71,7 @@ val menuItems = listOf<MenuEntry>(
         ),
     ),
     MenuEntry.Section(
-        icon = Icons.Default.PieChart,
+        icon = Icons.CircularChart,
         title = "Circular",
         items = listOf(
             MenuEntry.MenuItem(title = "Pie", screen = { PieChartDemo() }),
@@ -81,7 +82,7 @@ val menuItems = listOf<MenuEntry>(
         ),
     ),
     MenuEntry.Section(
-        icon = Icons.Default.Feed,
+        icon = Icons.Legend,
         title = "Legend",
         items = listOf(
             MenuEntry.MenuItem(title = "Legend", screen = { LegendDemoView() }),
@@ -129,7 +130,7 @@ fun ColumnScope.Section(section: MenuEntry.Section, currentMenuItem: MenuEntry.M
         )
         Spacer(modifier = Modifier.width(16.dp))
         Icon(
-            imageVector = if (isExpanded) Icons.Default.ArrowDropUp else Icons.Default.ArrowDropDown,
+            imageVector = if (isExpanded) Icons.ArrowDropUp else Icons.Default.ArrowDropDown,
             contentDescription = null,
         )
     }
