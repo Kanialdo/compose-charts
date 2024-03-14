@@ -4,7 +4,7 @@ androidPlugin = "8.3.0"
 composeCompiler = "1.5.8"
 composeJb = "1.6.1"
 detekt = "1.23.5"
-kotlin = "1.9.22"
+kotlin = "1.9.23"
 
 [libraries]
 
