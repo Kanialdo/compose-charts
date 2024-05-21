@@ -1,6 +1,6 @@
 [versions]
 
-androidPlugin = "8.4.0"
+androidPlugin = "8.4.1"
 composeCompiler = "1.5.8"
 composeJb = "1.6.2"
 detekt = "1.23.6"
