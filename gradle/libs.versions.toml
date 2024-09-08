@@ -2,7 +2,7 @@
 
 androidPlugin = "8.6.0"
 composeJb = "1.6.11"
-detekt = "1.23.6"
+detekt = "1.23.7"
 kotlin = "2.0.10"
 
 [libraries]
