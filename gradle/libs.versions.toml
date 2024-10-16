@@ -7,7 +7,7 @@ kotlin = "2.0.10"
 
 [libraries]
 
-androidx-activityCompose = { module = "androidx.activity:activity-compose", version = "1.9.2" }
+androidx-activityCompose = { module = "androidx.activity:activity-compose", version = "1.9.3" }
 androidx-appcompat = { module = "androidx.appcompat:appcompat", version = "1.7.0" }
 detekt-plugins-formatting = { module = "io.gitlab.arturbosch.detekt:detekt-formatting", version.ref = "detekt" }
 kotlinx-datetime = { group = "org.jetbrains.kotlinx", name = "kotlinx-datetime", version = "0.6.1" }
