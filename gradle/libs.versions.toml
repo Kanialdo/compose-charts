@@ -3,7 +3,7 @@
 androidPlugin = "8.8.0"
 composeJb = "1.7.1"
 detekt = "1.23.7"
-kotlin = "2.0.10"
+kotlin = "2.1.10"
 
 [libraries]
 
