@@ -1,7 +1,7 @@
 [versions]
 
 androidPlugin = "8.13.0"
-composeJb = "1.7.1"
+composeJb = "1.8.2"
 detekt = "1.23.8"
 kotlin = "2.0.10"
 
